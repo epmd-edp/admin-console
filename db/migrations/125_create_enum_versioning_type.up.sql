@@ -1,0 +1,1 @@
+create type versioning_type as enum ('default', 'edp');

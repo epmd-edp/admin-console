@@ -105,7 +105,9 @@ function createConfirmTable(formName) {
         {
             'Job Provisioner': 'jobProvisioning',
             'Jenkins Slave': 'jenkinsSlave',
-            'Deployment Script': 'deploymentScript'
+            'Deployment Script': 'deploymentScript',
+            'Versioning Type': 'versioningType',
+            'Start Versioning From': 'startVersioningFrom'
         });
 
     if ( !isFound('strategy') || getValue('strategy') === "clone" ) {
