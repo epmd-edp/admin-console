@@ -16,6 +16,7 @@ type CreateCodebase struct {
 	Description         *string     `json:"description,omitempty"`
 	Username            string      `json:"username"`
 	GitServer           string      `json:"gitServer"`
+	Versioning          Versioning  `json:"versioning"`
 	GitUrlPath          *string     `json:"gitUrlPath"`
 	JenkinsSlave        string      `json:"jenkinsSlave"`
 	JobProvisioning     string      `json:"jobProvisioning"`
@@ -47,4 +48,9 @@ type Database struct {
 
 type DeleteCodebaseCommand struct {
 	Name string `json:"name"`
+}
+
+type Versioning struct {
+	Type      string  `json:"type" valid:"Required"`
+	StartFrom *string `json:"startFrom,omitempty"`
 }

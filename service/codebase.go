@@ -248,6 +248,9 @@ func convertData(codebase command.CreateCodebase) edpv1alpha1.CodebaseSpec {
 		s.Description = codebase.Description
 	}
 
+	s.Versioning.Type = edpv1alpha1.VersioningType(codebase.Versioning.Type)
+	s.Versioning.StartFrom = codebase.Versioning.StartFrom
+
 	return s
 }
 

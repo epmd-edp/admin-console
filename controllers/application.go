@@ -44,6 +44,7 @@ type ApplicationController struct {
 
 	IntegrationStrategies []string
 	BuildTools            []string
+	VersioningTypes       []string
 	DeploymentScript      []string
 }
 
@@ -74,6 +75,7 @@ func (c *ApplicationController) GetApplicationsOverviewPage() {
 	c.Data["HasRights"] = isAdmin(contextRoles)
 	c.Data["Codebases"] = applications
 	c.Data["Type"] = query.App
+	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "codebase.html"
 }
@@ -144,6 +146,7 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 	c.Data["JenkinsSlaves"] = s
 	c.Data["BuildTools"] = c.BuildTools
 	c.Data["JobProvisioners"] = p
+	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["DeploymentScripts"] = c.DeploymentScript
 	c.Data["IsOpenshift"] = platform.IsOpenshift()
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
@@ -205,6 +208,10 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
 	}
+
+	codebase.Versioning.Type = c.GetString("versioningType")
+	startVersioningFrom := c.GetString("startVersioningFrom")
+	codebase.Versioning.StartFrom = &startVersioningFrom
 
 	if codebase.Strategy == "import" {
 		codebase.GitServer = c.GetString("gitServer")

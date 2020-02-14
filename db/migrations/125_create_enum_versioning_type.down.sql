@@ -1,0 +1,1 @@
+drop type if exists versioning_type;

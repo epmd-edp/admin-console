@@ -157,6 +157,8 @@ objects:
                     key: password
               - name: INTEGRATION_STRATEGIES
                 value: 'Create,Clone,Import'
+              - name: VERSIONING_TYPES
+                value: 'default,edp'
               - name: BUILD_TOOLS
                 value: maven
               - name: DEPLOYMENT_SCRIPT

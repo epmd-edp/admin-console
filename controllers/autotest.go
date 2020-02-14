@@ -27,6 +27,7 @@ type AutotestsController struct {
 
 	IntegrationStrategies []string
 	BuildTools            []string
+	VersioningTypes       []string
 	DeploymentScript      []string
 }
 
@@ -93,6 +94,10 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
 	}
+
+	codebase.Versioning.Type = c.GetString("versioningType")
+	startVersioningFrom := c.GetString("startVersioningFrom")
+	codebase.Versioning.StartFrom = &startVersioningFrom
 
 	if o := OtherLanguage; codebase.Lang == OtherLanguage {
 		codebase.Framework = &o
@@ -233,6 +238,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 	c.Data["JenkinsSlaves"] = s
 	c.Data["BuildTools"] = c.BuildTools
 	c.Data["JobProvisioners"] = p
+	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "create_autotest.html"
 }
@@ -257,6 +263,7 @@ func (c *AutotestsController) GetAutotestsOverviewPage() {
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["HasRights"] = isAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["Type"] = query.Autotests
+	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "codebase.html"
 }

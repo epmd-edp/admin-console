@@ -27,6 +27,7 @@ type LibraryController struct {
 
 	IntegrationStrategies []string
 	BuildTools            []string
+	VersioningTypes       []string
 	DeploymentScript      []string
 }
 
@@ -102,6 +103,7 @@ func (c *LibraryController) GetCreatePage() {
 	c.Data["JenkinsSlaves"] = s
 	c.Data["BuildTools"] = c.BuildTools
 	c.Data["JobProvisioners"] = p
+	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "create_library.html"
 }
@@ -148,6 +150,10 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
 	}
+
+	library.Versioning.Type = c.GetString("versioningType")
+	startVersioningFrom := c.GetString("startVersioningFrom")
+	library.Versioning.StartFrom = &startVersioningFrom
 
 	if o := OtherLanguage; library.Lang == OtherLanguage {
 		library.Framework = &o

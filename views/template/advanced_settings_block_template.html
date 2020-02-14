@@ -36,6 +36,36 @@
                 </select>
             </div>
 
+            <div class="form-group versioningType">
+                <label for="versioningType">Select Codebase Versioning Type
+                    <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                          title="Select codebase versioning type which will be used to handle codebase versioning flow."></span>
+                </label>
+                <select class="form-control versioningType" name="versioningType" id="versioningType">
+                    {{range $type := .VersioningTypes}}
+                        <option data-versioning-type="{{$type}}">{{$type}}</option>
+                    {{end}}
+                </select>
+            </div>
+
+            <div class="form-group startVersioningFrom hide-element">
+                <label for="startVersioningFrom">Start Version From
+                    <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                          title="Version may contain only: numbers and dashes and cannot start and end with dash."></span>
+                </label>
+                <input name="startVersioningFrom" type="text" class="start-versioning-from form-control"
+                       id="startVersioningFrom"
+                       placeholder="Type desired initial version">
+                <div class="start-versioning-from-validation invalid-feedback regex-error">
+                    Version may contain only: numbers and dashes and cannot start and end with dash.
+                </div>
+                <div class="start-versioning-from-duplicate-validation">
+                    <div class="invalid-feedback duplicate-msg">
+                        Current version is already exists.
+                    </div>
+                </div>
+            </div>
+
             {{if eq .Type "application" }}
                 <div class="form-group">
                     <label for="deploymentScript">Select Deployment Scripts
