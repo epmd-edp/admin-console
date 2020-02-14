@@ -74,11 +74,16 @@ github.com/epmd-edp/cd-pipeline-operator/v2 v2.2.0-52 h1:nZskamdDerK2mC71mRk4mtc
 github.com/epmd-edp/cd-pipeline-operator/v2 v2.2.0-52/go.mod h1:UJqDk1DeNhWOOAcXq1IrZzzgyBwm0jlpIDffMRBQzOw=
 github.com/epmd-edp/codebase-operator/v2 v2.2.0-83 h1:PEUfehspiz94klzvZtIE5kecgPEm5KBcvAT+t8ZNiUo=
 github.com/epmd-edp/codebase-operator/v2 v2.2.0-83/go.mod h1:6kjTmuLnM8sgZERseD2F/IAo+DGVcbnJEJKSfxERE3g=
+github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200213090052-53578bdc8158 h1:2wsFMqKts6gW88dptdp5ueUfdpi20sPwaNLn18lfA/Y=
+github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200213090052-53578bdc8158/go.mod h1:Oc3KGEAr52U0yfR8T/SrzT7Y66IfgobfRtBlrYk4taw=
+github.com/epmd-edp/edp-component-operator v0.0.0-20191029131047-d87b7a6d3bb0/go.mod h1:k4OqvjIznqyXgdpp1iuuSdSk4BdjiJ3j3eesPIIqO+s=
 github.com/epmd-edp/gerrit-operator/v2 v2.1.0-52/go.mod h1:NUerZ1Gse7TCf0ltzTx08Un4WztLGmLzW9FZ4npRM6g=
 github.com/epmd-edp/jenkins-operator/v2 v2.1.0-32/go.mod h1:yVeuimCbYOgqjwMiqc1piFj3HohgfcYMjE4fWl2lPVw=
 github.com/epmd-edp/jenkins-operator/v2 v2.1.0-47/go.mod h1:n5IZrwC++e8lEAxac12vei/DJCSLGGV9Na/io9wmhWs=
 github.com/epmd-edp/jenkins-operator/v2 v2.1.0-61/go.mod h1:n5IZrwC++e8lEAxac12vei/DJCSLGGV9Na/io9wmhWs=
+github.com/epmd-edp/jenkins-operator/v2 v2.3.0-126/go.mod h1:bzA4/nlMuDByTC9nj7EhyA8CA2DTb6yKkHm2ID7YT1w=
 github.com/epmd-edp/keycloak-operator v1.0.18-alpha-39/go.mod h1:n78SGdVQhCkr29STKtz2qKDnYBiWk4TUoGATKF6nOH8=
+github.com/epmd-edp/keycloak-operator v1.0.31-alpha-56/go.mod h1:uXEmg98UyXkMVe9deHTkz0wF7fb47geazmAoiQAb/Zw=
 github.com/evanphx/json-patch v4.0.0+incompatible/go.mod h1:50XU6AFN0ol/bzJsmQLiYLvXMP4fmwYFNcr97nuDLSk=
 github.com/evanphx/json-patch v4.5.0+incompatible/go.mod h1:50XU6AFN0ol/bzJsmQLiYLvXMP4fmwYFNcr97nuDLSk=
 github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568/go.mod h1:xEzjJPgXI435gkrCt3MPfRiAkVrwSbHsst4LCFVfpJc=
@@ -259,6 +264,7 @@ github.com/satori/go.uuid v1.2.0/go.mod h1:dA0hQrYB0VpLJoorglMZABFdXlWrHn1NEOzdh
 github.com/sergi/go-diff v0.0.0-20180205163309-da645544ed44/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
 github.com/sergi/go-diff v1.0.0 h1:Kpca3qRNrduNnOQeazBd0ysaKrUJiIuISHxogkT9RPQ=
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
+github.com/sethvargo/go-password v0.1.2/go.mod h1:qKHfdSjT26DpHQWHWWR5+X4BI45jT31dg6j4RI2TEb0=
 github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 h1:X+yvsM2yrEktyI+b2qND5gpH8YhURn0k8OCaeRnkINo=
 github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644/go.mod h1:nkxAfR/5quYxwPZhyDxgasBMnRtBZd0FCEpawpjMUFg=
 github.com/siddontang/go v0.0.0-20180604090527-bdc77568d726/go.mod h1:3yhqj7WBBfRhbBlzyOC3gUxftwsU0u8gqevxwIHQpMw=
