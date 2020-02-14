@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd59f4cb_8d5fe839",
+        "filename": "db/migrations/126_add_versioning_type_column_to_codebase_table.up.sql",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-14T12:03:11Z",
+      "side": 1,
+      "message": "how versioning_type column can be with bool type ?",
+      "revId": "fe62709f868dbc4211311441d59a685349ee4233",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5cff469f_57937a9d",
+        "filename": "models/command/codebase.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-14T12:03:11Z",
+      "side": 1,
+      "message": "for which purpose is new type used",
+      "revId": "fe62709f868dbc4211311441d59a685349ee4233",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
