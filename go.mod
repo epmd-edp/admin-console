@@ -10,7 +10,7 @@ require (
 	github.com/emicklei/go-restful v2.9.6+incompatible
 	github.com/emirpasic/gods v1.9.0
 	github.com/epmd-edp/cd-pipeline-operator/v2 v2.2.0-52
-	github.com/epmd-edp/codebase-operator/v2 v2.2.0-83
+	github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200213090052-53578bdc8158
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-openapi/jsonpointer v0.19.3
 	github.com/go-openapi/jsonreference v0.19.2
@@ -35,6 +35,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/client-go v3.9.0+incompatible
+	github.com/operator-framework/operator-sdk v0.0.0-20190530173525-d6f9cdf2f52e
 	github.com/pelletier/go-buffruneio v0.2.0
 	github.com/peterbourgon/diskv v2.0.1+incompatible
 	github.com/pkg/errors v0.8.1

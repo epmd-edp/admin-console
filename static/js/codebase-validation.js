@@ -116,6 +116,22 @@ $(function () {
         toggleStrategy($('#strategy').val().toLowerCase());
     }();
 
+    function checkVersioningType(value) {
+        if( value === 'default') {
+            $('#startVersioning').attr("disabled", true);
+            $('.form-group.startVersioningFrom').addClass('hide-element');
+            $('#startVersioningFrom').removeAttr("value", "0.0.0");
+        } else {
+            $('#startVersioning').attr("disabled", false);
+            $('.form-group.startVersioningFrom').removeClass('hide-element');
+            $('#startVersioningFrom').attr("value", "0.0.0");
+        }
+    };
+
+    $('#versioningType').change(function() {
+        checkVersioningType($(this).val())
+    });
+
     $('#languageSelection').on('change', function (e) {
         $('.js-form-subsection, .appLangError').hide();
         let langDivEl = $($(e.target).data('target'));

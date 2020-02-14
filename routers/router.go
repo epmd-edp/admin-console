@@ -35,6 +35,7 @@ import (
 const (
 	integrationStrategies = "integrationStrategies"
 	buildTools            = "buildTools"
+	versioningTypes       = "versioningTypes"
 	deploymentScript      = "deploymentScript"
 
 	CreateStrategy = "Create"
@@ -114,6 +115,11 @@ func init() {
 		log.Fatalf("buildTools config variable is empty.")
 	}
 
+	vt := util.GetValuesFromConfig(versioningTypes)
+	if vt == nil {
+		log.Fatalf("versioningTypes config variable is empty.")
+	}
+
 	ds := util.GetValuesFromConfig(deploymentScript)
 	if ds == nil {
 		log.Fatalf("deploymentScript config variable is empty.")
@@ -132,6 +138,7 @@ func init() {
 
 		IntegrationStrategies: is,
 		BuildTools:            buildTools,
+		VersioningTypes:       vt,
 		DeploymentScript:      ds,
 	}
 
@@ -148,6 +155,7 @@ func init() {
 
 		IntegrationStrategies: util.RemoveElByValue(autis, CreateStrategy),
 		BuildTools:            buildTools,
+		VersioningTypes:       vt,
 		DeploymentScript:      ds,
 	}
 
@@ -160,6 +168,7 @@ func init() {
 
 		IntegrationStrategies: is,
 		BuildTools:            buildTools,
+		VersioningTypes:       vt,
 		DeploymentScript:      ds,
 	}
 
