@@ -111,10 +111,9 @@ func (s CodebaseService) CreateCodebase(codebase command.CreateCodebase) (*edpv1
 		return &edpv1alpha1.Codebase{}, err
 	}
 
-	_, err = s.BranchService.CreateCodebaseBranch(command.CreateCodebaseBranch{
-		Name:     "master",
-		Username: codebase.Username,
-	}, codebase.Name)
+	p := setCodebaseBranchCr(codebase.Versioning.Type, codebase.Username, codebase.Versioning.StartFrom, &consts.DefaultBuildNumber)
+
+	_, err = s.BranchService.CreateCodebaseBranch(p, codebase.Name)
 	if err != nil {
 		clog.Error(err, "an error has been occurred during the master branch creation")
 		return &edpv1alpha1.Codebase{}, err
@@ -350,4 +349,23 @@ func (s CodebaseService) deleteCodebase(name string) error {
 	}
 	clog.Info("end executing codebase delete request", "codebase", name)
 	return nil
+}
+
+func setCodebaseBranchCr(vt string, username string, version *string, build *string) command.CreateCodebaseBranch {
+	var bcr command.CreateCodebaseBranch
+	if vt == "default" {
+		bcr = command.CreateCodebaseBranch{
+			Name:     "master",
+			Username: username,
+		}
+	} else if vt == "edp" {
+		bcr = command.CreateCodebaseBranch{
+			Name:     "master",
+			Username: username,
+			Version:  version,
+			Build:    build,
+		}
+	}
+
+	return bcr
 }

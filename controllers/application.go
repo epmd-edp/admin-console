@@ -211,7 +211,7 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 
 	codebase.Versioning.Type = c.GetString("versioningType")
 	startVersioningFrom := c.GetString("startVersioningFrom")
-	codebase.Versioning.StartFrom = &startVersioningFrom
+	codebase.Versioning.StartFrom = getStringOrNil(startVersioningFrom)
 
 	if codebase.Strategy == "import" {
 		codebase.GitServer = c.GetString("gitServer")
@@ -288,4 +288,12 @@ func isAdmin(contextRoles []string) bool {
 		return false
 	}
 	return util.Contains(contextRoles, beego.AppConfig.String("adminRole"))
+}
+
+func getStringOrNil(value string) *string {
+	if value == "" {
+		return nil
+	}
+
+	return &value
 }

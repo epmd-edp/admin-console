@@ -10,7 +10,7 @@ require (
 	github.com/emicklei/go-restful v2.9.6+incompatible
 	github.com/emirpasic/gods v1.9.0
 	github.com/epmd-edp/cd-pipeline-operator/v2 v2.2.0-52
-	github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200213090052-53578bdc8158
+	github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200218110434-18ab9312d67a
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-openapi/jsonpointer v0.19.3
 	github.com/go-openapi/jsonreference v0.19.2
