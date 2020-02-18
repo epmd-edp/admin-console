@@ -18,3 +18,5 @@ const (
 	StagePlural    = "stages"
 	CodebaseKind   = "Codebase"
 )
+
+var DefaultBuildNumber = "0"

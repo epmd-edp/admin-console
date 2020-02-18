@@ -17,3 +17,11 @@ func GetValuesFromConfig(name string) []string {
 	log.Printf("Fetched data from %v env variable: %v", name, s)
 	return s
 }
+
+func GetStringOrNil(value string) *string {
+	if value == "" {
+		return nil
+	}
+
+	return &value
+}

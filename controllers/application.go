@@ -211,7 +211,7 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 
 	codebase.Versioning.Type = c.GetString("versioningType")
 	startVersioningFrom := c.GetString("startVersioningFrom")
-	codebase.Versioning.StartFrom = &startVersioningFrom
+	codebase.Versioning.StartFrom = util.GetStringOrNil(startVersioningFrom)
 
 	if codebase.Strategy == "import" {
 		codebase.GitServer = c.GetString("gitServer")
