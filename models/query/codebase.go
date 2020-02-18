@@ -28,6 +28,8 @@ type Codebase struct {
 	JobProvisioningId   *int              `json:"-" orm:"column(job_provisioning_id)"`
 	JobProvisioning     string            `json:"jobProvisioning" orm:"-"`
 	DeploymentScript    string            `json:"deploymentScript" orm:"deployment_script"`
+	VersioningType      string            `json:"type" orm: "versioning_type"`
+	StartVersioningFrom *string           `json:"startFrom" orm: "start_versioning_from"`
 }
 
 func (c *Codebase) TableName() string {

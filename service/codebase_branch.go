@@ -116,6 +116,8 @@ func convertBranchInfoData(branchInfo command.CreateCodebaseBranch, appName stri
 	return edpv1alpha1.CodebaseBranchSpec{
 		BranchName:   branchInfo.Name,
 		FromCommit:   branchInfo.Commit,
+		Version:      branchInfo.Version,
+		Build:        branchInfo.Build,
 		CodebaseName: appName,
 	}
 }

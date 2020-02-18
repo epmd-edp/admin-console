@@ -3,6 +3,7 @@ package controllers
 import (
 	"edp-admin-console/models/command"
 	"edp-admin-console/service"
+	"edp-admin-console/util/consts"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
@@ -46,11 +47,18 @@ func (c *BranchController) CreateCodebaseBranch() {
 }
 
 func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCodebaseBranch {
-	return command.CreateCodebaseBranch{
+	cb := command.CreateCodebaseBranch{
 		Name:     c.GetString("name"),
 		Commit:   c.GetString("commit"),
 		Username: c.Ctx.Input.Session("username").(string),
 	}
+
+	vf	:= c.GetString("version")
+	cb.Version = getStringOrNil(vf)
+
+	cb.Build = &consts.DefaultBuildNumber
+
+	return cb
 }
 
 func validCodebaseBranchRequestData(requestData command.CreateCodebaseBranch) *ErrMsg {

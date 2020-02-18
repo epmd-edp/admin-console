@@ -144,6 +144,16 @@
                                             <td>{{.Codebase.DeploymentScript}}</td>
                                         </tr>
                                     {{end}}
+                                    <tr>
+                                        <th>Versioning Type</th>
+                                        <td>{{.Codebase.VersioningType}}</td>
+                                    </tr>
+                                    {{if .Codebase.StartVersioningFrom}}
+                                    <tr>
+                                        <th>Start Versioning From</th>
+                                        <td>{{.Codebase.StartVersioningFrom}}</td>
+                                    </tr>
+                                    {{end}}
                                     </tbody>
                                 </table>
                             </div>
@@ -280,6 +290,17 @@
                                 Commit hash field may contain only fully qualified hash string (40 letters)
                             </div>
                         </div>
+
+                        {{if .Codebase.StartVersioningFrom}}
+                        <div class="form-group">
+                            <label>Start Versioning From</label>
+                            <input type="text" class="form-control" id="startFrom" name="version"
+                                   placeholder="Enter Version">
+                            <div class="invalid-feedback commit-message">
+                                Version may contain only: numbers and dashes and cannot start and end with dash.
+                            </div>
+                        </div>
+                        {{end}}
                         {{ .xsrfdata }}
                     </form>
                 </div>
