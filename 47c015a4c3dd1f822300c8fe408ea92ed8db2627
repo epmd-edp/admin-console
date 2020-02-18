@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "60a08bde_94eeceb5",
+        "filename": "controllers/application.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-18T12:46:10Z",
+      "side": 1,
+      "message": "move to util",
+      "revId": "47c015a4c3dd1f822300c8fe408ea92ed8db2627",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "82d8da69_6a8a4036",
+        "filename": "service/codebase.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-02-18T12:46:10Z",
+      "side": 1,
+      "message": "avoid else statement",
+      "revId": "47c015a4c3dd1f822300c8fe408ea92ed8db2627",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
