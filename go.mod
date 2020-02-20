@@ -2,6 +2,8 @@ module edp-admin-console
 
 go 1.12
 
+replace github.com/openshift/api => github.com/openshift/api v0.0.0-20180801171038-322a19404e37
+
 require (
 	github.com/PuerkitoBio/purell v1.1.1
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
@@ -33,7 +35,6 @@ require (
 	github.com/lib/pq v1.0.0
 	github.com/mailru/easyjson v0.0.0-20190626092158-b2ccc519800e
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/client-go v3.9.0+incompatible
 	github.com/operator-framework/operator-sdk v0.0.0-20190530173525-d6f9cdf2f52e
 	github.com/pelletier/go-buffruneio v0.2.0

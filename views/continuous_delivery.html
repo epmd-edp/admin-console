@@ -54,6 +54,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Jenkins</th>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -80,6 +81,15 @@
                                             </button>
                                         </a>
                                     </td>
+                                    <td>
+                                        {{if $.HasRights}}
+                                            <button class="delete delete-cd-pipeline"
+                                                    data-toggle="modal"
+                                                    data-name="{{.Name}}">
+                                                <i class="icon-trashcan"></i>
+                                            </button>
+                                        {{end}}
+                                    </td>
                                 </tr>
                             {{end}}
                             </tbody>
@@ -91,12 +101,13 @@
     </section>
     {{template "template/footer_template.html" .}}
     {{template "template/modal_success_template.html" .}}
-
 </main>
+{{template "template/delete_confirmation_template.html" params "action" "/admin/edp/cd-pipeline/delete" "kind" "cd-pipeline" "xsrfdata" .xsrfdata "error" .Error}}
 <script src="/static/js/jquery-3.3.1.js"></script>
 <script src="/static/js/popper.js"></script>
 <script src="/static/js/bootstrap.js"></script>
 <script src="/static/js/util.js"></script>
+<script src="/static/js/confirmation-popup.js"></script>
 <script src="/static/js/continuous_delivery.js"></script>
 <script src="/static/js/bootstrap-notify.js"></script>
 </body>

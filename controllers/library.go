@@ -2,10 +2,12 @@ package controllers
 
 import (
 	"edp-admin-console/context"
+	"edp-admin-console/controllers/helper"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	"edp-admin-console/util"
+	"edp-admin-console/util/auth"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
@@ -33,10 +35,6 @@ type LibraryController struct {
 
 func (c *LibraryController) GetLibraryListPage() {
 	flash := beego.ReadFromRequest(&c.Controller)
-	if flash.Data["success"] != "" {
-		c.Data["Success"] = true
-	}
-
 	codebases, err := c.CodebaseService.GetCodebasesByCriteria(query.CodebaseCriteria{
 		Type: query.Library,
 	})
@@ -46,10 +44,16 @@ func (c *LibraryController) GetLibraryListPage() {
 		return
 	}
 
+	if flash.Data["success"] != "" {
+		c.Data["Success"] = true
+	}
+	if flash.Data["error"] != "" {
+		c.Data["DeletionError"] = flash.Data["error"]
+	}
 	c.Data["Codebases"] = codebases
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
-	c.Data["HasRights"] = isAdmin(c.GetSession("realm_roles").([]string))
+	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["Type"] = query.Library
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "codebase.html"
@@ -95,7 +99,7 @@ func (c *LibraryController) GetCreatePage() {
 
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
-	c.Data["HasRights"] = isAdmin(c.GetSession("realm_roles").([]string))
+	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["IsVcsEnabled"] = isVcsEnabled
 	c.Data["Type"] = query.Library
 	c.Data["CodeBaseIntegrationStrategy"] = true
@@ -194,7 +198,7 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 	return library
 }
 
-func validateLibraryRequestData(library command.CreateCodebase) *ErrMsg {
+func validateLibraryRequestData(library command.CreateCodebase) *helper.ErrMsg {
 	valid := validation.Validation{}
 
 	_, err := valid.Valid(library)
@@ -219,14 +223,14 @@ func validateLibraryRequestData(library command.CreateCodebase) *ErrMsg {
 	}
 
 	if err != nil {
-		return &ErrMsg{"An internal error has occurred on server while validating autotest's form fields.", http.StatusInternalServerError}
+		return &helper.ErrMsg{"An internal error has occurred on server while validating autotest's form fields.", http.StatusInternalServerError}
 	}
 
 	if valid.Errors == nil {
 		return nil
 	}
 
-	return &ErrMsg{string(createErrorResponseBody(valid)), http.StatusBadRequest}
+	return &helper.ErrMsg{string(helper.CreateErrorResponseBody(valid)), http.StatusBadRequest}
 }
 
 func logLibraryRequestData(library command.CreateCodebase) {
