@@ -2,10 +2,12 @@ package controllers
 
 import (
 	"edp-admin-console/context"
+	validation2 "edp-admin-console/controllers/validation"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	"edp-admin-console/util"
+	"edp-admin-console/util/auth"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
@@ -148,7 +150,7 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 	return codebase
 }
 
-func validateAutotestsRequestData(autotests command.CreateCodebase) *ErrMsg {
+func validateAutotestsRequestData(autotests command.CreateCodebase) *validation2.ErrMsg {
 	valid := validation.Validation{}
 
 	_, err := valid.Valid(autotests)
@@ -178,14 +180,14 @@ func validateAutotestsRequestData(autotests command.CreateCodebase) *ErrMsg {
 	}
 
 	if err != nil {
-		return &ErrMsg{"An internal error has occurred on server while validating autotests's form fields.", http.StatusInternalServerError}
+		return &validation2.ErrMsg{"An internal error has occurred on server while validating autotests's form fields.", http.StatusInternalServerError}
 	}
 
 	if valid.Errors == nil {
 		return nil
 	}
 
-	return &ErrMsg{string(createErrorResponseBody(valid)), http.StatusBadRequest}
+	return &validation2.ErrMsg{string(validation2.CreateErrorResponseBody(valid)), http.StatusBadRequest}
 }
 
 func (c *AutotestsController) GetCreateAutotestsPage() {
@@ -230,7 +232,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
-	c.Data["HasRights"] = isAdmin(c.GetSession("realm_roles").([]string))
+	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["IsVcsEnabled"] = isVcsEnabled
 	c.Data["Type"] = query.Autotests
 	c.Data["IntegrationStrategies"] = c.IntegrationStrategies
@@ -245,10 +247,6 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 
 func (c *AutotestsController) GetAutotestsOverviewPage() {
 	flash := beego.ReadFromRequest(&c.Controller)
-	if flash.Data["success"] != "" {
-		c.Data["Success"] = true
-	}
-
 	codebases, err := c.CodebaseService.GetCodebasesByCriteria(query.CodebaseCriteria{
 		Type: query.Autotests,
 	})
@@ -258,10 +256,16 @@ func (c *AutotestsController) GetAutotestsOverviewPage() {
 		return
 	}
 
+	if flash.Data["success"] != "" {
+		c.Data["Success"] = true
+	}
+	if flash.Data["error"] != "" {
+		c.Data["DeletionError"] = flash.Data["error"]
+	}
 	c.Data["Codebases"] = codebases
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
-	c.Data["HasRights"] = isAdmin(c.GetSession("realm_roles").([]string))
+	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["Type"] = query.Autotests
 	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())

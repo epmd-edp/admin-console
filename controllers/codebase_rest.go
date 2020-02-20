@@ -17,6 +17,7 @@
 package controllers
 
 import (
+	"edp-admin-console/controllers/validation"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
@@ -25,7 +26,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
 	"github.com/satori/go.uuid"
 	"net/http"
 	"path"
@@ -34,11 +34,6 @@ import (
 type CodebaseRestController struct {
 	beego.Controller
 	CodebaseService service.CodebaseService
-}
-
-type ErrMsg struct {
-	Message    string
-	StatusCode int
 }
 
 func (c *CodebaseRestController) Prepare() {
@@ -62,16 +57,9 @@ func (c *CodebaseRestController) GetCodebases() {
 	c.ServeJSON()
 }
 
-func isTypeAcceptable(getParam string) bool {
-	if _, ok := query.CodebaseTypes[getParam]; ok {
-		return true
-	}
-	return false
-}
-
 func getFilterCriteria(this *CodebaseRestController) (*query.CodebaseCriteria, error) {
 	codebaseType := this.GetString("type")
-	if codebaseType == "" || isTypeAcceptable(codebaseType) {
+	if codebaseType == "" || validation.IsCodebaseTypeAcceptable(codebaseType) {
 		return &query.CodebaseCriteria{
 			Type: query.CodebaseTypes[codebaseType],
 		}, nil
@@ -113,13 +101,14 @@ func (c *CodebaseRestController) CreateCodebase() {
 		codebase.Name = path.Base(*codebase.GitUrlPath)
 	}
 
-	errMsg := ValidRequestData(codebase)
+	errMsg := validation.ValidCodebaseRequestData(codebase)
 	if errMsg != nil {
 		log.Info("Failed to validate request data", "err", errMsg.Message)
 		http.Error(c.Ctx.ResponseWriter, errMsg.Message, http.StatusBadRequest)
 		return
 	}
-	LogRequestData(codebase)
+	ld := validation.CreateCodebaseLogRequestData(codebase)
+	log.Info(ld.String())
 
 	createdObject, err := c.CodebaseService.CreateCodebase(codebase)
 
@@ -139,27 +128,6 @@ func (c *CodebaseRestController) CreateCodebase() {
 	location := fmt.Sprintf("%s/%s", c.Ctx.Input.URL(), uuid.NewV4().String())
 	c.Ctx.ResponseWriter.WriteHeader(200)
 	c.Ctx.Output.Header("Location", location)
-}
-
-func createErrorResponseBody(valid validation.Validation) []byte {
-	errJson, _ := json.Marshal(extractErrors(valid))
-	errResponse := struct {
-		Message string
-		Content string
-	}{
-		"Body of request are not valid.",
-		string(errJson),
-	}
-	response, _ := json.Marshal(errResponse)
-	return response
-}
-
-func extractErrors(valid validation.Validation) []string {
-	var errMap []string
-	for _, err := range valid.Errors {
-		errMap = append(errMap, fmt.Sprintf("Validation failed on %s: %s", err.Key, err.Message))
-	}
-	return errMap
 }
 
 func (c *CodebaseRestController) Delete() {

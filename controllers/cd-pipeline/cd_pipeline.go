@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package controllers
+package cd_pipeline
 
 import (
 	"edp-admin-console/context"
+	"edp-admin-console/controllers/validation"
 	"edp-admin-console/models"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
@@ -26,17 +27,20 @@ import (
 	ec "edp-admin-console/service/edp-component"
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
+	"edp-admin-console/util/auth"
 	"edp-admin-console/util/consts"
 	dberror "edp-admin-console/util/error/db-errors"
 	"errors"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
 	edppipelinesv1alpha1 "github.com/epmd-edp/cd-pipeline-operator/v2/pkg/apis/edp/v1alpha1"
 	"html/template"
 	"net/http"
+	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"sort"
 )
+
+var log = logf.Log.WithName("cd-pipeline-controller")
 
 type CDPipelineController struct {
 	beego.Controller
@@ -84,14 +88,19 @@ func (c *CDPipelineController) GetContinuousDeliveryPage() {
 
 	cdPipelines = addCdPipelineInProgressIfAny(cdPipelines, c.GetString(paramWaitingForCdPipeline))
 
+	flash := beego.ReadFromRequest(&c.Controller)
+	if flash.Data["error"] != "" {
+		c.Data["Error"] = flash.Data["error"]
+	}
 	contextRoles := c.GetSession("realm_roles").([]string)
 	c.Data["ActiveApplicationsAndBranches"] = len(applications) > 0 && len(branches) > 0
 	c.Data["CDPipelines"] = cdPipelines
 	c.Data["Applications"] = applications
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
-	c.Data["HasRights"] = isAdmin(contextRoles)
+	c.Data["HasRights"] = auth.IsAdmin(contextRoles)
 	c.Data["Type"] = "delivery"
+	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "continuous_delivery.html"
 }
 
@@ -207,7 +216,7 @@ func (c *CDPipelineController) UpdateCDPipeline() {
 		ApplicationToApprove: c.getApplicationsToPromoteFromRequest(appNameCheckboxes),
 	}
 
-	errMsg := validateCDPipelineUpdateRequestData(pipelineUpdateCommand)
+	errMsg := validation.ValidateCDPipelineRequest(pipelineUpdateCommand)
 	if errMsg != nil {
 		log.Info("Request data is not valid", "err", errMsg.Message)
 		flash.Error(errMsg.Message)
@@ -260,7 +269,7 @@ func (c *CDPipelineController) CreateCDPipeline() {
 		Username:             c.Ctx.Input.Session("username").(string),
 	}
 
-	errMsg := validateCDPipelineRequestData(cdPipelineCreateCommand)
+	errMsg := validation.ValidateCDPipelineRequest(cdPipelineCreateCommand)
 	if errMsg != nil {
 		log.Info("Request data is not valid", "err", errMsg.Message)
 		flash.Error(errMsg.Message)
@@ -328,13 +337,20 @@ func (c *CDPipelineController) GetCDPipelineOverviewPage() {
 		return
 	}
 
+	flash := beego.ReadFromRequest(&c.Controller)
+	if flash.Data["success"] != "" {
+		c.Data["Success"] = true
+	}
+	if flash.Data["error"] != "" {
+		c.Data["Error"] = flash.Data["error"]
+	}
 	contextRoles := c.GetSession("realm_roles").([]string)
 	c.Data["CDPipeline"] = cdPipeline
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["Type"] = "delivery"
 	c.Data["IsOpenshift"] = platform.IsOpenshift()
-	c.Data["HasRights"] = isAdmin(contextRoles)
+	c.Data["HasRights"] = auth.IsAdmin(contextRoles)
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "cd_pipeline_overview.html"
 }
@@ -416,75 +432,6 @@ func addCdPipelineInProgressIfAny(cdPipelines []*query.CDPipeline, pipelineInPro
 		cdPipelines = append(cdPipelines, &pipeline)
 	}
 	return cdPipelines
-}
-
-func validateCDPipelineUpdateRequestData(cdPipeline command.CDPipelineCommand) *ErrMsg {
-	isApplicationsValid := true
-	isCDPipelineValid := true
-	isStagesValid := true
-	isQualityGatesValid := true
-	errMsg := &ErrMsg{"An internal error has occurred on server while validating CD Pipeline's request body.", http.StatusInternalServerError}
-	valid := validation.Validation{}
-	isCDPipelineValid, err := valid.Valid(cdPipeline)
-
-	if err != nil {
-		return errMsg
-	}
-
-	if cdPipeline.Applications != nil {
-		for _, app := range cdPipeline.Applications {
-			isApplicationsValid, err = valid.Valid(app)
-			if err != nil {
-				return errMsg
-			}
-		}
-	}
-
-	if cdPipeline.Stages != nil {
-		for _, stage := range cdPipeline.Stages {
-
-			isValid, err := validateQualityGates(valid, stage.QualityGates)
-			if err != nil {
-				return errMsg
-			}
-			isQualityGatesValid = isValid
-
-			isStagesValid, err = valid.Valid(stage)
-			if err != nil {
-				return errMsg
-			}
-		}
-	}
-
-	if isCDPipelineValid && isApplicationsValid && isStagesValid && isQualityGatesValid {
-		return nil
-	}
-
-	return &ErrMsg{string(createErrorResponseBody(valid)), http.StatusBadRequest}
-}
-
-func validateQualityGates(valid validation.Validation, qualityGates []edppipelinesv1alpha1.QualityGate) (bool, error) {
-	isQualityGatesValid := true
-
-	if qualityGates != nil {
-		for _, qualityGate := range qualityGates {
-			isValid, err := valid.Valid(qualityGate)
-			if err != nil {
-				return false, err
-			}
-			isQualityGatesValid = isValid
-
-			if (qualityGate.QualityGateType == "autotests" && (qualityGate.AutotestName == nil || qualityGate.BranchName == nil)) ||
-				(qualityGate.QualityGateType == "manual" && (qualityGate.AutotestName != nil || qualityGate.BranchName != nil)) {
-				isQualityGatesValid = false
-			}
-		}
-	} else {
-		valid.Errors = append(valid.Errors, &validation.Error{Key: "qualityGates", Message: "can not be empty"})
-		isQualityGatesValid = false
-	}
-
-	return isQualityGatesValid, nil
 }
 
 func (c *CDPipelineController) getApplicationsToPromoteFromRequest(appNameCheckboxes []string) []string {
@@ -654,11 +601,36 @@ func (c *CDPipelineController) createJenkinsLinks(cdPipelines []*query.CDPipelin
 }
 
 func (c CDPipelineController) DeleteCDStage() {
+	flash := beego.NewFlash()
 	pn := c.GetString("pipeline")
 	sn := c.GetString("name")
-	log.V(2).Info("request to delete cd stage has been retrieved", "pipeline", pn, "stage", sn)
+	o, err := c.GetInt("order")
+	if err != nil {
+		c.Abort("500")
+		return
+	}
+	log.V(2).Info("request to delete cd stage has been retrieved",
+		"pipeline", pn, "stage", sn, "order", o)
+
+	if o == 0 {
+		if err := c.PipelineService.DeleteCDPipeline(pn); err != nil {
+			if dberror.CDPipelineErrorOccurred(err) {
+				perr := err.(dberror.RemoveCDPipelineRestriction)
+				flash.Error(perr.Message)
+				flash.Store(&c.Controller)
+				log.Error(err, perr.Message)
+				c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineIsUsedAsSource", pn), 302)
+				return
+			}
+			log.Error(err, "cd pipeline delete process is failed")
+			c.Abort("500")
+			return
+		}
+		log.V(2).Info("delete cd stage method is finished", "pipeline", pn, "stage", sn)
+		c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineDeletedSuccessModal", pn), 302)
+	}
+
 	if err := c.PipelineService.DeleteCDStage(pn, sn); err != nil {
-		flash := beego.NewFlash()
 		if dberror.StageErrorOccurred(err) {
 			serr := err.(dberror.RemoveStageRestriction)
 			flash.Error(serr.Message)
@@ -667,10 +639,31 @@ func (c CDPipelineController) DeleteCDStage() {
 			c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%v/overview?stage=%v#stageIsUsedAsSource", pn, sn), 302)
 			return
 		}
-		log.Error(err, "delete process is failed")
+		log.Error(err, "cd stage delete process is failed")
 		c.Abort("500")
 		return
 	}
 	log.V(2).Info("delete cd stage method is finished", "pipeline", pn, "stage", sn)
 	c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%v/overview?stage=%v#stageSuccessModal", pn, sn), 302)
+}
+
+func (c CDPipelineController) DeleteCDPipeline() {
+	n := c.GetString("name")
+	log.V(2).Info("request to delete cd pipeline has been received", "name", n)
+	if err := c.PipelineService.DeleteCDPipeline(n); err != nil {
+		flash := beego.NewFlash()
+		if dberror.CDPipelineErrorOccurred(err) {
+			perr := err.(dberror.RemoveCDPipelineRestriction)
+			flash.Error(perr.Message)
+			flash.Store(&c.Controller)
+			log.Error(err, perr.Message)
+			c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineIsUsedAsSource", n), 302)
+			return
+		}
+		log.Error(err, "cd pipeline delete process is failed")
+		c.Abort("500")
+		return
+	}
+	log.V(2).Info("delete cd pipeline method is finished", "name", n)
+	c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineDeletedSuccessModal", n), 302)
 }

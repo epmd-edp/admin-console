@@ -481,27 +481,22 @@ func (s CDPipelineService) canStageBeDeleted(pipelineName, stageName string) err
 		}
 		return err
 	}
-	u, err := s.ICDPipelineRepository.DoesStageUsedAsSourceInAnother(pipelineName, stageName)
+	p, err := s.ICDPipelineRepository.SelectCDPipelinesUsingInputStageAsSource(pipelineName, stageName)
 	if err != nil {
 		return err
 	}
 
-	if *mso == 0 && *so == 0 {
+	if p != nil {
 		return dberror.RemoveStageRestriction{
-			Status:  dberror.StatusRemoveStageRestriction,
-			Message: fmt.Sprintf("Couldn't delete because of CD Pipeline %v contains only one stage %v", pipelineName, stageName),
+			Status: dberror.StatusRemoveStageRestriction,
+			Message: fmt.Sprintf("%v CD Stage is used as a source in %v CD Pipeline(s)",
+				stageName, strings.Join(p, ",")),
 		}
 	}
 	if *mso != *so {
 		return dberror.RemoveStageRestriction{
-			Status:  dberror.StatusRemoveStageRestriction,
+			Status:  dberror.StatusCDStageIsNotTheLast,
 			Message: fmt.Sprintf("%v CD Stage isn't the last in %v CD Pipeline", stageName, pipelineName),
-		}
-	}
-	if u {
-		return dberror.RemoveStageRestriction{
-			Status:  dberror.StatusRemoveStageRestriction,
-			Message: fmt.Sprintf("%v CD Stage is used as a source in another CD Pipeline", stageName),
 		}
 	}
 	return nil
@@ -519,5 +514,67 @@ func (s CDPipelineService) deleteStage(name string) error {
 		return errors.Wrapf(err, "couldn't delete stage %v from cluster", name)
 	}
 	log.V(2).Info("end executing stage delete request", "stage", name)
+	return nil
+}
+
+func (s CDPipelineService) DeleteCDPipeline(name string) error {
+	log.V(2).Info("start deleting cd pipeline", "pipe", name)
+	if err := s.canCDPipelineBeDeleted(name); err != nil {
+		return err
+	}
+	if err := s.deleteCDPipeline(name); err != nil {
+		return err
+	}
+	log.Info("cd pipeline has been marked for deletion", "name", name)
+	return nil
+}
+
+func (s CDPipelineService) canCDPipelineBeDeleted(name string) error {
+	p, err := s.GetCDPipelineByName(name)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't get %v cd pipeline from DB", name)
+	}
+	return s.checkStagesDeletionRestrictions(name, p.Stage)
+}
+
+func (s CDPipelineService) checkStagesDeletionRestrictions(pipeName string, stages []*query.Stage) error {
+	for _, v := range stages {
+		if err := s.canStageBeDeleted(pipeName, v.Name); err != nil {
+			serr := checkStageErr(err)
+			if serr == nil {
+				continue
+			}
+			return serr
+		}
+	}
+	return nil
+}
+
+func checkStageErr(err error) error {
+	if dberror.StageErrorOccurred(err) {
+		serr := err.(dberror.RemoveStageRestriction)
+		if serr.Status == dberror.StatusCDStageIsNotTheLast {
+			return nil
+		}
+		return dberror.RemoveCDPipelineRestriction{
+			Status:  dberror.StatusRemoveCDPipelineRestriction,
+			Message: serr.Message,
+		}
+	}
+	return err
+}
+
+func (s CDPipelineService) deleteCDPipeline(name string) error {
+	log.V(2).Info("start executing cd pipeline delete request", "name", name)
+	cp := &edppipelinesv1alpha1.CDPipeline{}
+	err := s.Clients.EDPRestClient.Delete().
+		Namespace(context.Namespace).
+		Resource(consts.CDPipelinePlural).
+		Name(name).
+		Do().Into(cp)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't delete cd pipeline %v from cluster", name)
+	}
+	log.V(2).Info("end executing cd pipeline delete request", "name", name)
 	return nil
 }

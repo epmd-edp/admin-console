@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	validation2 "edp-admin-console/controllers/validation"
 	"edp-admin-console/models/command"
 	"edp-admin-console/service"
 	"edp-admin-console/util"
@@ -62,7 +63,7 @@ func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCode
 	return cb
 }
 
-func validCodebaseBranchRequestData(requestData command.CreateCodebaseBranch) *ErrMsg {
+func validCodebaseBranchRequestData(requestData command.CreateCodebaseBranch) *validation2.ErrMsg {
 	valid := validation.Validation{}
 	_, err := valid.Valid(requestData)
 
@@ -71,12 +72,12 @@ func validCodebaseBranchRequestData(requestData command.CreateCodebaseBranch) *E
 	}
 
 	if err != nil {
-		return &ErrMsg{"An internal error has occurred on server while validating branch's form fields.", http.StatusInternalServerError}
+		return &validation2.ErrMsg{"An internal error has occurred on server while validating branch's form fields.", http.StatusInternalServerError}
 	}
 
 	if valid.Errors == nil {
 		return nil
 	}
 
-	return &ErrMsg{string(createErrorResponseBody(valid)), http.StatusBadRequest}
+	return &validation2.ErrMsg{string(validation2.CreateErrorResponseBody(valid)), http.StatusBadRequest}
 }

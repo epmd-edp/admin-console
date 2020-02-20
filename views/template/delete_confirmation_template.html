@@ -1,6 +1,6 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="delete-confirmation"
      data-backdrop="static" data-keyboard="false" {{if .pipeline}}data-pipeline="{{.pipeline}}"{{end}}
-    data-kind="{{.kind}}">
+     data-kind="{{.kind}}">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,22 +10,31 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>You are going to delete {{.kind}}.
+                <p class="popup-message default">You are going to delete {{.kind}}.
+                    If you are sure enter name of {{.kind}}:
+                </p>
+                <p class="popup-message last-stage" style="display: none">You are going to delete last {{.kind}}
+                    that leads to CD Pipeline deletion.
                     If you are sure enter name of {{.kind}}:
                 </p>
                 <form id="delete-action" method="post" action="{{.action}}">
                     <div class="form-group">
                         <input type="text" class="form-control" id="entity-name" name="name"
                                aria-describedby="emailHelp" placeholder="Enter name">
+
                         <div class="invalid-feedback different-name">
                             Names are different
                         </div>
-                        <div class="invalid-feedback server-error"></div>
+                        {{if .error }}
+                            <div class="invalid-feedback server-error">
+                                <p>{{.error}}</p>
+                            </div>
+                        {{end}}
                     </div>
                     {{ .xsrfdata }}
                     {{if eq .kind "codebase"}}
                         <input type="hidden" id="codebase-type" name="codebase-type" value="{{.type}}">
-                    {{else}}
+                    {{else if eq .kind "stage"}}
                         <input type="hidden" id="pipeline" name="pipeline" value="{{.pipeline}}">
                         <input type="hidden" id="order" name="order">
                     {{end}}
