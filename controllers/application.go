@@ -18,11 +18,13 @@ package controllers
 
 import (
 	"edp-admin-console/context"
+	"edp-admin-console/controllers/validation"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
+	"edp-admin-console/util/auth"
 	"fmt"
 	"github.com/astaxie/beego"
 	"html/template"
@@ -56,10 +58,6 @@ const (
 
 func (c *ApplicationController) GetApplicationsOverviewPage() {
 	flash := beego.ReadFromRequest(&c.Controller)
-	if flash.Data["success"] != "" {
-		c.Data["Success"] = true
-	}
-
 	applications, err := c.CodebaseService.GetCodebasesByCriteria(query.CodebaseCriteria{
 		Type: query.App,
 	})
@@ -69,10 +67,16 @@ func (c *ApplicationController) GetApplicationsOverviewPage() {
 		return
 	}
 
+	if flash.Data["success"] != "" {
+		c.Data["Success"] = true
+	}
+	if flash.Data["error"] != "" {
+		c.Data["DeletionError"] = flash.Data["error"]
+	}
 	contextRoles := c.GetSession("realm_roles").([]string)
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
-	c.Data["HasRights"] = isAdmin(contextRoles)
+	c.Data["HasRights"] = auth.IsAdmin(contextRoles)
 	c.Data["Codebases"] = applications
 	c.Data["Type"] = query.App
 	c.Data["VersioningTypes"] = c.VersioningTypes
@@ -169,7 +173,7 @@ func contains(a []string, x string) bool {
 func (c *ApplicationController) CreateApplication() {
 	flash := beego.NewFlash()
 	codebase := c.extractApplicationRequestData()
-	errMsg := ValidRequestData(codebase)
+	errMsg := validation.ValidCodebaseRequestData(codebase)
 	if errMsg != nil {
 		log.Info("failed to validate request data", "message", errMsg.Message)
 		flash.Error(errMsg.Message)
@@ -177,7 +181,8 @@ func (c *ApplicationController) CreateApplication() {
 		c.Redirect("/admin/edp/application/create", 302)
 		return
 	}
-	LogRequestData(codebase)
+	ld := validation.CreateCodebaseLogRequestData(codebase)
+	log.Info(ld.String())
 
 	createdObject, err := c.CodebaseService.CreateCodebase(codebase)
 
@@ -281,11 +286,4 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 	}
 	codebase.Username = c.Ctx.Input.Session("username").(string)
 	return codebase
-}
-
-func isAdmin(contextRoles []string) bool {
-	if contextRoles == nil {
-		return false
-	}
-	return util.Contains(contextRoles, beego.AppConfig.String("adminRole"))
 }

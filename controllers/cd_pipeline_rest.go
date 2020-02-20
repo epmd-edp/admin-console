@@ -17,6 +17,7 @@
 package controllers
 
 import (
+	"edp-admin-console/controllers/validation"
 	"edp-admin-console/models"
 	"edp-admin-console/models/command"
 	"edp-admin-console/service/cd_pipeline"
@@ -24,7 +25,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
 	uuid "github.com/satori/go.uuid"
 	"net/http"
 )
@@ -82,7 +82,7 @@ func (c *CDPipelineRestController) CreateCDPipeline() {
 		http.Error(c.Ctx.ResponseWriter, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	errMsg := validateCDPipelineRequestData(cdPipelineCreateCommand)
+	errMsg := validation.ValidateCDPipelineRequest(cdPipelineCreateCommand)
 	if errMsg != nil {
 		log.Info("Failed to validate request data", "err", errMsg.Message)
 		http.Error(c.Ctx.ResponseWriter, errMsg.Message, http.StatusBadRequest)
@@ -122,7 +122,7 @@ func (c *CDPipelineRestController) UpdateCDPipeline() {
 
 	pipelineUpdateCommand.Name = c.GetString(":name")
 
-	errMsg := validateCDPipelineUpdateRequestData(pipelineUpdateCommand)
+	errMsg := validation.ValidateCDPipelineUpdateRequestData(pipelineUpdateCommand)
 	if errMsg != nil {
 		log.Info("Request data is not valid", "err", errMsg.Message)
 		http.Error(c.Ctx.ResponseWriter, errMsg.Message, http.StatusBadRequest)
@@ -149,52 +149,6 @@ func (c *CDPipelineRestController) UpdateCDPipeline() {
 	}
 
 	c.Ctx.ResponseWriter.WriteHeader(http.StatusNoContent)
-}
-
-func validateCDPipelineRequestData(cdPipeline command.CDPipelineCommand) *ErrMsg {
-	var isCDPipelineValid, isApplicationsValid, isStagesValid, isQualityGatesValid bool
-	errMsg := &ErrMsg{"An internal error has occurred on server while validating CD Pipeline's request body.", http.StatusInternalServerError}
-	valid := validation.Validation{}
-	isCDPipelineValid, err := valid.Valid(cdPipeline)
-
-	if err != nil {
-		return errMsg
-	}
-
-	if cdPipeline.Applications != nil {
-		for _, app := range cdPipeline.Applications {
-			isApplicationsValid, err = valid.Valid(app)
-			if err != nil {
-				return errMsg
-			}
-		}
-	}
-
-	if cdPipeline.Stages != nil {
-		for _, stage := range cdPipeline.Stages {
-
-			isValid, err := validateQualityGates(valid, stage.QualityGates)
-			if err != nil {
-				return errMsg
-			}
-			isQualityGatesValid = isValid
-
-			isStagesValid, err = valid.Valid(stage)
-			if err != nil {
-				return errMsg
-			}
-		}
-	} else {
-		err := &validation.Error{Key: "stages", Message: "can not be null"}
-		valid.Errors = append(valid.Errors, err)
-		isStagesValid = false
-	}
-
-	if isCDPipelineValid && isApplicationsValid && isStagesValid && isQualityGatesValid {
-		return nil
-	}
-
-	return &ErrMsg{string(createErrorResponseBody(valid)), http.StatusBadRequest}
 }
 
 func (c *CDPipelineRestController) DeleteCDStage() {

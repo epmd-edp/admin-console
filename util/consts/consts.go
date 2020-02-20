@@ -14,9 +14,10 @@ const (
 	Autotest    = "autotests"
 	Library     = "library"
 
-	CodebasePlural = "codebases"
-	StagePlural    = "stages"
-	CodebaseKind   = "Codebase"
+	CodebasePlural   = "codebases"
+	StagePlural      = "stages"
+	CDPipelinePlural = "cdpipelines"
+	CodebaseKind     = "Codebase"
 )
 
 var DefaultBuildNumber = "0"

@@ -6,6 +6,15 @@ $(function () {
         if (anchor) {
             if (anchor === '#cdPipelineSuccessModal') {
                 showNotification(true, null, 'Provisioning has been started.', 'Provisioning has been failed.');
+            } else if (anchor === '#cdPipelineDeletedSuccessModal') {
+                let name = getUrlParameter('name');
+                showNotification(true, null, `CD Pipeline ${name} was marked for deletion.`);
+            } else if (anchor === '#cdPipelineIsUsedAsSource') {
+                let name = getUrlParameter('name'),
+                    $modal = $("#delete-confirmation");
+                $('.confirmation-msg').text(`Confirm Deletion of '${name}'`);
+                $modal.find('.server-error').show();
+                $modal.modal('show');
             } else {
                 showNotification(true, null, 'The pipeline has been edited successfully.', 'Editing has been failed.');
             }
@@ -16,7 +25,7 @@ $(function () {
         if (pipelineName) {
             let status = getCDPipelineStatus(pipelineName);
             if (status === STATUS.IN_PROGRESS) {
-                uri += "?waitingforcdpipeline="+pipelineName;
+                uri += "?waitingforcdpipeline=" + pipelineName;
                 setTimeout(function () {
                     location.reload();
                 }, delayTime);
@@ -24,6 +33,21 @@ $(function () {
 
             window.history.replaceState({}, document.title, uri);
         }
+    });
+
+    $('.delete-cd-pipeline').click(function () {
+        let name = $(this).data('name'),
+            $modal = $("#delete-confirmation");
+        $('.confirmation-msg').text(`Confirm Deletion of '${name}'`);
+        $modal.data('name', name).modal('show');
+    });
+
+    $('.delete-confirmation').click(function () {
+        deleteConfirmation();
+    });
+
+    $('.close,.cancel-delete').click(function () {
+        closeConfirmation();
     });
 });
 

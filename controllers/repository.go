@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	validation2 "edp-admin-console/controllers/validation"
 	"edp-admin-console/service"
 	"edp-admin-console/util"
 	"encoding/json"
@@ -38,17 +39,17 @@ func (this *RepositoryRestController) IsGitRepoAvailable() {
 	this.ServeJSON()
 }
 
-func validRepoRequestData(repo RepoData) *ErrMsg {
+func validRepoRequestData(repo RepoData) *validation2.ErrMsg {
 	valid := validation.Validation{}
 
 	_, err := valid.Valid(repo)
 	if err != nil {
-		return &ErrMsg{"An error has occurred while validating application's form fields.", http.StatusInternalServerError}
+		return &validation2.ErrMsg{"An error has occurred while validating application's form fields.", http.StatusInternalServerError}
 	}
 
 	if valid.Errors == nil {
 		return nil
 	}
 
-	return &ErrMsg{string(createErrorResponseBody(valid)), http.StatusBadRequest}
+	return &validation2.ErrMsg{string(validation2.CreateErrorResponseBody(valid)), http.StatusBadRequest}
 }
