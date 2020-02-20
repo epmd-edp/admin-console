@@ -46,7 +46,7 @@
                                 <table class="edp-card-table">
                                         <tbody>
                                         <tr >
-                                            <th style="width: 25%">Language</th>
+                                            <th style="width: 50%">Language</th>
                                             <td>{{.Codebase.Language}}</td>
                                         </tr>
                                         <tr>
@@ -129,7 +129,7 @@
                                 <table class="edp-card-table">
                                     <tbody>
                                     <tr >
-                                        <th>Job Provisioner</th>
+                                        <th style="width: 50%">Job Provisioner</th>
                                         <td>{{.Codebase.JobProvisioning}}</td>
                                     </tr>
                                     {{if .Codebase.JenkinsSlave}}
@@ -175,6 +175,7 @@
                                     {{ $isLibrary := eq $.Codebase.Type "library"}}
                                     {{ $isBuildToolNone := eq $.Codebase.BuildTool "none"}}
                                     {{ $libWithBuildToolNone := and $isLibrary $isBuildToolNone}}
+                                    {{ $isVersioningTypeEdp := eq $.Codebase.VersioningType "edp"}}
                                     <table class="edp-card-table">
                                         <tbody>
                                         <tr>
@@ -183,6 +184,11 @@
                                             <th scope="col">VCS</th>
                                             {{if not $libWithBuildToolNone}}
                                                 <th scope="col">CI</th>
+                                            {{end}}
+                                            {{if $isVersioningTypeEdp}}
+                                            <th scope="col">Version</th>
+                                            <th scope="col">Build Number</th>
+                                            <th scope="col">Last Successful Build</th>
                                             {{end}}
                                         </tr>
                                         {{range .Codebase.CodebaseBranch}}
@@ -202,6 +208,35 @@
                                                            rel="noopener noreferrer"
                                                            class="edp-link {{if ne .Status "active"}}disabled{{end}}">Link</a>
                                                     </td>
+                                                {{end}}
+                                                {{if $isVersioningTypeEdp}}
+                                                {{if or .Version}}
+                                                    <td>
+                                                        {{.Version}}
+                                                    </td>
+                                                {{else}}
+                                                    <td>
+                                                        —
+                                                    </td>
+                                                {{end}}
+                                                {{if or .Build}}
+                                                    <td>
+                                                        {{.Build}}
+                                                    </td>
+                                                {{else}}
+                                                    <td>
+                                                        —
+                                                    </td>
+                                                {{end}}
+                                                {{if or .LastSuccessBuild}}
+                                                    <td>
+                                                        {{.LastSuccessBuild}}
+                                                    </td>
+                                                {{else}}
+                                                    <td>
+                                                        —
+                                                    </td>
+                                                {{end}}
                                                 {{end}}
                                             </tr>
                                         {{end}}
