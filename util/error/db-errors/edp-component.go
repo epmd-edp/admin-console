@@ -7,6 +7,8 @@ const (
 	StatusReasonUnknown                    StatusReason = "Unknown"
 	StatusReasonCodebaseIsUsedByCDPipeline StatusReason = "Used"
 	StatusRemoveStageRestriction           StatusReason = "RemoveStageRestriction"
+	StatusCDStageIsNotTheLast              StatusReason = "StatusCDStageIsNotTheLast"
+	StatusRemoveCDPipelineRestriction      StatusReason = "RemoveCDPipelineRestriction"
 )
 
 func IsNotFound(err error) bool {
@@ -18,7 +20,12 @@ func CodebaseIsUsed(err error) bool {
 }
 
 func StageErrorOccurred(err error) bool {
-	return reasonForError(err) == StatusRemoveStageRestriction
+	r := reasonForError(err)
+	return r == StatusRemoveStageRestriction || r == StatusCDStageIsNotTheLast
+}
+
+func CDPipelineErrorOccurred(err error) bool {
+	return reasonForError(err) == StatusRemoveCDPipelineRestriction
 }
 
 func reasonForError(err error) StatusReason {
@@ -28,6 +35,8 @@ func reasonForError(err error) StatusReason {
 	case CodebaseIsUsedByCDPipeline:
 		return t.Status
 	case RemoveStageRestriction:
+		return t.Status
+	case RemoveCDPipelineRestriction:
 		return t.Status
 	}
 	return StatusReasonUnknown

@@ -35,7 +35,7 @@ type ICDPipelineRepository interface {
 	GetCDPipelinesUsingLibrary(codebaseName string) ([]string, error)
 	SelectMaxOrderBetweenStages(pipeName string) (*int, error)
 	SelectStageOrder(pipeName, stageName string) (*int, error)
-	DoesStageUsedAsSourceInAnother(pipeName, stageName string) (bool, error)
+	SelectCDPipelinesUsingInputStageAsSource(pipeName, stageName string) ([]string, error)
 }
 
 const (
@@ -103,14 +103,17 @@ const (
 		"from cd_pipeline cp " +
 		"left join cd_stage cs on cp.id = cs.cd_pipeline_id " +
 		"where cp.name = ? and cs.name = ? ;"
-	selectSourceStage = "select scds.output_codebase_docker_stream_id " +
-		"	from cd_stage cs " +
-		"left join cd_pipeline cp on cs.cd_pipeline_id = cp.id " +
-		"left join stage_codebase_docker_stream scds on cs.id = scds.cd_stage_id " +
-		"join stage_codebase_docker_stream scds2 " +
-		"on scds.output_codebase_docker_stream_id = scds2.input_codebase_docker_stream_id " +
-		"where cp.name = ? " +
-		"  and cs.name = ? ;"
+	selectSourceStage = "select cp_out.name " +
+		"	from cd_stage cs_in " +
+		"left join cd_pipeline cp_in on cs_in.cd_pipeline_id = cp_in.id " +
+		"left join stage_codebase_docker_stream scds_in on cs_in.id = scds_in.cd_stage_id " +
+		"left join stage_codebase_docker_stream scds_out " +
+		"on scds_in.output_codebase_docker_stream_id = scds_out.input_codebase_docker_stream_id " +
+		"left join cd_stage cs_out on cs_out.id = scds_out.cd_stage_id " +
+		"left join cd_pipeline cp_out on cp_out.id = cs_out.cd_pipeline_id " +
+		"where cp_in.name = ? " +
+		"  and cs_in.name = ? " +
+		"  and not cp_out.name = ? ;"
 )
 
 type CDPipelineRepository struct {
@@ -498,14 +501,14 @@ func (CDPipelineRepository) SelectStageOrder(pipeName, stageName string) (*int, 
 	return &c, nil
 }
 
-func (CDPipelineRepository) DoesStageUsedAsSourceInAnother(pipeName, stageName string) (bool, error) {
+func (CDPipelineRepository) SelectCDPipelinesUsingInputStageAsSource(pipeName, stageName string) ([]string, error) {
 	o := orm.NewOrm()
-	var c int
-	if err := o.Raw(selectSourceStage, pipeName, stageName).QueryRow(&c); err != nil {
+	var p []string
+	if _, err := o.Raw(selectSourceStage, pipeName, stageName, pipeName).QueryRows(&p); err != nil {
 		if err == orm.ErrNoRows {
-			return false, nil
+			return nil, nil
 		}
-		return false, err
+		return nil, err
 	}
-	return c != 0, nil
+	return p, nil
 }

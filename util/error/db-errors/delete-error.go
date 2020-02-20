@@ -19,3 +19,12 @@ type RemoveStageRestriction struct {
 func (e RemoveStageRestriction) Error() string {
 	return string(e.Status)
 }
+
+type RemoveCDPipelineRestriction struct {
+	Status  StatusReason
+	Message string
+}
+
+func (e RemoveCDPipelineRestriction) Error() string {
+	return string(e.Status)
+}

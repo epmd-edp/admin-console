@@ -127,10 +127,17 @@
                                                 {{range $i, $e := .CDPipeline.Stage}}
                                                     <tr valign="top">
                                                         <td>
-                                                            {{$notOne := ne $i 0}}
-                                                            {{$isLast := eq (add $i 1) $len}}
-                                                            {{if and $notOne $isLast}}
-                                                                {{if $.HasRights}}
+                                                            {{if $.HasRights}}
+                                                                {{$notOne := ne $i 0}}
+                                                                {{$isLast := eq (add $i 1) $len}}
+                                                                {{if eq $len 1}}
+                                                                    <button class="delete delete-stage"
+                                                                            data-toggle="modal"
+                                                                            data-name="{{.Name}}"
+                                                                            data-order="{{.Order}}">
+                                                                        <i class="icon-trashcan"></i>
+                                                                    </button>
+                                                                {{else if and $notOne $isLast}}
                                                                     <button class="delete delete-stage"
                                                                             data-toggle="modal"
                                                                             data-name="{{.Name}}"
@@ -353,7 +360,7 @@
     </div>
 
 </main>
-{{template "template/delete_confirmation_template.html" params "action" "/admin/edp/stage" "kind" "stage" "pipeline" .CDPipeline.Name "xsrfdata" .xsrfdata}}
+{{template "template/delete_confirmation_template.html" params "action" "/admin/edp/stage" "kind" "stage" "pipeline" .CDPipeline.Name "xsrfdata" .xsrfdata "error" .Error}}
 <script src="/static/js/jquery-3.3.1.js"></script>
 <script src="/static/js/popper.js"></script>
 <script src="/static/js/bootstrap.js"></script>

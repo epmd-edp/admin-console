@@ -9,9 +9,9 @@ $(function () {
                 showNotification(true, `Stage ${stage} was marked for deletion.`);
             } else if (anchor === '#stageIsUsedAsSource') {
                 let $modal = $("#delete-confirmation");
-                $modal.find('.invalid-feedback.server-error').show()
-                    .text(`Stage ${stage} is used as a source in another CD Pipeline(s)`);
-                $("#delete-confirmation").data('stage', stage).modal('show');
+                $('.confirmation-msg').text(`Confirm Deletion of '${stage}'`);
+                $modal.find('.server-error').show();
+                $modal.modal('show');
             }
             location.hash = '';
         }
@@ -65,6 +65,10 @@ $(function () {
         let stage = $(this).data('name'),
             order = $(this).data('order'),
             $modal = $("#delete-confirmation");
+        if (order === 0) {
+            $modal.find('.popup-message.default').hide();
+            $modal.find('.popup-message.last-stage').show();
+        }
         $('.confirmation-msg').text(`Confirm Deletion of '${stage}'`);
         $modal.data('name', stage).modal('show');
         $('input#order').val(order);

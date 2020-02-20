@@ -20,6 +20,7 @@ import (
 	"edp-admin-console/context"
 	"edp-admin-console/controllers"
 	"edp-admin-console/controllers/auth"
+	cdPipeController "edp-admin-console/controllers/cd-pipeline"
 	"edp-admin-console/filters"
 	"edp-admin-console/k8s"
 	"edp-admin-console/repository"
@@ -185,7 +186,7 @@ func init() {
 		EDPComponent:     ecs,
 	}
 
-	cpc := controllers.CDPipelineController{
+	cpc := cdPipeController.CDPipelineController{
 		CodebaseService:   codebaseService,
 		PipelineService:   pipelineService,
 		EDPTenantService:  edpService,
@@ -213,6 +214,7 @@ func init() {
 		beego.NSRouter("/codebase/:codebaseName/overview", &cc, "get:GetCodebaseOverviewPage"),
 		beego.NSRouter("/codebase", &cc, "post:Delete"),
 		beego.NSRouter("/stage", &cpc, "post:DeleteCDStage"),
+		beego.NSRouter("/cd-pipeline/delete", &cpc, "post:DeleteCDPipeline"),
 		beego.NSRouter("/codebase/:codebaseName/branch", &controllers.BranchController{BranchService: branchService, CodebaseService: codebaseService}, "post:CreateCodebaseBranch"),
 
 		beego.NSRouter("/library/overview", &lc, "get:GetLibraryListPage"),

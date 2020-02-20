@@ -12,11 +12,10 @@ $(function () {
                 showNotification(true);
             } else if (anchor === '#codebaseIsUsed') {
                 let codebase = getUrlParameter('codebase'),
-                    pipeline = getUrlParameter('pipeline'),
                     $modal = $("#delete-confirmation");
-                $modal.find('.invalid-feedback.server-error').show()
-                    .text(`Codebase ${codebase} is used by CD Pipeline(s) ${pipeline}`);
-                $("#delete-confirmation").data('codebase', codebase).modal('show');
+                $('.confirmation-msg').text(`Confirm Deletion of '${codebase}'`);
+                $modal.find('.server-error').show();
+                $modal.modal('show');
             } else if (anchor === '#codebaseIsDeleted') {
                 let codebase = getUrlParameter('codebase');
                 showNotification(true, `Codebase ${codebase} was marked for deletion.`);
