@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a0bf7bd4_fb79d728",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-02-21T06:29:26Z",
+      "side": 1,
+      "message": "lets name it cd-pipeline",
+      "range": {
+        "startLine": 17,
+        "startChar": 8,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "94555cfb9327f071d684d923e83003c0c3ce5154",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2a87609_b913e690",
+        "filename": "controllers/helper/helper.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-02-21T06:29:26Z",
+      "side": 1,
+      "message": "This package all about validation. Should we call it in a similar way?",
+      "range": {
+        "startLine": 1,
+        "startChar": 8,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "94555cfb9327f071d684d923e83003c0c3ce5154",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6f7a34b5_5f2d39d6",
+        "filename": "controllers/helper/helper.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-02-21T06:29:26Z",
+      "side": 1,
+      "message": "More specific",
+      "range": {
+        "startLine": 21,
+        "startChar": 5,
+        "endLine": 21,
+        "endChar": 21
+      },
+      "revId": "94555cfb9327f071d684d923e83003c0c3ce5154",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "069cfea1_f558dfc2",
+        "filename": "controllers/helper/helper.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-02-21T06:29:26Z",
+      "side": 1,
+      "message": "More specific",
+      "range": {
+        "startLine": 90,
+        "startChar": 5,
+        "endLine": 90,
+        "endChar": 25
+      },
+      "revId": "94555cfb9327f071d684d923e83003c0c3ce5154",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "98c4ccef_3ba193aa",
+        "filename": "controllers/helper/helper.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-02-21T06:29:26Z",
+      "side": 1,
+      "message": "Let\u0027s give this method more specific name like isCodebaseTypeAcceptable",
+      "range": {
+        "startLine": 249,
+        "startChar": 5,
+        "endLine": 249,
+        "endChar": 21
+      },
+      "revId": "94555cfb9327f071d684d923e83003c0c3ce5154",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2bb5adb_39aa34b7",
+        "filename": "filters/role_access_control_service.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-02-21T06:29:26Z",
+      "side": 1,
+      "message": "Let\u0027s add cd-pipeline name in the url",
+      "revId": "94555cfb9327f071d684d923e83003c0c3ce5154",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14cb121e_5c38ce8a",
+        "filename": "service/cd_pipeline/cd_pipeline.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-02-21T06:29:26Z",
+      "side": 1,
+      "message": "Let\u0027s split it to the several methods",
+      "range": {
+        "startLine": 538,
+        "startChar": 0,
+        "endLine": 552,
+        "endChar": 2
+      },
+      "revId": "94555cfb9327f071d684d923e83003c0c3ce5154",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
