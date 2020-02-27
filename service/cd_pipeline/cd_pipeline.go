@@ -24,6 +24,7 @@ import (
 	"edp-admin-console/models/query"
 	"edp-admin-console/repository"
 	"edp-admin-console/service"
+	cbs "edp-admin-console/service/codebase-branch"
 	ec "edp-admin-console/service/edp-component"
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util/consts"
@@ -45,7 +46,7 @@ type CDPipelineService struct {
 	Clients               k8s.ClientSet
 	ICDPipelineRepository repository.ICDPipelineRepository
 	CodebaseService       service.CodebaseService
-	BranchService         service.CodebaseBranchService
+	BranchService         cbs.CodebaseBranchService
 	EDPComponent          ec.EDPComponentService
 }
 
