@@ -76,7 +76,11 @@ function createConfirmTable(formName) {
                 let value = getValue(property);
                 value = typeof property === 'boolean' ? (property ? "&#10004;" : "&#10008;") : getValue(property);
                 if (value) {
-                    result += '<tr><td>' + key + '</td><td>' + value + '</td></tr>';
+                    if (key === 'Start Versioning From') {
+                        result += '<tr><td>' + key + '</td><td>' + value + '-SNAPSHOT' + '</td></tr>';
+                    } else {
+                        result += '<tr><td>' + key + '</td><td>' + value + '</td></tr>';
+                    }
                 }
             });
             $(result).appendTo($("#window-table"));
