@@ -20,8 +20,10 @@ import (
 	"edp-admin-console/context"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
+	cbs "edp-admin-console/service/codebase-branch"
 	ec "edp-admin-console/service/edp-component"
 	"edp-admin-console/util"
+	"edp-admin-console/util/auth"
 	"edp-admin-console/util/consts"
 	dberror "edp-admin-console/util/error/db-errors"
 	"errors"
@@ -35,7 +37,7 @@ type CodebaseController struct {
 	beego.Controller
 	CodebaseService  service.CodebaseService
 	EDPTenantService service.EDPTenantService
-	BranchService    service.CodebaseBranchService
+	BranchService    cbs.CodebaseBranchService
 	GitServerService service.GitServerService
 	EDPComponent     ec.EDPComponentService
 }
@@ -67,6 +69,8 @@ func (c *CodebaseController) GetCodebaseOverviewPage() {
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["Codebase"] = codebase
 	c.Data["Type"] = codebase.Type
+	contextRoles := c.GetSession("realm_roles").([]string)
+	c.Data["HasRights"] = auth.IsAdmin(contextRoles)
 	switch codebase.Type {
 	case "application":
 		{

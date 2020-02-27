@@ -23,6 +23,7 @@ import (
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/repository"
+	cbs "edp-admin-console/service/codebase-branch"
 	"edp-admin-console/util"
 	"edp-admin-console/util/consts"
 	dberror "edp-admin-console/util/error/db-errors"
@@ -43,7 +44,7 @@ type CodebaseService struct {
 	Clients               k8s.ClientSet
 	ICodebaseRepository   repository.ICodebaseRepository
 	ICDPipelineRepository repository.ICDPipelineRepository
-	BranchService         CodebaseBranchService
+	BranchService         cbs.CodebaseBranchService
 }
 
 func (s CodebaseService) CreateCodebase(codebase command.CreateCodebase) (*edpv1alpha1.Codebase, error) {

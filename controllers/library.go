@@ -6,6 +6,7 @@ import (
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
+	cbs "edp-admin-console/service/codebase-branch"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
 	"fmt"
@@ -22,7 +23,7 @@ type LibraryController struct {
 	beego.Controller
 	EDPTenantService service.EDPTenantService
 	CodebaseService  service.CodebaseService
-	BranchService    service.CodebaseBranchService
+	BranchService    cbs.CodebaseBranchService
 	GitServerService service.GitServerService
 	SlaveService     service.SlaveService
 	JobProvisioning  service.JobProvisioning
