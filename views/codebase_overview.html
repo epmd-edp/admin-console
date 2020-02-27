@@ -190,6 +190,7 @@
                                             <th scope="col">Build Number</th>
                                             <th scope="col">Last Successful Build</th>
                                             {{end}}
+                                            <th scope="col"></th>
                                         </tr>
                                         {{range .Codebase.CodebaseBranch}}
                                             <tr data-branch-name="{{.Name}}" data-branch-status="{{.Status}}">
@@ -238,6 +239,15 @@
                                                     </td>
                                                 {{end}}
                                                 {{end}}
+                                                <td>
+                                                    {{if and (ne "master" .Name) $.HasRights}}
+                                                        <button class="delete delete-branch"
+                                                                data-toggle="modal"
+                                                                data-name="{{.Name}}">
+                                                            <i class="icon-trashcan"></i>
+                                                        </button>
+                                                    {{end}}
+                                                </td>
                                             </tr>
                                         {{end}}
                                         </tbody>
@@ -350,12 +360,13 @@
             </div>
         </div>
     </div>
-
 </main>
+{{template "template/delete_confirmation_template.html" params "action" "/admin/edp/codebase/branch/delete" "kind" "codebase-branch" "codebasename" .Codebase.Name "xsrfdata" .xsrfdata "error" .Error}}
 <script src="/static/js/jquery-3.3.1.js"></script>
 <script src="/static/js/popper.js"></script>
 <script src="/static/js/bootstrap.js"></script>
 <script src="/static/js/util.js"></script>
+<script src="/static/js/confirmation-popup.js"></script>
 <script src="/static/js/release-branch.js"></script>
 <script src="/static/js/bootstrap-notify.js"></script>
 </body>

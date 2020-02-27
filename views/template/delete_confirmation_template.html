@@ -37,6 +37,8 @@
                     {{else if eq .kind "stage"}}
                         <input type="hidden" id="pipeline" name="pipeline" value="{{.pipeline}}">
                         <input type="hidden" id="order" name="order">
+                    {{else if eq .kind "codebase-branch"}}
+                        <input type="hidden" id="codebase-name" name="codebase-name" value="{{.codebasename}}">
                     {{end}}
                 </form>
             </div>

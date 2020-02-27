@@ -14,17 +14,19 @@ $(function () {
                 let errorMessage = 'Release branch with ' + getUrlParameter('errorExistingBranch') + ' name is already exists.';
                 $('.branch-exists-modal').text(errorMessage).show();
                 $('#releaseBranchModal').modal('show');
-            }
-            if (anchor === '#branchSuccessModal') {
+            } else if (anchor === '#branchSuccessModal') {
                 showNotification(true);
+            } else if (anchor === "#branchDeletedSuccessModal") {
+                let name = getUrlParameter('name');
+                showNotification(true, null, `Codebase Branch ${name} was marked for deletion.`);
             }
         }
 
         let branchName = getUrlParameter('waitingforbranch');
         if (branchName) {
-            let branchStatus = $("tr[data-branch-name='"+branchName+"']").attr("data-branch-status");
+            let branchStatus = $("tr[data-branch-name='" + branchName + "']").attr("data-branch-status");
             if (branchStatus === STATUS.IN_PROGRESS) {
-                uri += "?waitingforbranch="+branchName;
+                uri += "?waitingforbranch=" + branchName;
                 setTimeout(function () {
                     location.reload();
                 }, delayTime);
@@ -62,6 +64,20 @@ $(function () {
         handleCommitHashValidation();
     });
 
+    $('.delete-branch').click(function () {
+        let name = $(this).data('name'),
+            $modal = $("#delete-confirmation");
+        $('.confirmation-msg').text(`Confirm Deletion of '${name}'`);
+        $modal.data('name', name).modal('show');
+    });
+
+    $('.delete-confirmation').click(function () {
+        deleteConfirmation();
+    });
+
+    $('.close,.cancel-delete').click(function () {
+        closeConfirmation();
+    });
 });
 
 function isBranchNameValid() {
@@ -111,14 +127,14 @@ function handleCommitHashValidation() {
     return isCommitValid;
 }
 
-function showNotification(ok, delay) {
+function showNotification(ok, delay, successMsg) {
     $.notify({
             icon: ok ? 'glyphicon glyphicon-ok-circle alert-icon' : 'glyphicon gglyphicon-warning-sign alert-icon',
-            message: ok ? 'Provisioning has been started.' : 'Provisioning has been failed.'
+            message: ok && successMsg != null ? successMsg : ok ? 'Provisioning has been started.' : 'Provisioning has been failed.'
         },
         {
             type: ok ? 'success' : 'error',
-            delay: delay ? delay: 5000,
+            delay: delay ? delay : 5000,
             animate: {
                 enter: 'animated fadeInRight',
                 exit: 'animated fadeOutRight'

@@ -27,6 +27,7 @@ import (
 	edpComponentRepo "edp-admin-console/repository/edp-component"
 	"edp-admin-console/service"
 	"edp-admin-console/service/cd_pipeline"
+	cbs "edp-admin-console/service/codebase-branch"
 	edpComponentService "edp-admin-console/service/edp-component"
 	"edp-admin-console/util"
 	"github.com/astaxie/beego"
@@ -84,7 +85,7 @@ func init() {
 	ecs := edpComponentService.EDPComponentService{IEDPComponent: ecr}
 	edpService := service.EDPTenantService{Clients: clients}
 	clusterService := service.ClusterService{Clients: clients}
-	branchService := service.CodebaseBranchService{Clients: clients, IReleaseBranchRepository: branchRepository}
+	branchService := cbs.CodebaseBranchService{Clients: clients, IReleaseBranchRepository: branchRepository}
 	codebaseService := service.CodebaseService{
 		Clients:               clients,
 		ICodebaseRepository:   codebaseRepository,
@@ -195,6 +196,11 @@ func init() {
 		EDPComponent:      ecs,
 	}
 
+	cbc := controllers.BranchController{
+		BranchService:   branchService,
+		CodebaseService: codebaseService,
+	}
+
 	adminEdpNamespace := beego.NewNamespace("/admin/edp",
 		beego.NSRouter("/overview", &ec, "get:GetEDPComponents"),
 		beego.NSRouter("/application/overview", &appc, "get:GetApplicationsOverviewPage"),
@@ -213,9 +219,10 @@ func init() {
 
 		beego.NSRouter("/codebase/:codebaseName/overview", &cc, "get:GetCodebaseOverviewPage"),
 		beego.NSRouter("/codebase", &cc, "post:Delete"),
+		beego.NSRouter("/codebase/branch/delete", &cbc, "post:Delete"),
 		beego.NSRouter("/stage", &cpc, "post:DeleteCDStage"),
 		beego.NSRouter("/cd-pipeline/delete", &cpc, "post:DeleteCDPipeline"),
-		beego.NSRouter("/codebase/:codebaseName/branch", &controllers.BranchController{BranchService: branchService, CodebaseService: codebaseService}, "post:CreateCodebaseBranch"),
+		beego.NSRouter("/codebase/:codebaseName/branch", &cbc, "post:CreateCodebaseBranch"),
 
 		beego.NSRouter("/library/overview", &lc, "get:GetLibraryListPage"),
 		beego.NSRouter("/library/create", &lc, "get:GetCreatePage"),
