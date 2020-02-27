@@ -157,7 +157,8 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 
 	library.Versioning.Type = c.GetString("versioningType")
 	startVersioningFrom := c.GetString("startVersioningFrom")
-	library.Versioning.StartFrom = util.GetStringOrNil(startVersioningFrom)
+	snapshotPostfix := c.GetString("snapshotStaticField")
+	library.Versioning.StartFrom = util.GetVersionOrNil(startVersioningFrom, snapshotPostfix)
 
 	if o := OtherLanguage; library.Lang == OtherLanguage {
 		library.Framework = &o

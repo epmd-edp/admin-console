@@ -99,7 +99,8 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 
 	codebase.Versioning.Type = c.GetString("versioningType")
 	startVersioningFrom := c.GetString("startVersioningFrom")
-	codebase.Versioning.StartFrom = util.GetStringOrNil(startVersioningFrom)
+	snapshotPostfix := c.GetString("snapshotStaticField")
+	codebase.Versioning.StartFrom = util.GetVersionOrNil(startVersioningFrom, snapshotPostfix)
 
 	if o := OtherLanguage; codebase.Lang == OtherLanguage {
 		codebase.Framework = &o

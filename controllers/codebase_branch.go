@@ -56,7 +56,8 @@ func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCode
 	}
 
 	vf := c.GetString("version")
-	cb.Version = util.GetStringOrNil(vf)
+	px := c.GetString("postfix")
+	cb.Version = util.GetVersionOrNil(vf, px)
 
 	cb.Build = &consts.DefaultBuildNumber
 

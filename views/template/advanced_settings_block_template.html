@@ -53,9 +53,13 @@
                     <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
                           title="Version may contain only: numbers and dashes and cannot start and end with dash."></span>
                 </label>
-                <input name="startVersioningFrom" type="text" class="start-versioning-from form-control"
+                <div class="d-flex">
+                    <input name="startVersioningFrom" type="text" class="start-versioning-from form-control pull-right"
                        id="startVersioningFrom"
                        placeholder="Type desired initial version">
+                    <input name="snapshotStaticField" type="text" class="snapshot-static-field form-control pull-right"
+                       id="snapshotStaticField" value="SNAPSHOT" readonly="readonly">
+                </div>
                 <div class="start-versioning-from-validation invalid-feedback regex-error">
                     Version may contain only: numbers and dashes and cannot start and end with dash.
                 </div>
