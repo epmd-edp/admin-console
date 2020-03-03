@@ -337,8 +337,8 @@
                             >
                             <div class="error-block branch-exists-modal invalid-feedback" style="display: none;"></div>
                             <div class="invalid-feedback branch-name">
-                                Branch name may contain only: lower-case letters, numbers, dots and dashes and cannot
-                                start and end with dash and dot. Can not be empty.
+                                The Branch Name field should not be empty and may contain lower-case letters,
+                                numbers, dots, dashes. Note that a name cannot begin or end with the dot or dash.
                             </div>
                         </div>
 
@@ -355,25 +355,27 @@
                         <div class="form-group">
                             <label>Branch Version</label>
                             <div class="d-flex">
-                                <input type="text" class="form-control" id="startFrom" name="version"
-                                    placeholder="Enter Version" value={{trimSuffix (index .Codebase.CodebaseBranch 0).Version "-SNAPSHOT"}}>
-                                <div class="invalid-feedback commit-message">
-                                    Version may contain only: numbers and dashes and cannot start and end with dash.
-                                </div>
+                                <input type="text" class="form-control" id="branch-version" name="version"
+                                       placeholder="Enter Version" value={{trimSuffix (index .Codebase.CodebaseBranch 0).Version "-SNAPSHOT"}}>
                                 <select class="form-control versioning-postfix hide-element" name="versioningPostfix" id="versioningPostfix">
                                 </select>
+                            </div>
+                            <div class="invalid-feedback branch-version">
+                                The version should not be empty, start with letters or contain the release type postfixes (RG, GA, SNAPSHOT).
+                                Example: 1.2.3 or 1.2.3-TEST.
                             </div>
                         </div>
                         <div class="form-group master-branch-version hide-element">
                             <label>Master Branch Version</label>
                             <div class="d-flex">
-                                <input type="text" class="form-control" id="masterBranchVersion" name="masterVersion"
+                                <input type="text" class="form-control" id="master-branch-version" name="masterVersion"
                                     placeholder="Enter Master Branch Version" value={{incrementVersion (index .Codebase.CodebaseBranch 0).Version}}>
-                                <div class="invalid-feedback commit-message">
-                                    Version may contain only: numbers and dashes and cannot start and end with dash.
-                                </div>
                                 <input name="snapshotStaticField" type="text" class="snapshot-static-field form-control pull-right"
                                        id="snapshotStaticField" value="SNAPSHOT" readonly="readonly">
+                            </div>
+                            <div class="invalid-feedback master-branch-version">
+                                The version should not be empty, start with letters or contain the release type postfixes (RG, GA, SNAPSHOT).
+                                Example: 1.2.3 or 1.2.3-TEST.
                             </div>
                         </div>
                         {{end}}

@@ -44,21 +44,23 @@ $(function () {
     $('#btn-modal-close, #btn-cross-close').click(function () {
         $('.branch-exists-modal').hide();
         if ($('#versioningPostfix').length) {
-            $('#branchName,#commitNumber').removeClass('non-valid-input');
+            $('#branchName,#commitNumber,#branch-version,#master-branch-version').removeClass('non-valid-input');
+            $('.invalid-feedback.master-branch-version').hide();
             restoreBranchModalWindowValues()
         } else {
-            $('#branchName,#commitNumber').val('').removeClass('non-valid-input');
+            $('#branchName,#commitNumber,#branch-version').val('').removeClass('non-valid-input');
         }
         $('.invalid-feedback.branch-name').hide();
         $('.invalid-feedback.commit-message').hide();
+        $('.invalid-feedback.branch-version').hide();
     });
 
     $('.modal-release-branch').click(function () {
         $('#releaseBranchModal').modal('show');
         if ($('#versioningPostfix').length) {
             let branchName = $('#branchName').val(),
-                branchVersion = $('#startFrom').val(),
-                masterBranchVersion = $('#masterBranchVersion').val();
+                branchVersion = $('#branch-version').val(),
+                masterBranchVersion = $('#master-branch-version').val();
             saveBranchModalWindowValues(branchName, branchVersion, masterBranchVersion)
         }
     });
@@ -68,13 +70,42 @@ $(function () {
         let isBranchValid = handleBranchNameValidation();
         let isCommitValid = handleCommitHashValidation();
 
-        if (isBranchValid && isCommitValid) {
-            $('#create-branch-action').submit();
+        if ($("#branch-version").length === 0) {
+            if (isBranchValid && isCommitValid) {
+                $('#create-branch-action').submit();
+            }
+            return
+        }
+
+        if ($('#releaseBranch').is(':checked')) {
+            let branchVersion = $('#branch-version'),
+                masterBranchVersion = $('#master-branch-version'),
+                isVersionValid = handleBranchVersionValidation(branchVersion),
+                isMasterVersionValid = handleBranchVersionValidation(masterBranchVersion);
+            if (isBranchValid && isCommitValid && isVersionValid && isMasterVersionValid) {
+                $('#create-branch-action').submit();
+            }
+        } else {
+            let branchVersion = $('#branch-version'),
+                isVersionValid = handleBranchVersionValidation(branchVersion);
+            if (isBranchValid && isCommitValid && isVersionValid) {
+                $('#create-branch-action').submit();
+            }
         }
     });
 
     $('#branchName').focusout(function () {
         handleBranchNameValidation();
+    });
+
+    $('#branch-version').focusout(function () {
+        let branchVersion = $('#branch-version');
+        handleBranchVersionValidation(branchVersion);
+    });
+
+    $('#master-branch-version').focusout(function () {
+        let masterBranchVersion = $('#master-branch-version');
+        handleBranchVersionValidation(masterBranchVersion);
     });
 
     $('#commitNumber').focusout(function () {
@@ -133,6 +164,18 @@ function isHashCommitValid() {
     }
 }
 
+function isBranchVersionValid(branchVersion) {
+    if (branchVersion.val().length === 0) {
+        return false;
+    } else {
+        return !(!branchVersion.val() || !checkBranchVersion(branchVersion.val()));
+    }
+}
+
+function checkBranchVersion(branchVersion) {
+    return /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|(?!.*RC|.*GA|.*SNAPSHOT)\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$/i.test(branchVersion)
+}
+
 function checkBranchName(branchName) {
     return /^[a-z0-9][a-z0-9-.]*[a-z0-9]$/.test(branchName);
 }
@@ -151,6 +194,19 @@ function handleBranchNameValidation() {
         $('.invalid-feedback.branch-name').hide();
     }
     return isBranchValid;
+}
+
+function handleBranchVersionValidation(branchVersion) {
+    let isValid = isBranchVersionValid(branchVersion);
+    let elClass = branchVersion.attr("id");
+    if (!isValid) {
+        branchVersion.addClass('non-valid-input');
+        $('.invalid-feedback.' + elClass).show();
+    } else {
+        branchVersion.removeClass('non-valid-input');
+        $('.invalid-feedback.' + elClass).hide();
+    }
+    return isValid;
 }
 
 function handleCommitHashValidation() {
@@ -192,6 +248,6 @@ function restoreBranchModalWindowValues() {
     let branchConf = sessionStorage.getItem("branch");
     branchConf = JSON.parse(branchConf);
     $('#branchName').val(branchConf.branchName);
-    $('#startFrom').val(branchConf.branchVersion);
-    $('#masterBranchVersion').val(branchConf.masterBranchVersion)
+    $('#branch-version').val(branchConf.branchVersion);
+    $('#master-branch-version').val(branchConf.masterBranchVersion)
 }
