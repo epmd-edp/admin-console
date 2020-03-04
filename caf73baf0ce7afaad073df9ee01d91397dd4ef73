@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "271b43c7_e43de231",
+        "filename": "conf/app.conf",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-04T15:20:38Z",
+      "side": 1,
+      "message": "Why do we need to change default value?",
+      "range": {
+        "startLine": 6,
+        "startChar": 48,
+        "endLine": 6,
+        "endChar": 56
+      },
+      "revId": "caf73baf0ce7afaad073df9ee01d91397dd4ef73",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
