@@ -63,6 +63,15 @@ func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCode
 
 	cb.Build = &consts.DefaultBuildNumber
 
+	r, _ := c.GetBool("releaseBranch", false)
+	cb.Release = r
+
+	if r {
+		mv := c.GetString("masterVersion")
+		mp := c.GetString("snapshotStaticField")
+		cb.MasterVersion = util.GetVersionOrNil(mv, mp)
+	}
+
 	return cb
 }
 
