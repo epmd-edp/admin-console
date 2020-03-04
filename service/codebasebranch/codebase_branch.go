@@ -30,6 +30,7 @@ import (
 	"github.com/pkg/errors"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"strings"
@@ -108,6 +109,36 @@ func newTrue() *bool {
 	return &b
 }
 
+func (s *CodebaseBranchService) UpdateCodebaseBranch(appName, branchName string, version *string) error {
+	log.V(2).Info("start updating CodebaseBranch CR", "version", version, "branch",
+		branchName, "version", version)
+	edpRestClient := s.Clients.EDPRestClient
+
+	br, err := getReleaseBranchCR(edpRestClient, branchName, appName, context.Namespace)
+	if err != nil {
+		return err
+	}
+
+	br.Spec.Version = version
+	bytes, err := util.EncodeStructToBytes(br)
+	if err != nil {
+		return err
+	}
+
+	err = edpRestClient.Patch(types.MergePatchType).
+		Namespace(context.Namespace).
+		Resource(consts.CodebaseBranchPlural).
+		Name(fmt.Sprintf("%v-%v", appName, branchName)).
+		Body(bytes).
+		Do().Error()
+	if err != nil {
+		return errors.Wrapf(err, "couldn't update codebase branch %v from cluster", branchName)
+	}
+
+	log.Info("codebase branch has been updated", "name", branchName, "version", version, "appName", appName)
+	return nil
+}
+
 func (s *CodebaseBranchService) GetCodebaseBranchesByCriteria(criteria query.CodebaseBranchCriteria) ([]query.CodebaseBranch, error) {
 	codebaseBranches, err := s.IReleaseBranchRepository.GetCodebaseBranchesByCriteria(criteria)
 	if err != nil {
@@ -130,12 +161,12 @@ func getReleaseBranchCR(edpRestClient *rest.RESTClient, branchName string, appNa
 	result := &edpv1alpha1.CodebaseBranch{}
 	err := edpRestClient.Get().Namespace(namespace).Resource("codebasebranches").Name(fmt.Sprintf("%s-%s", appName, branchName)).Do().Into(result)
 
-	if k8serrors.IsNotFound(err) {
-		log.V(2).Info("CodebaseBranch doesn't exist in cluster", "branch", branchName)
-		return nil, nil
-	}
-
 	if err != nil {
+		if k8serrors.IsNotFound(err) {
+			log.V(2).Info("CodebaseBranch doesn't exist in cluster", "branch", branchName)
+			return nil, nil
+		}
+
 		return nil, errors.Wrapf(err, "an error has occurred while getting CodebaseBranch CR from cluster")
 	}
 

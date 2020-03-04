@@ -25,6 +25,18 @@ func (c *BranchController) CreateCodebaseBranch() {
 	branchInfo := c.extractCodebaseBranchRequestData()
 	errMsg := validCodebaseBranchRequestData(branchInfo)
 	appName := c.GetString(":codebaseName")
+
+	if branchInfo.Release {
+		mv := c.GetString("masterVersion")
+		mp := c.GetString("snapshotStaticField")
+		masterVersion := util.GetVersionOrNil(mv, mp)
+		err := c.BranchService.UpdateCodebaseBranch(appName, "master", masterVersion)
+		if err != nil {
+			c.Abort("500")
+			return
+		}
+	}
+
 	if errMsg != nil {
 		log.Info("Failed to validate request data", "err", errMsg.Message)
 		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview", appName), 302)
@@ -62,6 +74,9 @@ func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCode
 	cb.Version = util.GetVersionOrNil(vf, px)
 
 	cb.Build = &consts.DefaultBuildNumber
+
+	r, _ := c.GetBool("releaseBranch", false)
+	cb.Release = r
 
 	return cb
 }
