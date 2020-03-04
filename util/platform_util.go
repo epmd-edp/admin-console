@@ -1,6 +1,8 @@
 package util
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"log"
@@ -32,4 +34,13 @@ func GetVersionOrNil(value, postfix string) *string {
 	v := fmt.Sprintf("%v-%v", value, postfix)
 
 	return &v
+}
+
+func EncodeStructToBytes(s interface{}) ([]byte, error) {
+	reqBodyBytes := new(bytes.Buffer)
+	err := json.NewEncoder(reqBodyBytes).Encode(s)
+	if err != nil {
+		return nil, err
+	}
+	return reqBodyBytes.Bytes(), nil
 }
