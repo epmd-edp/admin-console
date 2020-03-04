@@ -1,0 +1,8 @@
+Verified+1: CI Jenkins
+Code-Review+1: Pavlo Yemelianov <pavlo_yemelianov@epam.com>
+Code-Review+2: Anton Tarianyk <anton_tarianyk@epam.com>
+Submitted-by: Anton Tarianyk <anton_tarianyk@epam.com>
+Submitted-at: Wed, 04 Mar 2020 09:01:20 +0000
+Reviewed-on: https://gerrit-oc-green-edp-cicd.delivery.aws.main.edp.projects.epam.com/c/edp-admin-console/+/394
+Project: edp-admin-console
+Branch: refs/heads/master
