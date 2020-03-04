@@ -52,9 +52,6 @@ func AuthFilter(context *bgCtx.Context) {
 	}
 	realmRoles := getRealmRoles(context, idToken)
 	log.Printf("Roles %s has been retrieved from the token", realmRoles)
-	resourceRoles := getResourceAccessValues(context, idToken)
-	log.Printf("ResourceAccess %s has been retrieved from the token", resourceRoles)
-	context.Output.Session("resource_access", resourceRoles)
 	context.Output.Session("realm_roles", realmRoles)
 	username := getUserInfoFromToken(context, idToken, "name")
 	log.Printf("Username {%s} has been fetched from token", username)
@@ -77,29 +74,6 @@ func getRealmRoles(context *bgCtx.Context, token *oidc.IDToken) []string {
 	}
 
 	return *realmAccess["roles"]
-}
-
-func getResourceAccessValues(context *bgCtx.Context, token *oidc.IDToken) map[string][]string {
-	log.Printf("Start to check roles ...")
-	var claim map[string]*json.RawMessage
-	err := token.Claims(&claim)
-	if err != nil {
-		log.Printf("Error has been occurred during the parsing token %+v", token)
-		context.Abort(200, "500")
-	}
-	var resourceAccess map[string]*map[string][]string
-	err = json.Unmarshal(*claim["resource_access"], &resourceAccess)
-	if err != nil {
-		log.Printf("Error has been occurred during the parsing token %+v", token)
-		context.Abort(200, "500")
-	}
-
-	instances := make(map[string][]string, len(resourceAccess))
-	for key, value := range resourceAccess {
-		var val = *value
-		instances[key] = val["roles"]
-	}
-	return instances
 }
 
 func startAuth(context *bgCtx.Context) {
