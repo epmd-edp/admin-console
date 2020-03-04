@@ -153,6 +153,7 @@ func convertBranchInfoData(branchInfo command.CreateCodebaseBranch, appName stri
 		FromCommit:   branchInfo.Commit,
 		Version:      branchInfo.Version,
 		Build:        branchInfo.Build,
+		Release:      branchInfo.Release,
 		CodebaseName: appName,
 	}
 }

@@ -11,6 +11,7 @@ type CodebaseBranch struct {
 	VCSLink              string                  `json:"branchLink" orm:"-"`
 	CICDLink             string                  `json:"jenkinsLink" orm:"-"`
 	AppName              string                  `json:"appName" orm:"-"`
+	Release              bool                    `json:"release" orm:"column(release)"`
 	Codebase             *Codebase               `json:"-" orm:"rel(fk)"`
 	CodebaseDockerStream []*CodebaseDockerStream `json:"codebaseDockerStream" orm:"reverse(many)"`
 }
