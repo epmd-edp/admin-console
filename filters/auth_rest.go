@@ -51,11 +51,8 @@ func AuthRestFilter(context *bgCtx.Context) {
 
 	realmRoles := getRealmRoles(context, idToken)
 	log.Printf("Roles %s has been retrieved from the token", realmRoles)
-	resourceRoles := getResourceAccessValues(context, idToken)
-	log.Printf("ResourceAccess %s has been retrieved from the token", resourceRoles)
 	usr := getUserInfoFromToken(context, idToken, "preferred_username")
 	log.Printf("Username {%s} has been fetched from token", usr)
-	context.Output.Session("resource_access", resourceRoles)
 	context.Output.Session("realm_roles", realmRoles)
 	context.Output.Session("username", usr)
 }
