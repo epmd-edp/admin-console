@@ -1,7 +1,7 @@
 $(function () {
 
     $(document).ready(function () {
-        $('#versioningType').change(function() {
+        $('#versioningType').change(function () {
             checkVersioningType($(this).val())
         });
     });
@@ -124,7 +124,7 @@ $(function () {
     }();
 
     function checkVersioningType(value) {
-        if( value === 'default') {
+        if (value === 'default') {
             $('#startVersioning').attr("disabled", true);
             $('.form-group.startVersioningFrom').addClass('hide-element');
             $('#startVersioningFrom').removeAttr("value", "0.0.0");
@@ -135,15 +135,21 @@ $(function () {
         }
     };
 
-    $('#versioningType').change(function() {
+    $('#versioningType').change(function () {
         checkVersioningType($(this).val())
     });
 
     $('#languageSelection').on('change', function (e) {
+        if ($(this).find('input:checked').val() === "Java") {
+            $('input[value="java8"]').prop('checked', true);
+        }
+
         $('.js-form-subsection, .appLangError').hide();
         let langDivEl = $($(e.target).data('target'));
         langDivEl.show();
+
         $('.js-form-subsection input[name="framework"]').prop('checked', false);
+        $('.js-form-subsection input[name="java-version"]').prop('checked', false);
 
         $('.multi-module').addClass('hide-element');
         $('#multiModule').attr("disabled", true);
@@ -168,6 +174,10 @@ $(function () {
 
         $('.test-report-framework').val('allure');
 
+        setJenkinsSlave($('.buildTool:enabled'));
+    });
+
+    $('.formSubsection-java .java-versions').change(function () {
         setJenkinsSlave($('.buildTool:enabled'));
     });
 
@@ -276,12 +286,20 @@ $(function () {
     });
 
     function setJenkinsSlave(el) {
-        let $slave = $('.jenkinsSlave option:contains(' + el.find(':selected').data('build-tool') + ')');
+        let $slave = getSlaveElement(el);
         if ($slave.length) {
             $slave.prop({selected: true});
             return;
         }
         $('.jenkinsSlave').val($('.jenkinsSlave option:first').val());
+    }
+
+    function getSlaveElement(el) {
+        let $javaVersion = $('input[name="java-version"]:checked').val();
+        if (!!$javaVersion) {
+            return $(`.jenkinsSlave option:contains(${el.find(':selected').data('build-tool') + "-" + $javaVersion})`);
+        }
+        return $(`.jenkinsSlave option:contains(${el.find(':selected').data('build-tool')})`);
     }
 
     function validateCodebaseInfo(event) {

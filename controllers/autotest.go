@@ -105,6 +105,8 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 
 	if o := OtherLanguage; codebase.Lang == OtherLanguage {
 		codebase.Framework = &o
+	} else if codebase.Lang == "Java" {
+		codebase.Lang = c.GetString("java-version")
 	}
 
 	if codebase.Strategy == strings.ToLower(ImportStrategy) {

@@ -163,6 +163,8 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 
 	if o := OtherLanguage; library.Lang == OtherLanguage {
 		library.Framework = &o
+	} else if library.Lang == "Java" {
+		library.Lang = c.GetString("java-version")
 	}
 
 	if library.Strategy == strings.ToLower(ImportStrategy) {

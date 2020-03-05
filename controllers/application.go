@@ -233,6 +233,10 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 
 	if o := OtherLanguage; codebase.Lang == OtherLanguage {
 		codebase.Framework = &o
+	} else if codebase.Lang == "Java" {
+		codebase.Lang = c.GetString("java-version")
+		f := "springboot"
+		codebase.Framework = &f
 	} else {
 		framework := c.GetString("framework")
 		codebase.Framework = &framework
