@@ -1,7 +1,7 @@
 $(function () {
 
     $(document).ready(function () {
-        $('#versioningType').change(function() {
+        $('#versioningType').change(function () {
             checkVersioningType($(this).val())
         });
     });
@@ -124,7 +124,7 @@ $(function () {
     }();
 
     function checkVersioningType(value) {
-        if( value === 'default') {
+        if (value === 'default') {
             $('#startVersioning').attr("disabled", true);
             $('.form-group.startVersioningFrom').addClass('hide-element');
             $('#startVersioningFrom').removeAttr("value", "0.0.0");
@@ -135,14 +135,19 @@ $(function () {
         }
     };
 
-    $('#versioningType').change(function() {
+    $('#versioningType').change(function () {
         checkVersioningType($(this).val())
     });
 
     $('#languageSelection').on('change', function (e) {
+        if ($(this).find('input:checked').val() === "Java") {
+            $('#framework-java8').prop('checked', true);
+        }
+
         $('.js-form-subsection, .appLangError').hide();
         let langDivEl = $($(e.target).data('target'));
         langDivEl.show();
+
         $('.js-form-subsection input[name="framework"]').prop('checked', false);
 
         $('.multi-module').addClass('hide-element');
@@ -168,6 +173,10 @@ $(function () {
 
         $('.test-report-framework').val('allure');
 
+        setJenkinsSlave($('.buildTool:enabled'));
+    });
+
+    $('.formSubsection-java .java-frameworks').change(function () {
         setJenkinsSlave($('.buildTool:enabled'));
     });
 
@@ -276,12 +285,20 @@ $(function () {
     });
 
     function setJenkinsSlave(el) {
-        let $slave = $('.jenkinsSlave option:contains(' + el.find(':selected').data('build-tool') + ')');
+        let $slave = getSlaveElement(el);
         if ($slave.length) {
             $slave.prop({selected: true});
             return;
         }
         $('.jenkinsSlave').val($('.jenkinsSlave option:first').val());
+    }
+
+    function getSlaveElement(el) {
+        let $javaVersion = $('input[name="framework"]:checked').val();
+        if (!!$javaVersion) {
+            return $(`.jenkinsSlave option:contains(${el.find(':selected').data('build-tool') + "-" + $javaVersion})`);
+        }
+        return $(`.jenkinsSlave option:contains(${el.find(':selected').data('build-tool')})`);
     }
 
     function validateCodebaseInfo(event) {
@@ -481,8 +498,9 @@ $(function () {
         let isLanguageChosen = $codebaseEl.find('.language input').is(':checked'),
             isFrameworkChosen = true;
         if (isLanguageChosen) {
-            if ($('.main-block').data('code-language') !== "other") {
-                let $frameworksEl = $codebaseEl.find('.form__input-wrapper .form-subsection input');
+            let language = $('.main-block').data('code-language');
+            if (language !== "other") {
+                let $frameworksEl = $codebaseEl.find(`.form__input-wrapper .formSubsection-${language} input`);
                 isFrameworkChosen = $frameworksEl.length === 0 ? true : $frameworksEl.is(":checked");
                 if (!isFrameworkChosen) {
                     $('.frameworkError').show();

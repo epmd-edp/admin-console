@@ -196,7 +196,7 @@ func getSecret(name string, username string, password string) *v1.Secret {
 }
 
 func convertData(codebase command.CreateCodebase) edpv1alpha1.CodebaseSpec {
-	s := edpv1alpha1.CodebaseSpec{
+	cs := edpv1alpha1.CodebaseSpec{
 		Lang:             codebase.Lang,
 		Framework:        codebase.Framework,
 		BuildTool:        codebase.BuildTool,
@@ -207,51 +207,42 @@ func convertData(codebase command.CreateCodebase) edpv1alpha1.CodebaseSpec {
 		JobProvisioning:  codebase.JobProvisioning,
 		DeploymentScript: codebase.DeploymentScript,
 	}
-
-	if s.Strategy == "import" {
-		s.GitUrlPath = codebase.GitUrlPath
+	if cs.Strategy == "import" {
+		cs.GitUrlPath = codebase.GitUrlPath
 	}
-
 	if codebase.Framework != nil {
-		s.Framework = codebase.Framework
+		cs.Framework = codebase.Framework
 	}
-
 	if codebase.Repository != nil {
-		s.Repository = &edpv1alpha1.Repository{
+		cs.Repository = &edpv1alpha1.Repository{
 			Url: codebase.Repository.Url,
 		}
 	}
-
 	if codebase.Route != nil {
-		s.Route = &edpv1alpha1.Route{
+		cs.Route = &edpv1alpha1.Route{
 			Site: codebase.Route.Site,
 		}
 		if len(codebase.Route.Path) > 0 {
-			s.Route.Path = codebase.Route.Path
+			cs.Route.Path = codebase.Route.Path
 		}
 	}
-
 	if codebase.Database != nil {
-		s.Database = &edpv1alpha1.Database{
+		cs.Database = &edpv1alpha1.Database{
 			Kind:     codebase.Database.Kind,
 			Version:  codebase.Database.Version,
 			Capacity: codebase.Database.Capacity,
 			Storage:  codebase.Database.Storage,
 		}
 	}
-
 	if codebase.TestReportFramework != nil {
-		s.TestReportFramework = codebase.TestReportFramework
+		cs.TestReportFramework = codebase.TestReportFramework
 	}
-
 	if codebase.Description != nil {
-		s.Description = codebase.Description
+		cs.Description = codebase.Description
 	}
-
-	s.Versioning.Type = edpv1alpha1.VersioningType(codebase.Versioning.Type)
-	s.Versioning.StartFrom = codebase.Versioning.StartFrom
-
-	return s
+	cs.Versioning.Type = edpv1alpha1.VersioningType(codebase.Versioning.Type)
+	cs.Versioning.StartFrom = codebase.Versioning.StartFrom
+	return cs
 }
 
 func (s CodebaseService) CheckBranch(apps []models.CDPipelineApplicationCommand) (bool, error) {

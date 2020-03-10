@@ -19,6 +19,9 @@ const (
 	StagePlural          = "stages"
 	CDPipelinePlural     = "cdpipelines"
 	CodebaseKind         = "Codebase"
+
+	LanguageJava        = "Java"
+	FrameworkSpringBoot = "springboot"
 )
 
 var DefaultBuildNumber = "0"
