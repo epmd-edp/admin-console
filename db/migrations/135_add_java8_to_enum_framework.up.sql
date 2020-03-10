@@ -1,0 +1,1 @@
+alter type "framework" add value 'java8';
