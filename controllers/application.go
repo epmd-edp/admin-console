@@ -26,6 +26,7 @@ import (
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
+	"edp-admin-console/util/consts"
 	"fmt"
 	"github.com/astaxie/beego"
 	"html/template"
@@ -233,6 +234,11 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 
 	if o := OtherLanguage; codebase.Lang == OtherLanguage {
 		codebase.Framework = &o
+	} else if codebase.Lang == consts.LanguageJava {
+		jv := c.GetString("java-version")
+		codebase.JavaVersion = &jv
+		f := consts.FrameworkSpringBoot
+		codebase.Framework = &f
 	} else {
 		framework := c.GetString("framework")
 		codebase.Framework = &framework

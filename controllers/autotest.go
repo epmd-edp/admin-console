@@ -9,6 +9,7 @@ import (
 	cbs "edp-admin-console/service/codebasebranch"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
+	"edp-admin-console/util/consts"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
@@ -105,6 +106,9 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 
 	if o := OtherLanguage; codebase.Lang == OtherLanguage {
 		codebase.Framework = &o
+	} else if codebase.Lang == consts.LanguageJava {
+		jv := c.GetString("java-version")
+		codebase.JavaVersion = &jv
 	}
 
 	if codebase.Strategy == strings.ToLower(ImportStrategy) {

@@ -74,26 +74,8 @@
                                           title="Select application language/framework and build tool."></span>
                                 </p>
                                 <div class="form__input-wrapper">
-
                                     {{template "template/language_template.html" .}}
-
-                                    <div class="js-form-subsection form-subsection formSubsection-java">
-                                        <div class="form__input-wrapper  with-circle"><span
-                                                    class="form__input-heading"></span>
-                                            <div class="form__radio-btn-wrapper">
-                                                <input name="framework" type="radio" class="form__radio-btn framework"
-                                                       id="framework-SpringBoot" value="SpringBoot">
-                                                <label
-                                                        class="form__radio-label" for="framework-SpringBoot">
-                                                    <span class="form__radio-btn--outer-circle">
-                                                        <span class="form__radio-btn--inner-circle "></span>
-                                                    </span>
-                                                    <img class="form__radio-label-icon"
-                                                         src="/static/img/Springboot.png" alt="logo">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{template "template/java_version_template.html" .}}
                                     <div class="js-form-subsection form-subsection formSubsection-js">
                                         <div class="form__input-wrapper with-circle"><span
                                                     class="form__input-heading"></span>
