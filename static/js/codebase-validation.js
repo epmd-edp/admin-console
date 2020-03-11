@@ -239,17 +239,23 @@ $(function () {
 
     $('.codebase-info-button').click(function (event) {
         validateCodebaseInfo(event);
+        if ($('#versioningType').val() === "edp") {
+            validateAdvancedInfo(event);
+        }
     });
 
     $('.application-submit,.autotest-submit,.library-submit').click(function (event) {
         validateMainInfo(event);
+        if ($('#versioningType').val() === "edp") {
+            validateAdvancedInfo(event);
+        }
     });
 
     $('.vcs-submit,.create-library,.create-autotest').click(function (event) {
         if ($(this).hasClass('create-autotest') || $(this).hasClass('create-library')) {
             event.preventDefault();
 
-            let canCreateAutotest = validateCodebaseInfo(event) & validateMainInfo(event) & validateVCSInfo(event);
+            let canCreateAutotest = validateCodebaseInfo(event) & validateMainInfo(event) & validateVCSInfo(event) & validateAdvancedInfo(event);
             if (canCreateAutotest) {
                 createConfirmTable($(this).hasClass('create-autotest') ? '#createAutotest' : '#createLibrary');
                 $('#confirmationPopup').modal('show');
@@ -266,7 +272,7 @@ $(function () {
     $('.db-submit').click(function (event) {
         let canCreateApplication = validateCodebaseInfo(event) &
             validateMainInfo(event) & validateVCSInfo(event) &
-            validateRouteInfo(event) & validateDbInfo(event);
+            validateRouteInfo(event) & validateDbInfo(event) & validateAdvancedInfo(event);
         if (canCreateApplication) {
             createConfirmTable('#createAppForm');
             $('#confirmationPopup').modal('show');
@@ -283,6 +289,11 @@ $(function () {
         }
 
         setJenkinsSlave($(this));
+    });
+
+    $('#startVersioningFrom').focusout(function () {
+        let branchVersion = $('#startVersioningFrom');
+        handleBranchVersionValidation(branchVersion);
     });
 
     function setJenkinsSlave(el) {
@@ -332,6 +343,23 @@ $(function () {
             return isValid;
         }
         blockIsValid($mainBlockEl);
+
+        return isValid;
+    }
+
+    function validateAdvancedInfo(event) {
+        let $advancedBlockEl = $('.advanced-settings-block');
+
+        resetErrors($advancedBlockEl);
+
+        let isValid = isAdvancedInfoValid();
+
+        if (!isValid) {
+            event.stopPropagation();
+            blockIsNotValid($advancedBlockEl);
+            return isValid;
+        }
+        blockIsValid($advancedBlockEl);
 
         return isValid;
     }
@@ -512,6 +540,19 @@ $(function () {
         }
 
         return isCodebaseNameValid && isDescriptionValid && isLanguageChosen && isFrameworkChosen;
+    }
+
+    function isAdvancedInfoValid() {
+        let $advancedSettingsEl = $('.advanced-settings-block'),
+            $versioningInputEl = $('.start-versioning-from'),
+
+            isStartVersioningFromValid = isBranchVersionValid($versioningInputEl);
+        if (!isStartVersioningFromValid) {
+            $('.invalid-feedback.startVersioningFrom').show();
+            $advancedSettingsEl.addClass('is-invalid');
+        }
+
+        return isStartVersioningFromValid
     }
 
     function isVCSValid() {
