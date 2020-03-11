@@ -60,13 +60,9 @@
                     <input name="snapshotStaticField" type="text" class="snapshot-static-field form-control pull-right"
                        id="snapshotStaticField" value="SNAPSHOT" readonly="readonly">
                 </div>
-                <div class="start-versioning-from-validation invalid-feedback regex-error">
-                    Version may contain only: numbers and dashes and cannot start and end with dash.
-                </div>
-                <div class="start-versioning-from-duplicate-validation">
-                    <div class="invalid-feedback duplicate-msg">
-                        Current version is already exists.
-                    </div>
+                <div class="invalid-feedback startVersioningFrom">
+                    The version should not be empty, start with letters or contain the release type postfixes (RG, GA, SNAPSHOT).
+                    Example: 1.2.3 or 1.2.3-TEST.
                 </div>
             </div>
 
