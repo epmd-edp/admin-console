@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26b5d9a0_9cfa7e3b",
+        "filename": "static/js/branch-util.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-12T10:30:00Z",
+      "side": 1,
+      "message": "rename it",
+      "range": {
+        "startLine": 3,
+        "startChar": 8,
+        "endLine": 3,
+        "endChar": 15
+      },
+      "revId": "97289f107cf0fa3a7fbfb922606832258730921e",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "acb25e9c_d010b64b",
+        "filename": "static/js/branch-util.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-12T10:30:00Z",
+      "side": 1,
+      "message": "get rid of else",
+      "range": {
+        "startLine": 17,
+        "startChar": 6,
+        "endLine": 17,
+        "endChar": 10
+      },
+      "revId": "97289f107cf0fa3a7fbfb922606832258730921e",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
