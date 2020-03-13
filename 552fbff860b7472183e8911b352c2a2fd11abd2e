@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b27ea7a0_5b534cef",
+        "filename": "static/js/codebase-branch-validation.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-13T14:08:41Z",
+      "side": 1,
+      "message": ".addClass(\u0027hide-element\u0027);",
+      "revId": "552fbff860b7472183e8911b352c2a2fd11abd2e",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
