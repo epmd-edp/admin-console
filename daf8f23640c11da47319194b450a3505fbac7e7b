@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bed3f411_c15998a4",
+        "filename": "static/js/codebase-validation.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-13T13:13:53Z",
+      "side": 1,
+      "message": "here",
+      "range": {
+        "startLine": 354,
+        "startChar": 16,
+        "endLine": 354,
+        "endChar": 30
+      },
+      "revId": "daf8f23640c11da47319194b450a3505fbac7e7b",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
