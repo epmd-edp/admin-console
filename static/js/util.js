@@ -54,10 +54,10 @@ function blockIsValid($block) {
 
 function createConfirmTable(formName) {
 
-    let $formData=$(formName).serializeArray();
+    let $formData = $(formName).serializeArray();
 
-    let getValue= function (name) {
-        let record =  $formData.find(x => x.name === name);
+    let getValue = function (name) {
+        let record = $formData.find(x => x.name === name);
         return record !== undefined ? record.value : "";
     };
 
@@ -105,16 +105,22 @@ function createConfirmTable(formName) {
             'Integration method': 'strategy'
         });
 
-    addBlock(null, "ADVANCED CI SETTINGS",
-        {
-            'Job Provisioner': 'jobProvisioning',
-            'Jenkins Slave': 'jenkinsSlave',
-            'Deployment Script': 'deploymentScript',
-            'Versioning Type': 'versioningType',
-            'Start Versioning From': 'startVersioningFrom'
-        });
+    let advancedBlock = {
+        'Job Provisioner': 'jobProvisioning',
+        'Jenkins Slave': 'jenkinsSlave',
+        'Deployment Script': 'deploymentScript',
+        'Versioning Type': 'versioningType'
+    };
 
-    if ( !isFound('strategy') || getValue('strategy') === "clone" ) {
+    if ($('#versioningType').val() === 'edp') {
+        advancedBlock['Start Versioning From'] = 'startVersioningFrom'
+    } else {
+        delete advancedBlock['Start Versioning From'];
+    }
+
+    addBlock(null, "ADVANCED CI SETTINGS", advancedBlock);
+
+    if (!isFound('strategy') || getValue('strategy') === "clone") {
         addBlock(
             null, null,
             {'Repository': 'gitRepoUrl'});
