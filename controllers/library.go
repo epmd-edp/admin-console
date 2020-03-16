@@ -3,18 +3,19 @@ package controllers
 import (
 	"edp-admin-console/context"
 	validation2 "edp-admin-console/controllers/validation"
+	"edp-admin-console/models"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	cbs "edp-admin-console/service/codebasebranch"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
+	"edp-admin-console/util/consts"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
 	"html/template"
 	"net/http"
-	"path"
 	"regexp"
 	"strings"
 )
@@ -127,16 +128,22 @@ func (c *LibraryController) Create() {
 	logLibraryRequestData(codebase)
 
 	createdObject, err := c.CodebaseService.CreateCodebase(codebase)
-
 	if err != nil {
-		if err.Error() == "CODEBASE_ALREADY_EXISTS" {
-			flash.Error("Library %s is already exists.", codebase.Name)
+		switch err.(type) {
+		case *models.CodebaseAlreadyExistsError:
+			flash.Error("Library %v already exists.", codebase.Name)
 			flash.Store(&c.Controller)
 			c.Redirect("/admin/edp/library/create", 302)
 			return
+		case *models.CodebaseWithGitUrlPathAlreadyExistsError:
+			flash.Error("Library %v with %v project path already exists.", codebase.Name, *codebase.GitUrlPath)
+			flash.Store(&c.Controller)
+			c.Redirect("/admin/edp/library/create", 302)
+			return
+		default:
+			c.Abort("500")
+			return
 		}
-		c.Abort("500")
-		return
 	}
 
 	log.Info("Library object is saved into cluster", "library", createdObject.Name)
@@ -154,6 +161,7 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 		JenkinsSlave:     c.GetString("jenkinsSlave"),
 		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
+		Name:             c.GetString("nameOfApp"),
 	}
 
 	library.Versioning.Type = c.GetString("versioningType")
@@ -164,13 +172,11 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 	framework := c.GetString("framework")
 	library.Framework = &framework
 
-	if library.Strategy == strings.ToLower(ImportStrategy) {
+	if library.Strategy == consts.ImportStrategy {
 		library.GitServer = c.GetString("gitServer")
 		gitRepoPath := c.GetString("gitRelativePath")
 		library.GitUrlPath = &gitRepoPath
-		library.Name = path.Base(*library.GitUrlPath)
 	} else {
-		library.Name = c.GetString("nameOfApp")
 		library.GitServer = "gerrit"
 	}
 
@@ -204,7 +210,7 @@ func validateLibraryRequestData(library command.CreateCodebase) *validation2.Err
 
 	_, err := valid.Valid(library)
 
-	if library.Strategy == strings.ToLower(ImportStrategy) {
+	if library.Strategy == consts.ImportStrategy {
 		valid.Match(library.GitUrlPath, regexp.MustCompile("^\\/.*$"), "Spec.GitUrlPath")
 	}
 

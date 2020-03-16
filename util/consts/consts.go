@@ -8,8 +8,6 @@ const (
 	DockerRegistry = "docker-registry"
 	Gerrit         = "gerrit"
 
-	EdpCICDPostfix = "-edp-cicd"
-
 	Application = "application"
 	Autotest    = "autotests"
 	Library     = "library"
@@ -20,8 +18,7 @@ const (
 	CDPipelinePlural     = "cdpipelines"
 	CodebaseKind         = "Codebase"
 
-	LanguageJava        = "Java"
-	FrameworkSpringBoot = "springboot"
+	ImportStrategy = "import"
 )
 
 var DefaultBuildNumber = "0"

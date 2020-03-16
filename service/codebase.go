@@ -55,21 +55,19 @@ func (s CodebaseService) CreateCodebase(codebase command.CreateCodebase) (*edpv1
 		clog.Info("an error has occurred while fetching Codebase CR from cluster", "name", codebase.Name)
 		return nil, err
 	}
-
 	if codebaseCr != nil {
 		clog.Info("codebase already exists in cluster", "name", codebaseCr.Name)
-		return nil, errors.New("CODEBASE_ALREADY_EXISTS")
+		return nil, models.NewCodebaseAlreadyExistsError()
 	}
 
-	codebaseDb, err := s.GetCodebaseByName(codebase.Name)
-	if err != nil {
-		clog.Info("an error has occurred while fetching Codebase entity from DB: %s", codebase.Name)
-		return nil, err
+	if s.findCodebaseByName(codebase.Name) {
+		clog.Info("Codebase already exists in DB", "name", codebase.Name)
+		return nil, models.NewCodebaseAlreadyExistsError()
 	}
 
-	if codebaseDb != nil {
-		clog.Info("Codebase is already exists in DB", "name", codebaseDb.Name)
-		return nil, errors.New("CODEBASE_ALREADY_EXISTS")
+	if s.findCodebaseByProjectPath(codebase.GitUrlPath) {
+		clog.Info("Codebase with the same gitUrlPath already exists in DB", "gitUrlPath", *codebase.GitUrlPath)
+		return nil, models.NewCodebaseWithGitUrlPathAlreadyExistsError()
 	}
 
 	edpClient := s.Clients.EDPRestClient
@@ -142,6 +140,21 @@ func (s CodebaseService) GetCodebaseByName(name string) (*query.Codebase, error)
 	clog.Info("fetched codebase info", "codebase", codebase)
 
 	return codebase, nil
+}
+
+func (s *CodebaseService) findCodebaseByName(name string) bool {
+	exist := s.ICodebaseRepository.FindCodebaseByName(name)
+	clog.V(2).Info("codebase exists", "exists", exist, "name", name)
+	return exist
+}
+
+func (s *CodebaseService) findCodebaseByProjectPath(gitProjectPath *string) bool {
+	if gitProjectPath == nil {
+		return false
+	}
+	exist := s.ICodebaseRepository.FindCodebaseByProjectPath(gitProjectPath)
+	clog.V(2).Info("codebase exists", "exists", exist, "url", gitProjectPath)
+	return exist
 }
 
 func (s CodebaseService) ExistCodebaseAndBranch(cbName, brName string) bool {

@@ -19,6 +19,7 @@ package controllers
 import (
 	"edp-admin-console/context"
 	"edp-admin-console/controllers/validation"
+	"edp-admin-console/models"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
@@ -29,7 +30,6 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"html/template"
-	"path"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"strings"
 )
@@ -186,16 +186,22 @@ func (c *ApplicationController) CreateApplication() {
 	log.Info(ld.String())
 
 	createdObject, err := c.CodebaseService.CreateCodebase(codebase)
-
 	if err != nil {
-		if err.Error() == "CODEBASE_ALREADY_EXISTS" {
-			flash.Error("Application %s name is already exists.", codebase.Name)
+		switch err.(type) {
+		case *models.CodebaseAlreadyExistsError:
+			flash.Error("Application %v already exists.", codebase.Name)
 			flash.Store(&c.Controller)
 			c.Redirect("/admin/edp/application/create", 302)
 			return
+		case *models.CodebaseWithGitUrlPathAlreadyExistsError:
+			flash.Error("Application %v with %v project path already exists.", codebase.Name, *codebase.GitUrlPath)
+			flash.Store(&c.Controller)
+			c.Redirect("/admin/edp/application/create", 302)
+			return
+		default:
+			c.Abort("500")
+			return
 		}
-		c.Abort("500")
-		return
 	}
 
 	log.Info("application object is saved into cluster", "name", createdObject.Name)
@@ -213,6 +219,7 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 		JenkinsSlave:     c.GetString("jenkinsSlave"),
 		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
+		Name:             c.GetString("nameOfApp"),
 	}
 
 	codebase.Versioning.Type = c.GetString("versioningType")
@@ -225,9 +232,7 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 		codebase.GitServer = c.GetString("gitServer")
 		gitRepoPath := c.GetString("gitRelativePath")
 		codebase.GitUrlPath = &gitRepoPath
-		codebase.Name = path.Base(*codebase.GitUrlPath)
 	} else {
-		codebase.Name = c.GetString("nameOfApp")
 		codebase.GitServer = "gerrit"
 	}
 
