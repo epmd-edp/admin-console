@@ -357,8 +357,8 @@
                             <div class="d-flex">
                                 <input type="text" class="form-control branch-version" id="branch-version" name="version"
                                        placeholder="Enter Version" value={{ getMasterBranchVersion .Codebase.CodebaseBranch }}>
-                                <select class="form-control versioning-postfix hide-element" name="versioningPostfix" id="versioningPostfix">
-                                </select>
+                                <input name="versioningPostfix" type="text" class="form-control versioning-postfix"
+                                       id="versioningPostfix" value="SNAPSHOT" readonly="readonly">
                             </div>
                             <div class="invalid-feedback branch-version">
                                 The branch version field cannot be empty and should be filled out in compliance with the semantic versioning rules. The correct example: 1.2.3 or 10.10.10.

@@ -347,14 +347,16 @@ func setCodebaseBranchCr(vt string, username string, version *string, build *str
 	if vt == "default" {
 		return command.CreateCodebaseBranch{
 			Name:     "master",
+			BranchName: "master",
 			Username: username,
 		}
 	}
 
 	return command.CreateCodebaseBranch{
-		Name:     "master",
-		Username: username,
-		Version:  version,
-		Build:    build,
+		Name:       "master",
+		BranchName: "master",
+		Username:   username,
+		Version:    version,
+		Build:      build,
 	}
 }

@@ -139,14 +139,12 @@ $(function () {
 
         if ($(this).is(":checked")) {
             $branchNameInputEl.attr('readonly', true).val("release/" + trimMinorVersionComponent($branchVersionInputEl.val()));
-            $versioningPostfixEl.attr('disabled', false).removeClass('hide-element');
-            $versioningPostfixEl.append('<option versioning-postfix="RC">RC</option>\n',
-                '<option versioning-postfix="GA">GA</option>');
+            $versioningPostfixEl.val("RC");
             $masterBranchVersionInputEl.attr('disabled', false).removeClass('hide-element');
         } else {
             $branchNameInputEl.removeAttr('readonly');
             restoreBranchModalWindowValues();
-            $versioningPostfixEl.attr('disabled', true).addClass('hide-element').empty();
+            $versioningPostfixEl.val("SNAPSHOT");
             $masterBranchVersionInputEl.attr('disabled', true).addClass('hide-element');
         }
     });

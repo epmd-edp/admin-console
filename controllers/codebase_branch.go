@@ -13,6 +13,7 @@ import (
 	"github.com/astaxie/beego/validation"
 	"net/http"
 	"regexp"
+	"strings"
 )
 
 type BranchController struct {
@@ -64,10 +65,12 @@ func (c *BranchController) CreateCodebaseBranch() {
 
 func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCodebaseBranch {
 	cb := command.CreateCodebaseBranch{
-		Name:     c.GetString("name"),
+		Name:     strings.Replace(c.GetString("name"), "/", "-", 1),
 		Commit:   c.GetString("commit"),
 		Username: c.Ctx.Input.Session("username").(string),
 	}
+
+	cb.BranchName = c.GetString("name")
 
 	vf := c.GetString("version")
 	px := c.GetString("versioningPostfix")
