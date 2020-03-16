@@ -18,6 +18,7 @@ package controllers
 
 import (
 	"edp-admin-console/controllers/validation"
+	"edp-admin-console/models"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
@@ -111,16 +112,21 @@ func (c *CodebaseRestController) CreateCodebase() {
 	log.Info(ld.String())
 
 	createdObject, err := c.CodebaseService.CreateCodebase(codebase)
-
 	if err != nil {
-		if err.Error() == "CODEBASE_ALREADY_EXISTS" {
-			errMsg := fmt.Sprintf("Codebase resource with %s name is already exists.", codebase.Name)
+		switch err.(type) {
+		case *models.CodebaseAlreadyExistsError:
+			errMsg := fmt.Sprintf("Codebase %v already exists.", codebase.Name)
 			http.Error(c.Ctx.ResponseWriter, errMsg, http.StatusBadRequest)
 			return
+		case *models.CodebaseWithGitUrlPathAlreadyExistsError:
+			errMsg := fmt.Sprintf("Codebase %v with %v project path already exists.", codebase.Name, *codebase.GitUrlPath)
+			http.Error(c.Ctx.ResponseWriter, errMsg, http.StatusBadRequest)
+			return
+		default:
+			errMsg := fmt.Sprintf("Failed to create codebase: %v", err.Error())
+			http.Error(c.Ctx.ResponseWriter, errMsg, http.StatusInternalServerError)
+			return
 		}
-		errMsg := fmt.Sprintf("Failed to create codebase resource: %v", err.Error())
-		http.Error(c.Ctx.ResponseWriter, errMsg, http.StatusInternalServerError)
-		return
 	}
 
 	log.Info("Codebase resource is saved into cluster", "codebase", createdObject.Name)

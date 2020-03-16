@@ -30,7 +30,6 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"html/template"
-	"strings"
 )
 
 type CodebaseController struct {
@@ -115,7 +114,7 @@ func addCodebaseBranchInProgressIfAny(branches []*query.CodebaseBranch, branchIn
 }
 
 func (c CodebaseController) createBranchLinks(codebase query.Codebase, tenant string) error {
-	if codebase.Strategy == strings.ToLower(ImportStrategy) {
+	if codebase.Strategy == consts.ImportStrategy {
 		return c.createLinksForGitProvider(codebase, tenant)
 	}
 	return c.createLinksForGerritProvider(codebase, tenant)

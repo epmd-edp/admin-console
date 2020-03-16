@@ -32,3 +32,25 @@ func (e *CDPipelineDoesNotExistError) Error() string {
 func NewCDPipelineDoesNotExistError() error {
 	return &CDPipelineDoesNotExistError{}
 }
+
+type CodebaseAlreadyExistsError struct {
+}
+
+func (e *CodebaseAlreadyExistsError) Error() string {
+	return "codebase already exists"
+}
+
+func NewCodebaseAlreadyExistsError() error {
+	return &CodebaseAlreadyExistsError{}
+}
+
+type CodebaseWithGitUrlPathAlreadyExistsError struct {
+}
+
+func (e *CodebaseWithGitUrlPathAlreadyExistsError) Error() string {
+	return "codebase with git url path already exists"
+}
+
+func NewCodebaseWithGitUrlPathAlreadyExistsError() error {
+	return &CodebaseWithGitUrlPathAlreadyExistsError{}
+}

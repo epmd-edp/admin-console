@@ -37,10 +37,11 @@ func (c *Codebase) TableName() string {
 }
 
 type CodebaseCriteria struct {
-	BranchStatus Status
-	Status       Status
-	Type         CodebaseType
-	Language     CodebaseLanguage
+	BranchStatus   Status
+	Status         Status
+	Type           CodebaseType
+	Language       CodebaseLanguage
+	GitProjectPath string
 }
 
 type CodebaseType string

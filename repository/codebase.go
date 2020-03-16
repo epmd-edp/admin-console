@@ -28,15 +28,13 @@ type ICodebaseRepository interface {
 	ExistActiveBranch(dockerStreamName string) (bool, error)
 	ExistCodebaseAndBranch(cbName, brName string) bool
 	SelectApplicationToPromote(cdPipelineId int) ([]*query.ApplicationsToPromote, error)
+	FindCodebaseByName(name string) bool
+	FindCodebaseByProjectPath(gitProjectPath *string) bool
 }
 
 type CodebaseRepository struct {
 	ICodebaseRepository
 }
-
-const (
-	ApplicationType = "application"
-)
 
 func (CodebaseRepository) GetCodebasesByCriteria(criteria query.CodebaseCriteria) ([]*query.Codebase, error) {
 	o := orm.NewOrm()
@@ -98,6 +96,14 @@ func (CodebaseRepository) GetCodebasesByCriteria(criteria query.CodebaseCriteria
 
 	}
 	return codebases, err
+}
+
+func (CodebaseRepository) FindCodebaseByName(name string) bool {
+	return orm.NewOrm().QueryTable(new(query.Codebase)).Filter("name", name).Exist()
+}
+
+func (CodebaseRepository) FindCodebaseByProjectPath(gitProjectPath *string) bool {
+	return orm.NewOrm().QueryTable(new(query.Codebase)).Filter("git_project_path", *gitProjectPath).Exist()
 }
 
 func (CodebaseRepository) GetCodebaseByName(name string) (*query.Codebase, error) {

@@ -101,7 +101,6 @@ $(function () {
         $('.other-language').removeClass('button-disable');
 
         $('.main-block').data('import-strategy', true);
-        $('.app-name').addClass('hide-element');
         $('.gitServerEl').removeClass('hide-element');
         $('.gitRelativePathEl').removeClass('hide-element');
 
@@ -297,6 +296,13 @@ $(function () {
     $('#startVersioningFrom').focusout(function () {
         let branchVersion = $('#startVersioningFrom');
         handleBranchVersionValidation(branchVersion);
+    });
+
+    $('#gitRelativePath').focusout(function () {
+        if (!isFieldValid($(this), REGEX.RELATIVE_PATH)) {
+            return;
+        }
+        $('#nameOfApp').val($(this).val().match(/([^\/]*)\/*$/)[1]);
     });
 
     function setJenkinsSlave(el) {

@@ -3,18 +3,19 @@ package controllers
 import (
 	"edp-admin-console/context"
 	validation2 "edp-admin-console/controllers/validation"
+	"edp-admin-console/models"
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	cbs "edp-admin-console/service/codebasebranch"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
+	"edp-admin-console/util/consts"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
 	"html/template"
 	"net/http"
-	"path"
 	"regexp"
 	"strings"
 )
@@ -34,10 +35,6 @@ type AutotestsController struct {
 	DeploymentScript      []string
 }
 
-const (
-	ImportStrategy = "Import"
-)
-
 func (c *AutotestsController) CreateAutotests() {
 	flash := beego.NewFlash()
 	codebase := c.extractAutotestsRequestData()
@@ -53,16 +50,22 @@ func (c *AutotestsController) CreateAutotests() {
 	logAutotestsRequestData(codebase)
 
 	createdObject, err := c.CodebaseService.CreateCodebase(codebase)
-
 	if err != nil {
-		if err.Error() == "CODEBASE_ALREADY_EXISTS" {
-			flash.Error("Autotests %s is already exists.", codebase.Name)
+		switch err.(type) {
+		case *models.CodebaseAlreadyExistsError:
+			flash.Error("Autotest %v already exists.", codebase.Name)
 			flash.Store(&c.Controller)
 			c.Redirect("/admin/edp/autotest/create", 302)
 			return
+		case *models.CodebaseWithGitUrlPathAlreadyExistsError:
+			flash.Error("Autotest %v with %v project path already exists.", codebase.Name, *codebase.GitUrlPath)
+			flash.Store(&c.Controller)
+			c.Redirect("/admin/edp/autotest/create", 302)
+			return
+		default:
+			c.Abort("500")
+			return
 		}
-		c.Abort("500")
-		return
 	}
 
 	log.Info("Autotests object is saved into cluster", "name", createdObject.Name)
@@ -96,6 +99,7 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 		JenkinsSlave:     c.GetString("jenkinsSlave"),
 		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
+		Name:             c.GetString("nameOfApp"),
 	}
 
 	codebase.Versioning.Type = c.GetString("versioningType")
@@ -106,13 +110,11 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 	framework := c.GetString("framework")
 	codebase.Framework = &framework
 
-	if codebase.Strategy == strings.ToLower(ImportStrategy) {
+	if codebase.Strategy == consts.ImportStrategy {
 		codebase.GitServer = c.GetString("gitServer")
 		gitRepoPath := c.GetString("gitRelativePath")
 		codebase.GitUrlPath = &gitRepoPath
-		codebase.Name = path.Base(*codebase.GitUrlPath)
 	} else {
-		codebase.Name = c.GetString("nameOfApp")
 		codebase.GitServer = "gerrit"
 	}
 
@@ -156,7 +158,7 @@ func validateAutotestsRequestData(autotests command.CreateCodebase) *validation2
 
 	_, err := valid.Valid(autotests)
 
-	if autotests.Strategy == strings.ToLower(ImportStrategy) {
+	if autotests.Strategy == consts.ImportStrategy {
 		valid.Match(autotests.GitUrlPath, regexp.MustCompile("^\\/.*$"), "Spec.GitUrlPath")
 	}
 
