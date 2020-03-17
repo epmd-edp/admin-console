@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea0c959a_6decaf37",
+        "filename": "models/command/codebase_branch.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-17T08:49:34Z",
+      "side": 1,
+      "message": "do we really need BranchName property ? as we have Name",
+      "revId": "75ada6376b85650936bfb0a180514eabe660e007",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
