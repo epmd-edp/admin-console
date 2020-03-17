@@ -12,8 +12,8 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
 	"net/http"
+	"net/url"
 	"regexp"
-	"strings"
 )
 
 type BranchController struct {
@@ -49,7 +49,8 @@ func (c *BranchController) CreateCodebaseBranch() {
 	exist := c.CodebaseService.ExistCodebaseAndBranch(appName, branchInfo.Name)
 
 	if exist {
-		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?errorExistingBranch=%s#branchExistsModal", appName, branchInfo.Name), 302)
+		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?errorExistingBranch=%s#branchExistsModal",
+			appName, url.PathEscape(branchInfo.Name)), 302)
 		return
 	}
 
@@ -60,12 +61,13 @@ func (c *BranchController) CreateCodebaseBranch() {
 	}
 
 	log.Info("BranchRelease resource is saved into cluster", "name", cb.Name)
-	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", appName, paramWaitingForBranch, branchInfo.Name), 302)
+	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", appName,
+		paramWaitingForBranch, url.PathEscape(branchInfo.Name)), 302)
 }
 
 func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCodebaseBranch {
 	cb := command.CreateCodebaseBranch{
-		Name:     strings.Replace(c.GetString("name"), "/", "-", 1),
+		Name:     c.GetString("name"),
 		Commit:   c.GetString("commit"),
 		Username: c.Ctx.Input.Session("username").(string),
 	}
@@ -91,7 +93,8 @@ func validCodebaseBranchRequestData(requestData command.CreateCodebaseBranch) *v
 	}
 
 	if err != nil {
-		return &validation2.ErrMsg{"An internal error has occurred on server while validating branch's form fields.", http.StatusInternalServerError}
+		return &validation2.ErrMsg{"An internal error has occurred on server while validating branch's form fields.",
+			http.StatusInternalServerError}
 	}
 
 	if valid.Errors == nil {
