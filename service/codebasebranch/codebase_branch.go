@@ -149,7 +149,7 @@ func (s *CodebaseBranchService) GetCodebaseBranchesByCriteria(criteria query.Cod
 
 func convertBranchInfoData(branchInfo command.CreateCodebaseBranch, appName string) edpv1alpha1.CodebaseBranchSpec {
 	return edpv1alpha1.CodebaseBranchSpec{
-		BranchName:   strings.Replace(branchInfo.Name, "-", "/", 1),
+		BranchName:   util.ProcessBranchVersionDashToSlash(branchInfo.Name),
 		FromCommit:   branchInfo.Commit,
 		Version:      branchInfo.Version,
 		Build:        branchInfo.Build,
