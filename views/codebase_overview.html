@@ -323,12 +323,17 @@
                                    name="releaseBranch">
                             <label class="form-check-label" for="releaseBranch">
                                 Release Branch
+                                <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                                      title="Select the check box in order to create a release branch."></span>
                             </label>
                         </div>
                         {{end}}
 
                         <div class="form-group">
-                            <label for="site">Branch Name</label>
+                            <label for="site">Branch Name
+                                <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                                      title="Type the branch name that will be created in the Version Control System."></span>
+                            </label>
                             <input type="text" class="form-control branch-name" id="branchName" name="name"
                                    placeholder="Enter Branch Name"
                                    {{if .Codebase.StartVersioningFrom}}
@@ -343,7 +348,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label>From Commit Hash</label>
+                            <label>From Commit Hash
+                                <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                                      title="The new branch will be created starting from the selected commit hash. If this field is empty, the latest commit from the branch name will be used."></span>
+                            </label>
                             <input type="text" class="form-control" id="commitNumber" name="commit"
                                    placeholder="Enter Commit">
                             <div class="invalid-feedback commit-message">
@@ -353,7 +361,10 @@
 
                         {{if .Codebase.StartVersioningFrom}}
                         <div class="form-group">
-                            <label>Branch Version</label>
+                            <label>Branch Version
+                                <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                                      title="Enter the necessary branch version for the artifact."></span>
+                            </label>
                             <div class="d-flex">
                                 <input type="text" class="form-control branch-version" id="branch-version" name="version"
                                        placeholder="Enter Version" value={{ getMasterBranchVersion .Codebase.CodebaseBranch }}>
@@ -365,7 +376,10 @@
                             </div>
                         </div>
                         <div class="form-group master-branch-version hide-element">
-                            <label>Master Branch Version</label>
+                            <label>Master Branch Version
+                                <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                                      title="Type the branch version that will be used in a master branch after the release creation."></span>
+                            </label>
                             <div class="d-flex">
                                 <input type="text" class="form-control" id="master-branch-version" name="masterVersion"
                                     placeholder="Enter Master Branch Version" value={{ incrementVersion (getMasterBranchVersion .Codebase.CodebaseBranch) }}>

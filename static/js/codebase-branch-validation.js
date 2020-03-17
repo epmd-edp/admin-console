@@ -41,6 +41,8 @@ $(function () {
         window.history.replaceState({}, document.title, uri);
     });
 
+    $('.tooltip-icon').tooltip();
+
     $('#btn-modal-close, #btn-cross-close').click(function () {
         $('.branch-exists-modal').hide();
         if ($('#versioningPostfix').length) {
