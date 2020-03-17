@@ -51,13 +51,15 @@ func (s *CodebaseBranchService) CreateCodebaseBranch(branchInfo command.CreateCo
 	log.V(2).Info("start creating CodebaseBranch CR", "codebase", appName, "branch", branchInfo.Name)
 	edpRestClient := s.Clients.EDPRestClient
 
-	releaseBranchCR, err := getReleaseBranchCR(edpRestClient, branchInfo.Name, appName, context.Namespace)
+	cb := util.ProcessBranchVersionSlashToDash(branchInfo.Name, branchInfo.Release)
+
+	releaseBranchCR, err := getReleaseBranchCR(edpRestClient, cb, appName, context.Namespace)
 	if err != nil {
-		return nil, errors.Wrapf(err, "an error has occurred while getting %v CodebaseBranch CR from cluster", branchInfo.Name)
+		return nil, errors.Wrapf(err, "an error has occurred while getting %v CodebaseBranch CR from cluster", cb)
 	}
 
 	if releaseBranchCR != nil {
-		return nil, fmt.Errorf("CodebaseBranch %v already exists", branchInfo.Name)
+		return nil, fmt.Errorf("CodebaseBranch %v already exists", cb)
 	}
 
 	c, err := util.GetCodebaseCR(s.Clients.EDPRestClient, appName)
@@ -72,7 +74,7 @@ func (s *CodebaseBranchService) CreateCodebaseBranch(branchInfo command.CreateCo
 			Kind:       "CodebaseBranch",
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("%s-%s", appName, branchInfo.Name),
+			Name:      fmt.Sprintf("%s-%s", appName, cb),
 			Namespace: context.Namespace,
 			OwnerReferences: []metav1.OwnerReference{
 				{
@@ -149,7 +151,7 @@ func (s *CodebaseBranchService) GetCodebaseBranchesByCriteria(criteria query.Cod
 
 func convertBranchInfoData(branchInfo command.CreateCodebaseBranch, appName string) edpv1alpha1.CodebaseBranchSpec {
 	return edpv1alpha1.CodebaseBranchSpec{
-		BranchName:   strings.Replace(branchInfo.Name, "-", "/", 1),
+		BranchName:   branchInfo.Name,
 		FromCommit:   branchInfo.Commit,
 		Version:      branchInfo.Version,
 		Build:        branchInfo.Build,
