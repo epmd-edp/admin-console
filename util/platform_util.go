@@ -2,6 +2,7 @@ package util
 
 import (
 	"bytes"
+	"edp-admin-console/models/command"
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
@@ -47,4 +48,17 @@ func EncodeStructToBytes(s interface{}) ([]byte, error) {
 
 func TrimSuffix(v, s string) string {
 	return strings.TrimSuffix(v, s)
+}
+
+func ProcessBranchVersionSlash(b command.CreateCodebaseBranch, toSpec bool) string {
+	if b.Release && toSpec {
+		return strings.Replace(b.Name, "-", "/", -1)
+	}
+
+	if b.Release && !toSpec {
+		return strings.Replace(b.Name, "/", "-", -1)
+	}
+
+	return b.Name
+
 }

@@ -13,7 +13,6 @@ import (
 	"github.com/astaxie/beego/validation"
 	"net/http"
 	"regexp"
-	"strings"
 )
 
 type BranchController struct {
@@ -49,7 +48,8 @@ func (c *BranchController) CreateCodebaseBranch() {
 	exist := c.CodebaseService.ExistCodebaseAndBranch(appName, branchInfo.Name)
 
 	if exist {
-		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?errorExistingBranch=%s#branchExistsModal", appName, branchInfo.Name), 302)
+		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?errorExistingBranch=%s#branchExistsModal",
+			appName, util.ProcessBranchVersionSlash(branchInfo, false)), 302)
 		return
 	}
 
@@ -60,12 +60,13 @@ func (c *BranchController) CreateCodebaseBranch() {
 	}
 
 	log.Info("BranchRelease resource is saved into cluster", "name", cb.Name)
-	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", appName, paramWaitingForBranch, branchInfo.Name), 302)
+	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", appName,
+		paramWaitingForBranch, util.ProcessBranchVersionSlash(branchInfo, false)), 302)
 }
 
 func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCodebaseBranch {
 	cb := command.CreateCodebaseBranch{
-		Name:     strings.Replace(c.GetString("name"), "/", "-", 1),
+		Name:     c.GetString("name"),
 		Commit:   c.GetString("commit"),
 		Username: c.Ctx.Input.Session("username").(string),
 	}
@@ -79,6 +80,8 @@ func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCode
 	r, _ := c.GetBool("releaseBranch", false)
 	cb.Release = r
 
+	cb.Name = util.ProcessBranchVersionSlash(cb, false)
+
 	return cb
 }
 
@@ -91,7 +94,8 @@ func validCodebaseBranchRequestData(requestData command.CreateCodebaseBranch) *v
 	}
 
 	if err != nil {
-		return &validation2.ErrMsg{"An internal error has occurred on server while validating branch's form fields.", http.StatusInternalServerError}
+		return &validation2.ErrMsg{"An internal error has occurred on server while validating branch's form fields.",
+			http.StatusInternalServerError}
 	}
 
 	if valid.Errors == nil {
