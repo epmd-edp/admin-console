@@ -48,3 +48,10 @@ func EncodeStructToBytes(s interface{}) ([]byte, error) {
 func TrimSuffix(v, s string) string {
 	return strings.TrimSuffix(v, s)
 }
+
+func ProcessBranchVersionSlashToDash(name string, release bool) string {
+	if release {
+		return strings.Replace(name, "/", "-", -1)
+	}
+	return name
+}

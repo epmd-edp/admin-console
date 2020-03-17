@@ -41,7 +41,9 @@ type CodebaseController struct {
 	EDPComponent     ec.EDPComponentService
 }
 
-const paramWaitingForBranch = "waitingforbranch"
+const (
+	paramWaitingForBranch = "waitingforbranch"
+)
 
 func (c *CodebaseController) GetCodebaseOverviewPage() {
 	codebaseName := c.GetString(":codebaseName")
@@ -62,6 +64,7 @@ func (c *CodebaseController) GetCodebaseOverviewPage() {
 		c.Abort("500")
 		return
 	}
+
 	codebase.CodebaseBranch = addCodebaseBranchInProgressIfAny(codebase.CodebaseBranch, c.GetString(paramWaitingForBranch))
 
 	flash := beego.ReadFromRequest(&c.Controller)
