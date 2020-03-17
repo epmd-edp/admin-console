@@ -9,6 +9,7 @@ import (
 	cbs "edp-admin-console/service/codebasebranch"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
+	"edp-admin-console/util/consts"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
@@ -161,8 +162,10 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 	sp := c.GetString("snapshotStaticField")
 	library.Versioning.StartFrom = util.GetVersionOrNil(startVersioningFrom, sp)
 
-	framework := c.GetString("framework")
-	library.Framework = &framework
+	if consts.LanguageJava == library.Lang || OtherLanguage == library.Lang {
+		framework := c.GetString("framework")
+		library.Framework = &framework
+	}
 
 	if library.Strategy == strings.ToLower(ImportStrategy) {
 		library.GitServer = c.GetString("gitServer")
