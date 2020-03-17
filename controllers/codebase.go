@@ -63,7 +63,9 @@ func (c *CodebaseController) GetCodebaseOverviewPage() {
 		c.Abort("500")
 		return
 	}
-	codebase.CodebaseBranch = addCodebaseBranchInProgressIfAny(codebase.CodebaseBranch, c.GetString(paramWaitingForBranch))
+
+	codebase.CodebaseBranch = addCodebaseBranchInProgressIfAny(codebase.CodebaseBranch,
+		strings.Replace(c.GetString(paramWaitingForBranch), "-", "/", -1))
 
 	flash := beego.ReadFromRequest(&c.Controller)
 	if flash.Data["error"] != "" {
