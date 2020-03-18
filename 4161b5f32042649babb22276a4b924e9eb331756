@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "771a182f_5c3e2792",
+        "filename": "controllers/application.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-18T07:59:04Z",
+      "side": 1,
+      "message": "appName?",
+      "range": {
+        "startLine": 222,
+        "startChar": 33,
+        "endLine": 222,
+        "endChar": 42
+      },
+      "revId": "4161b5f32042649babb22276a4b924e9eb331756",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1d6f31ac_4b4bd056",
+        "filename": "controllers/autotest.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-18T07:59:04Z",
+      "side": 1,
+      "message": "Let\u0027s move it to separate method",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 3
+      },
+      "revId": "4161b5f32042649babb22276a4b924e9eb331756",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d8852524_242dec43",
+        "filename": "controllers/codebase_rest.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-18T07:59:04Z",
+      "side": 1,
+      "message": "the same",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 3
+      },
+      "revId": "4161b5f32042649babb22276a4b924e9eb331756",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d90493b9_46a5668e",
+        "filename": "models/error.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-18T07:59:04Z",
+      "side": 1,
+      "message": "Let\u0027s move errors to some package error)",
+      "range": {
+        "startLine": 1,
+        "startChar": 8,
+        "endLine": 1,
+        "endChar": 14
+      },
+      "revId": "4161b5f32042649babb22276a4b924e9eb331756",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
