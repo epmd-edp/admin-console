@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f5c435fe_f14974b8",
+        "filename": "controllers/codebase.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-18T07:52:15Z",
+      "side": 1,
+      "message": "Why do we not use the util method here?",
+      "range": {
+        "startLine": 68,
+        "startChar": 3,
+        "endLine": 68,
+        "endChar": 67
+      },
+      "revId": "929c4482344815b8cc79250cc646e28bb6323703",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "65a2bf32_25d93d1a",
+        "filename": "controllers/codebase_branch.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-18T07:52:15Z",
+      "side": 1,
+      "message": "Let\u0027s once convert it  and write to local variable",
+      "range": {
+        "startLine": 48,
+        "startChar": 60,
+        "endLine": 48,
+        "endChar": 108
+      },
+      "revId": "929c4482344815b8cc79250cc646e28bb6323703",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3d322fd8_3b7b9c38",
+        "filename": "util/platform_util.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-18T07:52:15Z",
+      "side": 1,
+      "message": "let\u0027s create 2 methods to process branch without adding toSpec parameter",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 75
+      },
+      "revId": "929c4482344815b8cc79250cc646e28bb6323703",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
