@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8fb2ff35_74c21355",
+        "filename": "controllers/application.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-18T08:30:19Z",
+      "side": 1,
+      "message": "Why should we specify edp here? I don\u0027t see any other error packages",
+      "range": {
+        "startLine": 23,
+        "startChar": 1,
+        "endLine": 23,
+        "endChar": 9
+      },
+      "revId": "c9950e825d26155f451e1fba5b944c9f68cef1c8",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
