@@ -40,6 +40,7 @@ import (
 	"net/http"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"sort"
+	"strings"
 )
 
 var log = logf.Log.WithName("cd-pipeline-controller")
@@ -492,8 +493,14 @@ func (c *CDPipelineController) createNativeDockerImageLinks(s []*query.CodebaseD
 	}
 
 	for i, v := range s {
+		if v.CodebaseBranch.Release {
+			s[i].CICDLink = util.CreateCICDApplicationLink(cj.Url, v.CodebaseBranch.Codebase.Name,
+				strings.Replace(v.CodebaseBranch.Name, "/", "-", 1))
+		} else {
+			s[i].CICDLink = util.CreateCICDApplicationLink(cj.Url, v.CodebaseBranch.Codebase.Name, v.CodebaseBranch.Name)
+		}
+
 		s[i].ImageLink = util.CreateNativeDockerStreamLink(co.Url, context.Namespace, v.OcImageStreamName)
-		s[i].CICDLink = util.CreateCICDApplicationLink(cj.Url, v.CodebaseBranch.Codebase.Name, v.CodebaseBranch.Name)
 	}
 
 	return nil
@@ -521,7 +528,12 @@ func (c *CDPipelineController) createNonNativeDockerImageLinks(s []*query.Codeba
 
 	for i, v := range s {
 		s[i].ImageLink = util.CreateNonNativeDockerStreamLink(cd.Url, v.OcImageStreamName)
-		s[i].CICDLink = util.CreateCICDApplicationLink(cj.Url, v.CodebaseBranch.Codebase.Name, v.CodebaseBranch.Name)
+		if v.CodebaseBranch.Release {
+			s[i].CICDLink = util.CreateCICDApplicationLink(cj.Url, v.CodebaseBranch.Codebase.Name,
+				strings.Replace(v.CodebaseBranch.Name, "/", "-", 1))
+		} else {
+			s[i].CICDLink = util.CreateCICDApplicationLink(cj.Url, v.CodebaseBranch.Codebase.Name, v.CodebaseBranch.Name)
+		}
 	}
 
 	return nil
