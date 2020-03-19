@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "40c71650_668bc0dd",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-19T12:05:39Z",
+      "side": 1,
+      "message": "move to separate methode",
+      "revId": "de1f7e69f8046846a1e624d4dadf36545d515360",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9646dc72_da3dae8f",
+        "filename": "controllers/codebase.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-03-19T12:05:39Z",
+      "side": 1,
+      "message": "the same",
+      "revId": "de1f7e69f8046846a1e624d4dadf36545d515360",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
