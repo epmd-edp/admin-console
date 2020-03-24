@@ -1,0 +1,12 @@
+name: edp-admin-console
+namespace: ""
+platform: ""
+cdPipelineName: ""
+dnsWildcard: ""
+database:
+  required: false
+ingress:
+  required: false
+image:
+  name: ""
+  version: ""
