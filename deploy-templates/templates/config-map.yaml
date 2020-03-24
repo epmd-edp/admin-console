@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  dns_wildcard: {{ .Values.dnsWildcard }}
+  edp_name: {{ .Values.namespace }}
+  edp_version: 1.0.0
+  perf_integration_enabled: 'false'
+  vcs_integration_enabled: 'false'
+metadata:
+  name: edp-config
+  namespace: {{ .Values.namespace }}

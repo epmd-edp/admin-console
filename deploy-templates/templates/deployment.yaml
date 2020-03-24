@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    app: {{ .Values.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      serviceAccountName: {{ .Values.name }}
+      initContainers:
+        - image: "postgres:9.6"
+          command: ["/usr/bin/psql", "-h", "$(PG_HOST)", "-p", "$(PG_PORT)", "-U", "$(PG_USER)","-d", "$(PG_DATABASE)", "-c", "CREATE SCHEMA IF NOT EXISTS \"$(EDP_NAME)\";"]
+          imagePullPolicy: Always
+          name: db-init
+          env:
+            - name: PG_HOST
+              value: edp-install-wizard-db
+            - name: PG_PORT
+              value: '5432'
+            - name: PG_DATABASE
+              value: postgres
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: super-admin-db
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: super-admin-db
+                  key: password
+            - name: EDP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: edp-config
+                  key: edp_name
+      containers:
+        - name: {{ .Values.name }}
+          image: "{{ .Values.image.name }}:{{ .Values.image.version }}"
+          imagePullPolicy: Always
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: HOST
+              value: >-
+                https://{{ .Values.name }}-{{ .Values.namespace }}.{{ .Values.dnsWildcard }}
+            - name: EDP_ADMIN_CONSOLE_VERSION
+              value: {{ .Values.image.version }}
+            - name: DB_ENABLED
+              value: 'true'
+            - name: EDP_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: edp-config
+                  key: edp_version
+            - name: AUTH_KEYCLOAK_ENABLED
+              value: 'false'
+            - name: DNS_WILDCARD
+              valueFrom:
+                configMapKeyRef:
+                  name: edp-config
+                  key: dns_wildcard
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: super-admin-db
+                  key: username
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: super-admin-db
+                  key: password
+            - name: VERSIONING_TYPES
+              value: 'default,edp'
+            - name: INTEGRATION_STRATEGIES
+              value: 'Create,Clone,Import'
+            - name: BUILD_TOOLS
+              value: maven
+            - name: DEPLOYMENT_SCRIPT
+              value: 'helm-chart,openshift-template'
+            - name: PLATFORM_TYPE
+              value: {{ .Values.platform }}
+            - name: VCS_INTEGRATION_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: edp-config
+                  key: vcs_integration_enabled
+            - name: EDP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: edp-config
+                  key: edp_name
+            - name: PG_HOST
+              value: edp-install-wizard-db
+            - name: PG_PORT
+              value: '5432'
+            - name: PG_DATABASE
+              value: postgres
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 180
+            periodSeconds: 20
+            successThreshold: 1
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 5
+          readinessProbe:
+            failureThreshold: 5
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            successThreshold: 1
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 5
+          resources:
+            requests:
+              memory: 500Mi

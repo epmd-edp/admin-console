@@ -1,0 +1,19 @@
+{{ if eq .Values.platform "openshift" }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: {{ .Values.name }}
+  name: {{ .Values.name }}
+spec:
+  rules:
+    - host: {{ .Values.name }}-{{ .Values.namespace }}.{{ .Values.dnsWildcard }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ .Values.name }}
+              servicePort: 8080
+            path: /
+{{ end }}
