@@ -176,19 +176,20 @@ func getReleaseBranchCR(edpRestClient *rest.RESTClient, branchName string, appNa
 	return result, nil
 }
 
-func (s *CodebaseBranchService) Delete(codebase, branch string) error {
+func (s *CodebaseBranchService) Delete(codebase, b string) error {
 	log.V(2).Info("start executing service codebase branch delete method",
-		"name", codebase, "branch", branch)
-	if err := s.canCodebaseBranchBeDeleted(codebase, branch); err != nil {
+		"name", codebase, "branch", b)
+	b = strings.ReplaceAll(b, "/", "-")
+	if err := s.canCodebaseBranchBeDeleted(codebase, b); err != nil {
 		return err
 	}
 
-	crbn := fmt.Sprintf("%v-%v", codebase, branch)
+	crbn := fmt.Sprintf("%v-%v", codebase, b)
 	if err := s.deleteCodebaseBranch(crbn); err != nil {
 		return err
 	}
 	log.Info("codebase branch has been marked for deletion",
-		"name", codebase, "branch", branch)
+		"name", codebase, "branch", b)
 	return nil
 }
 
