@@ -44,21 +44,12 @@ $(function () {
     $('.tooltip-icon').tooltip();
 
     $('#btn-modal-close, #btn-cross-close').click(function () {
-        $('.branch-exists-modal').hide();
-        if ($('#versioningPostfix').length) {
-            $('#branchName,#commitNumber,#branch-version,#master-branch-version').removeClass('non-valid-input');
-            $('.invalid-feedback.master-branch-version').hide();
-            restoreBranchModalWindowValues()
-        } else {
-            $('#branchName,#commitNumber,#branch-version').val('').removeClass('non-valid-input');
-        }
-        $('.invalid-feedback.branch-name').hide();
-        $('.invalid-feedback.commit-message').hide();
-        $('.invalid-feedback.branch-version').hide();
+        cleanModalControls()
     });
 
     $('.modal-release-branch').click(function () {
         $('#releaseBranchModal').modal('show');
+        showBranchModalControls();
         if ($('#versioningPostfix').length) {
             let branchName = $('#branchName').val(),
                 branchVersion = $('#branch-version').val(),
@@ -144,26 +135,45 @@ $(function () {
     });
 
     $('#releaseBranch').change(function () {
-        let $createNewBranchModalEl = $('.create-new-branch-modal'),
-            $versioningPostfixEl = $createNewBranchModalEl.find('.versioning-postfix'),
-            $masterBranchVersionInputEl = $createNewBranchModalEl.find('.master-branch-version'),
-            $branchNameInputEl = $createNewBranchModalEl.find('.branch-name'),
-            $branchVersionInputEl = $createNewBranchModalEl.find('.branch-version');
-
-        if ($(this).is(":checked")) {
-            $('#branchName').removeClass('non-valid-input');
-            $('.invalid-feedback.branch-name').hide();
-            $branchNameInputEl.attr('readonly', true).val("release/" + trimMinorVersionComponent($branchVersionInputEl.val()));
-            $versioningPostfixEl.val("RC");
-            $masterBranchVersionInputEl.attr('disabled', false).removeClass('hide-element');
-        } else {
-            $branchNameInputEl.removeAttr('readonly');
-            restoreBranchModalWindowValues();
-            $versioningPostfixEl.val("SNAPSHOT");
-            $masterBranchVersionInputEl.attr('disabled', true).addClass('hide-element');
-        }
+        showBranchModalControls()
     });
 });
+
+function showBranchModalControls() {
+    let $createNewBranchModalEl = $('.create-new-branch-modal'),
+        $versioningPostfixEl = $createNewBranchModalEl.find('.versioning-postfix'),
+        $masterBranchVersionInputEl = $createNewBranchModalEl.find('.master-branch-version'),
+        $branchNameInputEl = $createNewBranchModalEl.find('.branch-name'),
+        $branchVersionInputEl = $createNewBranchModalEl.find('.branch-version');
+
+    if ($('#releaseBranch').is(":checked")) {
+        $('#branchName').removeClass('non-valid-input');
+        $('.invalid-feedback.branch-name').hide();
+        $branchNameInputEl.attr('readonly', true).val("release/" + trimMinorVersionComponent($branchVersionInputEl.val()));
+        $versioningPostfixEl.val("RC");
+        $masterBranchVersionInputEl.attr('disabled', false).removeClass('hide-element');
+    } else {
+        $branchNameInputEl.removeAttr('readonly');
+        restoreBranchModalWindowValues();
+        $versioningPostfixEl.val("SNAPSHOT");
+        $masterBranchVersionInputEl.attr('disabled', true).addClass('hide-element');
+    }
+}
+
+function cleanModalControls() {
+    if ($('#versioningPostfix').length) {
+        $('#branchName,#commitNumber,#branch-version,#master-branch-version').removeClass('non-valid-input');
+        $('.invalid-feedback.master-branch-version').hide();
+        restoreBranchModalWindowValues()
+    } else {
+        $('#branchName,#commitNumber,#branch-version').val('').removeClass('non-valid-input');
+    }
+    $('#releaseBranch').prop('checked', false);
+    $('#commitNumber').val("");
+    $('.invalid-feedback.branch-name').hide();
+    $('.invalid-feedback.commit-message').hide();
+    $('.invalid-feedback.branch-version').hide();
+}
 
 function isBranchNameValid() {
     let $branchName = $('#branchName');
