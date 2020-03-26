@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb2bd725_0ea7bfaa",
+        "filename": "service/codebasebranch/codebase_branch.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2020-03-26T08:19:22Z",
+      "side": 1,
+      "message": "Why do we need it? Can we delete branch by spec name, not metadata name?",
+      "revId": "d9eb67ef0642944d13249058daa64938373c93eb",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
