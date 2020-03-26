@@ -44,6 +44,9 @@ $(function () {
     $('.tooltip-icon').tooltip();
 
     $('#btn-modal-close, #btn-cross-close').click(function () {
+        $('#releaseBranch').prop('checked', false);
+        $('#commitNumber').val("");
+        showBranchModalControls();
         $('.branch-exists-modal').hide();
         if ($('#versioningPostfix').length) {
             $('#branchName,#commitNumber,#branch-version,#master-branch-version').removeClass('non-valid-input');
@@ -99,6 +102,27 @@ $(function () {
         }
     });
 
+    function showBranchModalControls() {
+        let $createNewBranchModalEl = $('.create-new-branch-modal'),
+            $versioningPostfixEl = $createNewBranchModalEl.find('.versioning-postfix'),
+            $masterBranchVersionInputEl = $createNewBranchModalEl.find('.master-branch-version'),
+            $branchNameInputEl = $createNewBranchModalEl.find('.branch-name'),
+            $branchVersionInputEl = $createNewBranchModalEl.find('.branch-version');
+
+        if ($('#releaseBranch').is(":checked")) {
+            $('#branchName').removeClass('non-valid-input');
+            $('.invalid-feedback.branch-name').hide();
+            $branchNameInputEl.attr('readonly', true).val("release/" + trimMinorVersionComponent($branchVersionInputEl.val()));
+            $versioningPostfixEl.val("RC");
+            $masterBranchVersionInputEl.attr('disabled', false).removeClass('hide-element');
+        } else {
+            $branchNameInputEl.removeAttr('readonly');
+            restoreBranchModalWindowValues();
+            $versioningPostfixEl.val("SNAPSHOT");
+            $masterBranchVersionInputEl.attr('disabled', true).addClass('hide-element');
+        }
+    }
+
     $('#branch-version').focusout(function () {
         let branchVersion = $('#branch-version');
         handleBranchVersionValidation(branchVersion);
@@ -144,24 +168,7 @@ $(function () {
     });
 
     $('#releaseBranch').change(function () {
-        let $createNewBranchModalEl = $('.create-new-branch-modal'),
-            $versioningPostfixEl = $createNewBranchModalEl.find('.versioning-postfix'),
-            $masterBranchVersionInputEl = $createNewBranchModalEl.find('.master-branch-version'),
-            $branchNameInputEl = $createNewBranchModalEl.find('.branch-name'),
-            $branchVersionInputEl = $createNewBranchModalEl.find('.branch-version');
-
-        if ($(this).is(":checked")) {
-            $('#branchName').removeClass('non-valid-input');
-            $('.invalid-feedback.branch-name').hide();
-            $branchNameInputEl.attr('readonly', true).val("release/" + trimMinorVersionComponent($branchVersionInputEl.val()));
-            $versioningPostfixEl.val("RC");
-            $masterBranchVersionInputEl.attr('disabled', false).removeClass('hide-element');
-        } else {
-            $branchNameInputEl.removeAttr('readonly');
-            restoreBranchModalWindowValues();
-            $versioningPostfixEl.val("SNAPSHOT");
-            $masterBranchVersionInputEl.attr('disabled', true).addClass('hide-element');
-        }
+        showBranchModalControls()
     });
 });
 
