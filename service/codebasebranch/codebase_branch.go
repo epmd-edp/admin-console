@@ -51,7 +51,7 @@ func (s *CodebaseBranchService) CreateCodebaseBranch(branchInfo command.CreateCo
 	log.V(2).Info("start creating CodebaseBranch CR", "codebase", appName, "branch", branchInfo.Name)
 	edpRestClient := s.Clients.EDPRestClient
 
-	cb := util.ProcessBranchVersionSlashToDash(branchInfo.Name, branchInfo.Release)
+	cb := util.ProcessNameToKubernetesConvention(branchInfo.Name)
 
 	releaseBranchCR, err := getReleaseBranchCR(edpRestClient, cb, appName, context.Namespace)
 	if err != nil {

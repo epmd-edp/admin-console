@@ -109,7 +109,7 @@ func (c *BranchController) Delete() {
 	bn := c.GetString("name")
 	rl := log.WithValues("codebase name", cn, "branch name", bn)
 	rl.V(2).Info("delete codebase branch method is invoked")
-	if err := c.BranchService.Delete(cn, bn); err != nil {
+	if err := c.BranchService.Delete(cn, util.ProcessNameToKubernetesConvention(bn)); err != nil {
 		if dberror.CodebaseBranchErrorOccurred(err) {
 			cberr := err.(dberror.RemoveCodebaseBranchRestriction)
 			f := beego.NewFlash()
