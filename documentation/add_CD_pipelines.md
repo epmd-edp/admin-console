@@ -79,7 +79,11 @@ After the complete adding of the CD pipeline, inspect the [Check CD Pipeline Ava
 
 As soon as the CD pipeline is provisioned and added to the CD Pipelines list, there is an ability to:
 
-1. Edit the CD pipeline by clicking the pen icon next to its name in the CD Pipelines list:
+1. Remove the added CD pipeline:
+
+    ![removepipe](../readme-resource/removecdpipe.png "removepipe")
+
+2. Edit the CD pipeline by clicking the pen icon next to its name in the CD Pipelines list:
 
     ![addcdpip7](../readme-resource/addcdpipe7.png "addcdpipe7")
 
@@ -87,7 +91,7 @@ As soon as the CD pipeline is provisioned and added to the CD Pipelines list, th
     
     ![addcdpip8](../readme-resource/addcdpipe8.png "addcdpipe8")
 
-2. Check the CD pipeline data and details by clicking the CD pipeline name in the CD Pipelines list:
+3. Check the CD pipeline data and details by clicking the CD pipeline name in the CD Pipelines list:
 
     - the main link on the top of the details page refers to Jenkins;
 
@@ -95,8 +99,10 @@ As soon as the CD pipeline is provisioned and added to the CD Pipelines list, th
 
     - the Applications menu has the main information about the applications with the respective codebase Docker streams and links to Jenkins and Gerrit as well as the signification of the promotion in CD pipeline; 
 
-    - the Stages menu includes the stages data that was previously mentioned, the direct links to the respective to every stage OpenShift page, and the link to the Autotest details page in case there are added autotests;
-
+    - the Stages menu includes the stages data that was previously mentioned, the direct links to the respective to every stage OpenShift page, and the link to the Autotest details page in case there are added autotests.
+    
+      _**NOTE**: In order to **remove a stage**, click the corresponding delete icon, type the CD pipeline name and confirm the deletion by clicking the Delete button. If you remove the last stage, the whole CD pipeline will be removed as the CD pipeline does not exist without stages._
+      
     ![addcdpip9](../readme-resource/addcdpipe9.png "addcdpipe9")
 
     - the Third-Party Services menu displays the name, description, and version of the added service;
@@ -108,3 +114,9 @@ As soon as the CD pipeline is provisioned and added to the CD Pipelines list, th
     - the Status Info menu displays all the actions that were performed during the deployment process:
     
     ![addcdpip11](../readme-resource/addcdpipe11.png "addcdpipe11")
+   
+>_**INFO**: If there is a necessity to create another CD pipeline, navigate to the Continuous Delivery section, click the Create button and perform the same steps as described above._    
+
+### Related Articles
+
+* [EDP Admin Console](https://github.com/epmd-edp/admin-console#edp-admin-console)

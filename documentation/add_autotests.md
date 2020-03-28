@@ -11,9 +11,7 @@ Once clicked, the four-step menu will appear:
 * The Advanced CI Settings Menu
 * The Version Control System Info Menu
 
-After the complete adding of the autotest, inspect the [Check Autotest Availability](#Check_Autotest_Availability) part.
-
-# The Codebase Info Menu 
+## The Codebase Info Menu 
 
 There are two available strategies: clone and import. The Clone strategy flow is displayed below:
 
@@ -45,7 +43,7 @@ There are two available strategies: clone and import. The Clone strategy flow is
 
     _**INFO**: The Import strategy does not have an Autotest Name field._
 
-6. In the **Autotest Code Language** field, select the Java code language and get the default Maven build tool OR add another code language. Selecting **Other** allows extending the default code languages and get the necessary build tool, for details, inspect the [Add Other Code Language](add_other_code_language.md) section.
+6. In the **Autotest Code Language** field, select the Java code language (specify Java 8 or Java 11 to be used) and get the default Maven build tool OR add another code language. Selecting **Other** allows extending the default code languages and get the necessary build tool, for details, inspect the [Add Other Code Language](add_other_code_language.md) section.
 
 7. The **Select Build Tool** field can dispose of the default Maven tool or can be changed in accordance with the selected code language.
 
@@ -59,6 +57,20 @@ There are two available strategies: clone and import. The Clone strategy flow is
 
 10. Select Jenkins slave that will be used to handle a codebase. For details, refer to the [Add Jenkins Slave](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/add-jenkins-slave.md#add-jenkins-slave) instruction and inspect the steps that should be done to add a new Jenkins slave.
 
+11. Select the necessary codebase versioning type:
+         
+    * **default** - the previous versioning logic that is realized in EDP Admin Console 2.2.0 and lower versions. Using the default versioning type, in order to specify the version of the current artifacts, images, and tags in the Version Control System, a developer should navigate to the corresponding file and change the version **manually**.
+          
+    * **edp** - the new versioning logic that is available in EDP Admin Console 2.3.0 and subsequent versions. Using the edp versioning type, a developer indicates the version number from which all the artifacts will be versioned and, as a result, **automatically** registered in the corresponding file (e.g. pom.xml). 
+         
+      When selecting the edp versioning type, the extra field will appear:
+             
+      ![add-app3_2](../readme-resource/addapp3_2.png "add-app3_2")
+         
+      a. Type the version number from which you want the artifacts to be versioned.
+         
+    _**NOTE**: The Start Version From field should be filled out in compliance with the semantic versioning rules, e.g. 1.2.3 or 10.10.10._
+    
     _**INFO**: Click the Create button to create an autotest or click the Proceed button to be switched to the next VCS menu that can be predefined._ 
 
     ## The Version Control System Info Menu
@@ -67,24 +79,15 @@ There are two available strategies: clone and import. The Clone strategy flow is
     
     ![addtest5](../readme-resource/addtest5.png "addtest5")
 
-11. Enter the login credentials into the **VCS Login** field.
+12. Enter the login credentials into the **VCS Login** field.
 
-12. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
+13. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
 
-13. Click the Create button, check the CONFIRMATION summary, click Continue to add an autotest to the Autotests list. 
+14. Click the Create button, check the CONFIRMATION summary, click Continue to add an autotest to the Autotests list. 
 
-## <a name="Check_Autotest_Availability"></a> Check Autotest Availability
+>_**NOTE**: After the complete adding of the autotest, inspect the [Inspect Autotest](documentation/inspect_autotest.md) part._
 
-As soon as the autotest is added, it will be available in the Autotests list where it is possible to click its name and get access to the following:  
+### Related Articles
 
-1. General Info - displays the common information about the cloned autotest.
-2. Advanced CI Settings - displays the specified job provisioner and Jenkins slave.
-3. Branches - displays the status and name of the deployment branch, keeps the additional links to Jenkins and Gerrit.
-
-    The **master** branch is the default one but you can create a new branch as well. To do this, perform the steps:
-    - Click the Create button;
-    - Fill in the required fields by typing the branch name and pasting the copied commit hash;
-    - Click the Proceed button and wait until the new branch will be added to the list.
-
-    _**NOTE**: To copy the commit hash, click the VCS link and select the necessary commit._
-4. Status Info - displays all the actions that were performed during the cloning process.
+* [Inspect Autotest](documentation/inspect_autotest.md)
+* [Add CD Pipelines](documentation/add_cd_pipelines.md)

@@ -13,8 +13,6 @@ Once clicked, the four-step menu will appear:
 
 _**NOTE**: The Version Control System Info menu is available in case this option is predefined._
 
-After the complete adding of the library, inspect the [Check Library Availability](#Check_Library_Availability) part.
-
 ## The Codebase Info Menu
 
 ![addlib1](../readme-resource/addlib1.png "addlib1")
@@ -42,7 +40,7 @@ After the complete adding of the library, inspect the [Check Library Availabilit
 
 6. Select any of the supported code languages in the **Library Code Language** block:
 
-    - Java – selecting Java allows using the Gradle or Maven tool.
+    - Java – selecting Java allows specify Java 8 or Java 11, and further usage of the Gradle or Maven tool.
     - JavaScript - selecting JavaScript allows using the NPM tool.
     - .Net - selecting .Net allows using the .Net tool.
     - Groovy-pipeline - selecting Groovy-pipeline allows having the ability to customize a stages logic. For details, please refer to the [Customize CD Pipeline](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/customize-deploy-pipeline.md#customize-cd-pipeline) page.
@@ -62,29 +60,33 @@ After the complete adding of the library, inspect the [Check Library Availabilit
 
 10. Select Jenkins slave that will be used to handle a codebase. For details, refer to the [Add Jenkins Slave](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/add-jenkins-slave.md#add-jenkins-slave) instruction and inspect the steps that should be done to add a new Jenkins slave.
 
+11. Select the necessary codebase versioning type:
+         
+    * **default** - the previous versioning logic that is realized in EDP Admin Console 2.2.0 and lower versions. Using the default versioning type, in order to specify the version of the current artifacts, images, and tags in the Version Control System, a developer should navigate to the corresponding file and change the version **manually**.
+          
+    * **edp** - the new versioning logic that is available in EDP Admin Console 2.3.0 and subsequent versions. Using the edp versioning type, a developer indicates the version number from which all the artifacts will be versioned and, as a result, **automatically** registered in the corresponding file (e.g. pom.xml). 
+         
+      When selecting the edp versioning type, the extra field will appear:
+             
+      ![add-app3_2](../readme-resource/addapp3_2.png "add-app3_2")
+         
+      a. Type the version number from which you want the artifacts to be versioned.
+         
+    _**NOTE**: The Start Version From field should be filled out in compliance with the semantic versioning rules, e.g. 1.2.3 or 10.10.10._    
+    
     _**INFO**: Click the Create button to create an autotest or click the Proceed button to be switched to the next VCS menu that can be predefined._ 
 
     ## The Version Control System Info Menu
 
     ![addlib4](../readme-resource/addlib4.png "addlib4")
 
-11. Enter the login credentials into the **VCS Login** field.
-12. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
-13. Click the Create button, check the CONFIRMATION summary, click Continue to add the library to the Libraries list.
+12. Enter the login credentials into the **VCS Login** field.
+13. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
+14. Click the Create button, check the CONFIRMATION summary, click Continue to add the library to the Libraries list.
 
-## <a name="Check_Library_Availability"></a> Check Library Availability
+> _**NOTE**: After the complete adding of the library, inspect the [Inspect Library](documentation/inspect_library.md) part._
 
-Once you add all the necessary libraries performing the same steps as described above, they appear in the Library list. Click the library name to open the following:
+### Related Articles
 
-1. General Info - displays common information about the created or cloned library.
-2. Advanced CI Settings - displays the specified job provisioner and Jenkins slave.
-3. Branches - displays the status and name of the deployment branch, keeps the additional links to Jenkins and Gerrit.
-
-    The **master** branch is the default one but you can create a new branch as well. To do this, perform the steps:
-
-    - Click the Create button;
-    - Fill in the required fields by typing the branch name and pasting the copied commit hash;
-    - Click the Proceed button and wait until the new branch will be added to the list.
-   
-    _**NOTE**:To copy the commit hash, click the VCS link and select the necessary commit._  
-4. Status Info - displays all the actions that were performed during the creating/cloning process.
+* [Inspect Library](documentation/inspect_library.md)
+* [Add CD Pipelines](documentation/add_cd_pipelines.md)

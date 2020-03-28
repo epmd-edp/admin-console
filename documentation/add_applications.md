@@ -15,8 +15,6 @@ Once clicked, the six-step menu will appear:
 
 _**NOTE**: The Version Control System Info menu is available in case this option is predefined._
 
-After the complete adding of the application, inspect the [Check Application Availability](#Check_Application_Availability) part.
-
 ## The Codebase Info Menu
 
 ![add-app1](../readme-resource/addapp1.png "add-app1")
@@ -44,10 +42,10 @@ After the complete adding of the application, inspect the [Check Application Ava
     
 6. Select any of the supported application languages with its framework in the **Application Code Language/framework** field:
 
-    - Java – selecting Java allows using the Spring Boot framework.
+    - Java – selecting Java allows using Java 8 or Java 11.
     - JavaScript - selecting JavaScript allows using the React framework.
     - .Net - selecting .Net allows using the NET Core framework.
-    - Other - selecting Other allows extending the default code languages when creating a codebase with the clone/import strategy. To add another code language, inspect the [Add Other Code Language](add_other_code_language.md) section on GitHub.
+    - Other - selecting Other allows extending the default code languages when creating a codebase with the clone/import strategy. To add another code language, inspect the [Add Other Code Language](add_other_code_language.md) section.
 
     _**NOTE**: The Create strategy does not allow to customize the default code language set._
     
@@ -72,18 +70,32 @@ After the complete adding of the application, inspect the [Check Application Ava
 
     ![add-app3](../readme-resource/addapp3.png "add-app3")
 
-10. Select job provisioner that will be used to handle a codebase. For details, refer to the [Add Job Provision](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/add-job-provision.md#add-job-provision) instruction and become familiar with the main steps to add an additional job provisioner.
+10. Select CI pipeline provisioner that will be handling a codebase. For details, refer to the [Add Job Provision](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/add-job-provision.md#add-job-provision) instruction and become familiar with the main steps to add an additional job provisioner.
 11. Select Jenkins slave that will be used to handle a codebase. For details, refer to the [Add Jenkins Slave](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/add-jenkins-slave.md#add-jenkins-slave) instruction and inspect the steps that should be done to add a new Jenkins slave.  
-12. The **Select Deployment Script** field has two available options: helm-chart/ openshift-template that are predefined in case it is OpenShift or EKS.  
-13. Click the Proceed button to be switched to the next menu.
+12. Select the necessary codebase versioning type:
+     
+     * **default** - the previous versioning logic that is realized in EDP Admin Console 2.2.0 and lower versions. Using the default versioning type, in order to specify the version of the current artifacts, images, and tags in the Version Control System, a developer should navigate to the corresponding file and change the version **manually**.
+      
+     * **edp** - the new versioning logic that is available in EDP Admin Console 2.3.0 and subsequent versions. Using the edp versioning type, a developer indicates the version number from which all the artifacts will be versioned and, as a result, **automatically** registered in the corresponding file (e.g. pom.xml). 
+     
+       When selecting the edp versioning type, the extra field will appear:
+         
+       ![add-app3_2](../readme-resource/addapp3_2.png "add-app3_2")
+     
+       a. Type the version number from which you want the artifacts to be versioned.
+     
+     _**NOTE**: The Start Version From field should be filled out in compliance with the semantic versioning rules, e.g. 1.2.3 or 10.10.10._
+                      
+13. In the **Select Deployment Script** field, specify one of the available options: helm-chart / openshift-template that are predefined in case it is OpenShift or EKS.  
+14. Click the Proceed button to be switched to the next menu.
 
     ## The Version Control System Info Menu
 
     ![add-app4](../readme-resource/addapp4.png "add-app4")
     
-14. Enter the login credentials into the **VCS Login** field.
-15. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
-16. Click the Proceed button to be switched to the next menu.
+15. Enter the login credentials into the **VCS Login** field.
+16. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
+17. Click the Proceed button to be switched to the next menu.
     
     _**NOTE**: The VCS Info step will be skipped in case you don`t need to integrate the version control for the application deployment. If the cloned application included the VCS, you will have to complete this step as well._
 
@@ -91,50 +103,31 @@ After the complete adding of the application, inspect the [Check Application Ava
 
     ![add-app5](../readme-resource/addapp5.png "add-app5")
 
-17. Select the **Need Route** check box to create a route component in the OpenShift project for the externally reachable host name. As a result, the added application will be accessible in a browser.
+18. Select the **Need Route** check box to create a route component in the OpenShift project for the externally reachable host name. As a result, the added application will be accessible in a browser.
     
     Fill in the necessary fields:
     
     - Name – type the name by entering at least two characters and by using the lower-case letters, numbers and inner dashes. The mentioned name will be as a prefix for the host name.
     - Path – specify the path starting with the **/api** characters. The mentioned path will be at the end of the URL path.
     
-18. Click the Proceed button to be switched to the final menu.
+19. Click the Proceed button to be switched to the final menu.
 
     ## The Database Menu
 
     ![add-app6](../readme-resource/addapp6.png "add-app6")
 
-19. Select the **Need Database** check box in case you need a database. Fill in the required fields:
+20. Select the **Need Database** check box in case you need a database. Fill in the required fields:
     
     - Database – the PostgreSQL DB is available by default.
     - Version – the latest version (postgres:9.6) of the PostgreSQL DB is available by default.
     - Capacity – indicate the necessary size of the database and its unit of measurement (Mi – megabyte, Gi – gigabyte, Ti – terabyte). There is no limit for the database capacity.
     - Persistent storage – select one of the available storage methods: efs or gp2.
     
-20. Click the Create button. Once clicked, the CONFIRMATION summary will appear displaying all the specified options and settings, click Continue to complete the application addition.
+21. Click the Create button. Once clicked, the CONFIRMATION summary will appear displaying all the specified options and settings, click Continue to complete the application addition.
     
-    
-## <a name="Check_Application_Availability"></a> Check Application Availability
-    
-Once the application is added to the Applications list, you can check its data, simply click the application name and get access to the following:
-    
-1. General Info - displays common information about the created/cloned application.
-2. Advanced CI Settings - displays the specified job provisioner, Jenkins slave, and a deployment script.
-3. Branches - displays the status and name of the deployment branch, keeps the additional links to Jenkins and Gerrit.
+>_**NOTE**: After the complete adding of the application, please refer to the [Inspect Application](documentation/inspect_application.md) page._
 
-    The **master** branch is the default one but you can create a new branch as well. To do this, perform the steps:
-    
-    - Click the Create button;
-    - Fill in the required fields by typing the branch name and pasting the copied commit hash. To copy the commit hash, click the VCS link and select the necessary commit; 
-    - Click the Proceed button and wait until the new branch will be added to the list.
+### Related Articles
 
-4. Status Info - displays all the actions that were performed during the creation/cloning process.
-    
-After adding an application, the following will be created:
-    
-- Code Review and Build pipelines in Jenkins for this application. The Build pipeline will be triggered automatically if at least one environment is already added.
-- A new project in Gerrit.
-- SonarQube integration will be available after the Build pipeline in Jenkins is passed.
-- Nexus Repository Manager will be available after the Build pipeline in Jenkins is passed as well.
-    
-_**INFO:** To open OpenShift, Jenkins, Gerrit, Sonar, and Nexus, click the Overview section on the navigation bar and hit the necessary link._
+* [Inspect Application](documentation/inspect_application.md)
+* [Add CD Pipelines](documentation/add_cd_pipelines.md)
