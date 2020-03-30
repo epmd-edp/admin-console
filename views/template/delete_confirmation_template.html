@@ -10,12 +10,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p class="popup-message default">You are going to delete {{.kind}}.
-                    If you are sure enter name of {{.kind}}:
+                <p class="popup-message default">
+                    {{if eq .kind "codebase"}}
+                        Please confirm the deletion of the codebase with all its components (Record in database, Jenkins pipelines).
+                    {{else if eq .kind "codebase-branch"}}
+                        Please confirm the deletion of the codebase branch with the corresponding record in the database.
+                    {{else if eq .kind "cd-pipeline"}}
+                        Please confirm the deletion of the CD pipeline with all its components (Record in database, Jenkins pipelines, cluster namespace).
+                    {{else}}
+                        Please confirm the deletion of the CD stage with all its components (Record in database, Jenkins pipeline, cluster namespace).
+                    {{end}}
                 </p>
-                <p class="popup-message last-stage" style="display: none">You are going to delete last {{.kind}}
+                <p class="popup-message last-stage" style="display: none">You are going to delete last stage
                     that leads to CD Pipeline deletion.
-                    If you are sure enter name of {{.kind}}:
+                    Please confirm the deletion of the CD pipeline with all its components (Record in database, Jenkins pipelines, cluster namespace).
                 </p>
                 <form id="delete-action" method="post" action="{{.action}}">
                     <div class="form-group">

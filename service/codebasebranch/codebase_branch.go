@@ -203,9 +203,8 @@ func (s *CodebaseBranchService) canCodebaseBranchBeDeleted(codebase, branch stri
 	}
 	if p != nil {
 		return dberror.RemoveCodebaseBranchRestriction{
-			Status: dberror.StatusReasonCodebaseBranchIsUsedByCDPipeline,
-			Message: fmt.Sprintf("%v %v CodebaseBranch is used in %v CD Pipeline(s)",
-				c.Type, branch, strings.Join(p, ",")),
+			Status:  dberror.StatusReasonCodebaseBranchIsUsedByCDPipeline,
+			Message: fmt.Sprintf("%v CodebaseBranch is used in %v CD Pipeline(s)", branch, strings.Join(p, ",")),
 		}
 	}
 	return nil
