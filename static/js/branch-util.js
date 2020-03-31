@@ -27,7 +27,7 @@ function processBranchName(name) {
     if (!name.trim()) {
         return `${name}`.toUpperCase()
     }
-    return `-${name}`.toUpperCase()
+    return `${name}-`.toUpperCase()
 }
 
 function trimMinorVersionComponent(version) {

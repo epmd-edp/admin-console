@@ -155,7 +155,7 @@ $(function () {
     $('#branchName').on('input', function () {
         if ($('#releaseBranch').is(':not(:checked)')) {
             $('#versioningPostfix').val("SNAPSHOT");
-            $('#versioningPostfix').val($('#versioningPostfix').val() + processBranchName($(this).val()));
+            $('#versioningPostfix').val(processBranchName($(this).val()) + $('#versioningPostfix').val());
         }
     });
 
