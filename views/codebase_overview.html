@@ -82,11 +82,13 @@
                                             <td>{{.Codebase.Description}}</td>
                                         </tr>
                                     {{end}}
-                                    {{if and .Codebase.RouteSite .Codebase.RoutePath }}
+                                    {{if .Codebase.RouteSite }}
                                         <tr>
                                             <th>Expose Service Site</th>
                                             <td>{{.Codebase.RouteSite}}</td>
                                         </tr>
+                                    {{end}}
+                                    {{if .Codebase.RoutePath }}
                                         <tr>
                                             <th>Expose Service Path</th>
                                             <td>{{.Codebase.RoutePath}}</td>

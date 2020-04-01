@@ -37,6 +37,10 @@ function isFieldValid(elementToValidate, regex) {
     return !(!elementToValidate.val() || !check(elementToValidate.val()));
 }
 
+function isCodebaseSiteFieldValid(elementToValidate, regex) {
+    return regex.test(elementToValidate.val());
+}
+
 function blockIsNotValid($block) {
     $block.find('.card-header')
         .addClass('invalid')
