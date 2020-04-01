@@ -9,7 +9,7 @@ $(function () {
     let REGEX = {
         CAPACITY: /\w/,
         SERVICE_PATH: /^\/.*$/,
-        SERVICE_NAME: /^[a-z][a-z0-9-]*[a-z0-9]$/,
+        SERVICE_NAME: /^$|^[a-z][a-z0-9-]*[a-z0-9]$/,
         VCS_LOGIN: /\w/,
         VCS_PASSWORD: /\w/,
         DESCRIPTION: /^[a-zA-Z0-9]/,
