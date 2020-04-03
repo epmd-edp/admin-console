@@ -125,9 +125,9 @@ _**NOTE**: The Version Control System Info menu is available in case this option
     
 21. Click the Create button. Once clicked, the CONFIRMATION summary will appear displaying all the specified options and settings, click Continue to complete the application addition.
     
->_**NOTE**: After the complete adding of the application, please refer to the [Inspect Application](documentation/inspect_application.md) page._
+>_**NOTE**: After the complete adding of the application, please refer to the [Inspect Application](../documentation/inspect_application.md) page._
 
 ### Related Articles
 
-* [Inspect Application](documentation/inspect_application.md)
-* [Add CD Pipelines](documentation/add_cd_pipelines.md)
+* [Inspect Application](../documentation/inspect_application.md)
+* [Add CD Pipelines](../documentation/add_CD_pipelines.md)

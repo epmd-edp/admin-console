@@ -85,9 +85,9 @@ There are two available strategies: clone and import. The Clone strategy flow is
 
 14. Click the Create button, check the CONFIRMATION summary, click Continue to add an autotest to the Autotests list. 
 
->_**NOTE**: After the complete adding of the autotest, inspect the [Inspect Autotest](documentation/inspect_autotest.md) part._
+>_**NOTE**: After the complete adding of the autotest, inspect the [Inspect Autotest](../documentation/inspect_autotest.md) part._
 
 ### Related Articles
 
-* [Inspect Autotest](documentation/inspect_autotest.md)
-* [Add CD Pipelines](documentation/add_cd_pipelines.md)
+* [Inspect Autotest](../documentation/inspect_autotest.md)
+* [Add CD Pipelines](../documentation/add_CD_pipelines.md)

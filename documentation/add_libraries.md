@@ -44,7 +44,7 @@ _**NOTE**: The Version Control System Info menu is available in case this option
     - JavaScript - selecting JavaScript allows using the NPM tool.
     - .Net - selecting .Net allows using the .Net tool.
     - Groovy-pipeline - selecting Groovy-pipeline allows having the ability to customize a stages logic. For details, please refer to the [Customize CD Pipeline](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/customize-deploy-pipeline.md#customize-cd-pipeline) page.
-    - Other - selecting Other allows extending the default code languages when creating a codebase with the clone/import strategy. To add another code language, inspect the [Add Other Code Language](https://github.com/epmd-edp/admin-console/blob/master/readme.md#add-other-code-language) page.
+    - Other - selecting Other allows extending the default code languages when creating a codebase with the clone/import strategy. To add another code language, inspect the ([Add Other Code Language](add_other_code_language.md) page.
 
     _**NOTE**: The Create strategy does not allow to customize the default code language set._
 
@@ -84,9 +84,9 @@ _**NOTE**: The Version Control System Info menu is available in case this option
 13. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
 14. Click the Create button, check the CONFIRMATION summary, click Continue to add the library to the Libraries list.
 
-> _**NOTE**: After the complete adding of the library, inspect the [Inspect Library](documentation/inspect_library.md) part._
+> _**NOTE**: After the complete adding of the library, inspect the [Inspect Library](../documentation/inspect_library.md) part._
 
 ### Related Articles
 
-* [Inspect Library](documentation/inspect_library.md)
-* [Add CD Pipelines](documentation/add_cd_pipelines.md)
+* [Inspect Library](../documentation/inspect_library.md)
+* [Add CD Pipelines](../documentation/add_cd_pipelines.md)
