@@ -89,4 +89,4 @@ _**NOTE**: The Version Control System Info menu is available in case this option
 ### Related Articles
 
 * [Inspect Library](../documentation/inspect_library.md)
-* [Add CD Pipelines](../documentation/add_cd_pipelines.md)
+* [Add CD Pipelines](../documentation/add_CD_pipelines.md)
