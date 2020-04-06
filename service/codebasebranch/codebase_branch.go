@@ -22,22 +22,23 @@ import (
 	"edp-admin-console/models/command"
 	"edp-admin-console/models/query"
 	"edp-admin-console/repository"
+	"edp-admin-console/service/logger"
 	"edp-admin-console/util"
 	"edp-admin-console/util/consts"
 	dberror "edp-admin-console/util/error/db-errors"
 	"fmt"
 	edpv1alpha1 "github.com/epmd-edp/codebase-operator/v2/pkg/apis/edp/v1alpha1"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
-	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"strings"
 	"time"
 )
 
-var log = logf.Log.WithName("codebase-branch-service")
+var log = logger.GetLogger()
 
 type CodebaseBranchService struct {
 	Clients                  k8s.ClientSet
@@ -48,7 +49,8 @@ type CodebaseBranchService struct {
 }
 
 func (s *CodebaseBranchService) CreateCodebaseBranch(branchInfo command.CreateCodebaseBranch, appName string) (*edpv1alpha1.CodebaseBranch, error) {
-	log.V(2).Info("start creating CodebaseBranch CR", "codebase", appName, "branch", branchInfo.Name)
+	log.Debug("start creating CodebaseBranch CR",
+		zap.String("codebase", appName), zap.String("branch", branchInfo.Name))
 	edpRestClient := s.Clients.EDPRestClient
 
 	cb := util.ProcessNameToKubernetesConvention(branchInfo.Name)
@@ -112,10 +114,10 @@ func newTrue() *bool {
 }
 
 func (s *CodebaseBranchService) UpdateCodebaseBranch(appName, branchName string, version *string) error {
-	log.V(2).Info("start updating CodebaseBranch CR", "version", version, "branch",
-		branchName, "version", version)
+	log.Debug("start updating CodebaseBranch CR",
+		zap.String("version", *version),
+		zap.String("branch", branchName))
 	edpRestClient := s.Clients.EDPRestClient
-
 	br, err := getReleaseBranchCR(edpRestClient, branchName, appName, context.Namespace)
 	if err != nil {
 		return err
@@ -136,8 +138,10 @@ func (s *CodebaseBranchService) UpdateCodebaseBranch(appName, branchName string,
 	if err != nil {
 		return errors.Wrapf(err, "couldn't update codebase branch %v from cluster", branchName)
 	}
-
-	log.Info("codebase branch has been updated", "name", branchName, "version", version, "appName", appName)
+	log.Info("codebase branch has been updated",
+		zap.String("name", branchName),
+		zap.String("version", *version),
+		zap.String("appName", appName))
 	return nil
 }
 
@@ -166,7 +170,7 @@ func getReleaseBranchCR(edpRestClient *rest.RESTClient, branchName string, appNa
 
 	if err != nil {
 		if k8serrors.IsNotFound(err) {
-			log.V(2).Info("CodebaseBranch doesn't exist in cluster", "branch", branchName)
+			log.Debug("CodebaseBranch doesn't exist in cluster", zap.String("branch", branchName))
 			return nil, nil
 		}
 
@@ -177,8 +181,9 @@ func getReleaseBranchCR(edpRestClient *rest.RESTClient, branchName string, appNa
 }
 
 func (s *CodebaseBranchService) Delete(codebase, branch string) error {
-	log.V(2).Info("start executing service codebase branch delete method",
-		"name", codebase, "branch", branch)
+	log.Debug("start executing service codebase branch delete method",
+		zap.String("name", codebase),
+		zap.String("branch", branch))
 	if err := s.canCodebaseBranchBeDeleted(codebase, branch); err != nil {
 		return err
 	}
@@ -188,7 +193,8 @@ func (s *CodebaseBranchService) Delete(codebase, branch string) error {
 		return err
 	}
 	log.Info("codebase branch has been marked for deletion",
-		"name", codebase, "branch", branch)
+		zap.String("name", codebase),
+		zap.String("branch", branch))
 	return nil
 }
 

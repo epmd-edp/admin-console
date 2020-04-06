@@ -29,6 +29,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/astaxie/beego"
+	"go.uber.org/zap"
 	"html/template"
 )
 
@@ -60,7 +61,7 @@ func (c *CodebaseController) GetCodebaseOverviewPage() {
 
 	err = c.createBranchLinks(*codebase, context.Tenant)
 	if err != nil {
-		log.Error(err, "an error has occurred while creating link to Git Server")
+		log.Error("an error has occurred while creating link to Git Server", zap.Error(err))
 		c.Abort("500")
 		return
 	}
@@ -106,7 +107,8 @@ func addCodebaseBranchInProgressIfAny(branches []*query.CodebaseBranch, branchIn
 			}
 		}
 
-		log.Info("Adding branch which is going to be created to the list.", "name", branchInProgress)
+		log.Debug("Adding branch which is going to be created to the list.",
+			zap.String("name", branchInProgress))
 		branch := query.CodebaseBranch{
 			Name:   branchInProgress,
 			Status: "inactive",
@@ -183,23 +185,22 @@ func (c CodebaseController) createLinksForGerritProvider(codebase query.Codebase
 func (c *CodebaseController) Delete() {
 	flash := beego.NewFlash()
 	cn := c.GetString("name")
-	rl := log.WithValues("codebase name", cn)
-	rl.Info("delete codebase method is invoked")
+	log.Debug("delete codebase method is invoked", zap.String("name", cn))
 	ct := c.GetString("codebase-type")
 	if err := c.CodebaseService.Delete(cn, ct); err != nil {
 		if dberror.CodebaseIsUsed(err) {
 			cerr := err.(dberror.CodebaseIsUsedByCDPipeline)
 			flash.Error(cerr.Message)
 			flash.Store(&c.Controller)
-			log.Error(err, cerr.Message)
+			log.Error(cerr.Message, zap.Error(err))
 			c.Redirect(createCodebaseIsUsedURL(cerr.Codebase, ct), 302)
 			return
 		}
-		log.Error(err, "delete process is failed")
+		log.Error("delete process is failed", zap.Error(err))
 		c.Abort("500")
 		return
 	}
-	rl.Info("delete codebase method is finished")
+	log.Info("delete codebase method is finished", zap.String("name", cn))
 	c.Redirect(createCodebaseIsDeletedURL(cn, ct), 302)
 }
 

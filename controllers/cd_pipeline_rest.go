@@ -26,6 +26,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	uuid "github.com/satori/go.uuid"
+	"go.uber.org/zap"
 	"net/http"
 )
 
@@ -84,13 +85,15 @@ func (c *CDPipelineRestController) CreateCDPipeline() {
 	}
 	errMsg := validation.ValidateCDPipelineRequest(cdPipelineCreateCommand)
 	if errMsg != nil {
-		log.Info("Failed to validate request data", "err", errMsg.Message)
+		log.Error("Failed to validate request data", zap.String("err", errMsg.Message))
 		http.Error(c.Ctx.ResponseWriter, errMsg.Message, http.StatusBadRequest)
 		return
 	}
 	log.Info("Request data is receieved to create CD pipeline",
-		"pipeline", cdPipelineCreateCommand.Name, "applications", cdPipelineCreateCommand.Applications,
-		"stages", cdPipelineCreateCommand.Stages, "services", cdPipelineCreateCommand.ThirdPartyServices)
+		zap.String("pipeline", cdPipelineCreateCommand.Name),
+		zap.Any("applications", cdPipelineCreateCommand.Applications),
+		zap.Any("stages", cdPipelineCreateCommand.Stages),
+		zap.Any("services", cdPipelineCreateCommand.ThirdPartyServices))
 
 	_, pipelineErr := c.CDPipelineService.CreatePipeline(cdPipelineCreateCommand)
 	if pipelineErr != nil {
@@ -124,12 +127,13 @@ func (c *CDPipelineRestController) UpdateCDPipeline() {
 
 	errMsg := validation.ValidateCDPipelineUpdateRequestData(pipelineUpdateCommand)
 	if errMsg != nil {
-		log.Info("Request data is not valid", "err", errMsg.Message)
+		log.Error("Request data is not valid", zap.String("err", errMsg.Message))
 		http.Error(c.Ctx.ResponseWriter, errMsg.Message, http.StatusBadRequest)
 		return
 	}
 	log.Info("Request data is received to update CD pipeline",
-		"pipeline", pipelineUpdateCommand.Name, "applications", pipelineUpdateCommand.Applications)
+		zap.String("pipeline", pipelineUpdateCommand.Name),
+		zap.Any("applications", pipelineUpdateCommand.Applications))
 
 	err = c.CDPipelineService.UpdatePipeline(pipelineUpdateCommand)
 	if err != nil {
@@ -157,21 +161,23 @@ func (c *CDPipelineRestController) DeleteCDStage() {
 		http.Error(c.Ctx.ResponseWriter, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	log.V(2).Info("request to delete cd stage has been retrieved",
-		"pipeline", sc.CDPipelineName, "stage", sc.Name)
+	log.Debug("request to delete cd stage has been retrieved",
+		zap.String("pipeline", sc.CDPipelineName),
+		zap.String("stage", sc.Name))
 	if err := c.CDPipelineService.DeleteCDStage(sc.CDPipelineName, sc.Name); err != nil {
 		if dberror.StageErrorOccurred(err) {
 			serr := err.(dberror.RemoveStageRestriction)
-			log.Error(err, serr.Message)
+			log.Error(serr.Message, zap.Error(err))
 			http.Error(c.Ctx.ResponseWriter, serr.Message, http.StatusConflict)
 			return
 		}
-		log.Error(err, "delete process is failed")
+		log.Error("delete process is failed", zap.Error(err))
 		http.Error(c.Ctx.ResponseWriter, "delete process is failed", http.StatusInternalServerError)
 		return
 	}
-	log.V(2).Info("delete cd stage method is finished",
-		"pipeline", sc.CDPipelineName, "stage", sc.Name)
+	log.Debug("delete cd stage method is finished",
+		zap.String("pipeline", sc.CDPipelineName),
+		zap.String("stage", sc.Name))
 	location := fmt.Sprintf("%s/%s", c.Ctx.Input.URL(), uuid.NewV4().String())
 	c.Ctx.ResponseWriter.WriteHeader(200)
 	c.Ctx.Output.Header("Location", location)

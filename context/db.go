@@ -18,6 +18,7 @@ package context
 
 import (
 	"edp-admin-console/models/query"
+	"edp-admin-console/service/logger"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -26,8 +27,11 @@ import (
 	_ "github.com/golang-migrate/migrate/database/postgres"
 	_ "github.com/golang-migrate/migrate/source/file"
 	_ "github.com/lib/pq"
-	"log"
+	"go.uber.org/zap"
+	"os"
 )
+
+var log = logger.GetLogger()
 
 func InitDb() {
 	err := orm.RegisterDriver("postgres", orm.DRPostgres)
@@ -45,7 +49,9 @@ func InitDb() {
 
 	err = orm.RegisterDataBase("default", "postgres", params)
 	checkErr(err)
-	log.Printf("Connection to %s:%s database is established.", pgHost, pgPort)
+	log.Info("Connection to database is established.",
+		zap.String("host", pgHost),
+		zap.String("port", pgPort))
 
 	db, err := orm.GetDB("default")
 	checkErr(err)
@@ -58,7 +64,7 @@ func InitDb() {
 	checkErr(err)
 	debug, err := beego.AppConfig.Bool("ormDebug")
 	if err != nil {
-		log.Printf("Cannot read orm debug config. Set to false %v", err)
+		log.Info("Cannot read orm debug config. Set to false", zap.Error(err))
 		debug = false
 	}
 	orm.Debug = debug
@@ -76,8 +82,9 @@ func checkErr(err error) {
 
 func handleErr(err error) {
 	if err.Error() == "no change" {
-		log.Printf("Warning from db migration: %v", err)
+		log.Info("Warning from db migration", zap.Error(err))
 	} else {
-		log.Fatal(err)
+		log.Fatal("An error has occurred during migration", zap.Error(err))
+		os.Exit(1)
 	}
 }

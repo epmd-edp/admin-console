@@ -28,6 +28,7 @@ require (
 	github.com/spf13/pflag v1.0.3
 	github.com/stretchr/testify v1.4.0
 	github.com/xanzy/ssh-agent v0.2.1 // indirect
+	go.uber.org/zap v1.14.1
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	gopkg.in/square/go-jose.v2 v2.3.0 // indirect
 	gopkg.in/src-d/go-billy.v4 v4.3.0 // indirect

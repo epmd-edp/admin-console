@@ -18,11 +18,11 @@ package context
 
 import (
 	"context"
-	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/coreos/go-oidc"
+	"go.uber.org/zap"
 	"golang.org/x/oauth2"
-	"log"
+	"os"
 )
 
 type KeycloakParameters struct {
@@ -44,19 +44,17 @@ var authConfig AuthConfig
 
 func InitAuth() {
 	parameters := getParameters()
-	log.Println(fmt.Sprintf("Keycloak has been retrieved: %s. \n"+
-		"ClientId has been retrieved: %s. \n"+
-		"ClientSecret has been retrieved. \n"+
-		"Host has been retrieved: %s. \n"+
-		"CallBackEndpoint has been retrieved: %s. \n"+
-		"StateAuthKey has been retrieved: %s.",
-		parameters.KeycloakURL, parameters.ClientId,
-		parameters.Host, parameters.CallBackEndpoint, parameters.StateAuthKey))
+	log.Info("Keycloak has been retrieved",
+		zap.String("url", parameters.KeycloakURL),
+		zap.String("client id", parameters.ClientId),
+		zap.String("host", parameters.Host),
+		zap.String("call back endpoint", parameters.CallBackEndpoint),
+		zap.String("state auth key", parameters.StateAuthKey))
 
 	provider, err := oidc.NewProvider(context.Background(), parameters.KeycloakURL)
-
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Couldn't establish connection to Keycloak", zap.Error(err))
+		os.Exit(1)
 		return
 	}
 

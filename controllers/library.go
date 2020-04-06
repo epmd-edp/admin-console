@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
+	"go.uber.org/zap"
 	"html/template"
 	"net/http"
 	"regexp"
@@ -82,7 +83,7 @@ func (c *LibraryController) GetCreatePage() {
 			c.Abort("500")
 			return
 		}
-		log.Info("Fetched Git Servers", "git servers", gitServers)
+		log.Debug("Fetched Git Servers", zap.Any("git servers", gitServers))
 
 		c.Data["GitServers"] = gitServers
 	}
@@ -119,7 +120,7 @@ func (c *LibraryController) Create() {
 	codebase := c.extractLibraryRequestData()
 	errMsg := validateLibraryRequestData(codebase)
 	if errMsg != nil {
-		log.Info("Failed to validate library request data", "err", errMsg.Message)
+		log.Error("Failed to validate library request data", zap.String("err", errMsg.Message))
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
 		c.Redirect("/admin/edp/library/create", 302)
@@ -133,7 +134,7 @@ func (c *LibraryController) Create() {
 		return
 	}
 
-	log.Info("Library object is saved into cluster", "library", createdObject.Name)
+	log.Info("Library object is saved into cluster", zap.String("library", createdObject.Name))
 	flash.Success("Library object is created.")
 	flash.Store(&c.Controller)
 	c.Redirect(fmt.Sprintf("/admin/edp/library/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)

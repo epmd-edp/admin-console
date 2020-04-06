@@ -24,17 +24,18 @@ import (
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	cbs "edp-admin-console/service/codebasebranch"
+	"edp-admin-console/service/logger"
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
 	"fmt"
 	"github.com/astaxie/beego"
+	"go.uber.org/zap"
 	"html/template"
-	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"strings"
 )
 
-var log = logf.Log.WithName("codebase-controller")
+var log = logger.GetLogger()
 
 type ApplicationController struct {
 	beego.Controller
@@ -93,7 +94,8 @@ func addCodebaseInProgressIfAny(codebases []*query.Codebase, codebaseInProgress 
 			}
 		}
 
-		log.Info("adding codebase which is going to be created to the list", "name", codebaseInProgress)
+		log.Debug("adding codebase which is going to be created to the list",
+			zap.String("name", codebaseInProgress))
 		app := query.Codebase{
 			Name:   codebaseInProgress,
 			Status: query.Inactive,
@@ -125,7 +127,7 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 			c.Abort("500")
 			return
 		}
-		log.Info("fetched Git Servers", "git servers", gitServers)
+		log.Debug("fetched Git Servers", zap.Any("git servers", gitServers))
 
 		c.Data["GitServers"] = gitServers
 	}
@@ -176,7 +178,7 @@ func (c *ApplicationController) CreateApplication() {
 	codebase := c.extractApplicationRequestData()
 	errMsg := validation.ValidCodebaseRequestData(codebase)
 	if errMsg != nil {
-		log.Info("failed to validate request data", "message", errMsg.Message)
+		log.Error("failed to validate request data", zap.String("message", errMsg.Message))
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
 		c.Redirect("/admin/edp/application/create", 302)
@@ -191,7 +193,7 @@ func (c *ApplicationController) CreateApplication() {
 		return
 	}
 
-	log.Info("application object is saved into cluster", "name", createdObject.Name)
+	log.Info("application object is saved into cluster", zap.String("name", createdObject.Name))
 	flash.Success("Application object is created.")
 	flash.Store(&c.Controller)
 	c.Redirect(fmt.Sprintf("/admin/edp/application/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)

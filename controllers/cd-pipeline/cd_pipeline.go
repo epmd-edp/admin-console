@@ -27,6 +27,7 @@ import (
 	"edp-admin-console/service/cd_pipeline"
 	cbs "edp-admin-console/service/codebasebranch"
 	ec "edp-admin-console/service/edp-component"
+	"edp-admin-console/service/logger"
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
@@ -36,13 +37,13 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	edppipelinesv1alpha1 "github.com/epmd-edp/cd-pipeline-operator/v2/pkg/apis/edp/v1alpha1"
+	"go.uber.org/zap"
 	"html/template"
 	"net/http"
-	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"sort"
 )
 
-var log = logf.Log.WithName("cd-pipeline-controller")
+var log = logger.GetLogger()
 
 type CDPipelineController struct {
 	beego.Controller
@@ -220,15 +221,17 @@ func (c *CDPipelineController) UpdateCDPipeline() {
 
 	errMsg := validation.ValidateCDPipelineUpdateRequestData(pipelineUpdateCommand)
 	if errMsg != nil {
-		log.Info("Request data is not valid", "err", errMsg.Message)
+		log.Info("Request data is not valid", zap.String("err", errMsg.Message))
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
 		c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%s/update", pipelineName), 302)
 		return
 	}
-	log.Info("Request data is receieved to update CD pipeline",
-		"pipeline", pipelineName, "applications", pipelineUpdateCommand.Applications,
-		"stages", pipelineUpdateCommand.Stages, "services", pipelineUpdateCommand.ThirdPartyServices)
+	log.Debug("Request data is received to update CD pipeline",
+		zap.String("pipeline", pipelineName),
+		zap.Any("applications", pipelineUpdateCommand.Applications),
+		zap.Any("stages", pipelineUpdateCommand.Stages),
+		zap.Any("services", pipelineUpdateCommand.ThirdPartyServices))
 
 	err := c.PipelineService.UpdatePipeline(pipelineUpdateCommand)
 	if err != nil {
@@ -273,15 +276,17 @@ func (c *CDPipelineController) CreateCDPipeline() {
 
 	errMsg := validation.ValidateCDPipelineRequest(cdPipelineCreateCommand)
 	if errMsg != nil {
-		log.Info("Request data is not valid", "err", errMsg.Message)
+		log.Error("Request data is not valid", zap.String("err", errMsg.Message))
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
 		c.Redirect("/admin/edp/cd-pipeline/create", 302)
 		return
 	}
-	log.Info("Request data is receieved to create CD pipeline",
-		"pipeline", cdPipelineCreateCommand.Name, "applications", cdPipelineCreateCommand.Applications,
-		"stages", cdPipelineCreateCommand.Stages, "services", cdPipelineCreateCommand.ThirdPartyServices)
+	log.Debug("Request data is received to create CD pipeline",
+		zap.String("pipeline", pipelineName),
+		zap.Any("applications", cdPipelineCreateCommand.Applications),
+		zap.Any("stages", cdPipelineCreateCommand.Stages),
+		zap.Any("services", cdPipelineCreateCommand.ThirdPartyServices))
 
 	_, pipelineErr := c.PipelineService.CreatePipeline(cdPipelineCreateCommand)
 	if pipelineErr != nil {
@@ -334,7 +339,7 @@ func (c *CDPipelineController) GetCDPipelineOverviewPage() {
 	}
 
 	if err := c.createPlatformLinks(cdPipeline.Stage, cdPipeline.Name); err != nil {
-		log.Error(err, "an error has occurred while creating platform links")
+		log.Error("an error has occurred while creating platform links", zap.Error(err))
 		c.Abort("500")
 		return
 	}
@@ -403,7 +408,7 @@ func retrieveStagesFromRequest(this *CDPipelineController) []command.CDStageComm
 		return stages[i].Order < stages[j].Order
 	})
 
-	log.Info("Stages are fetched from request", "stages", stages)
+	log.Info("Stages are fetched from request", zap.Any("stages", stages))
 	return stages
 }
 
@@ -426,7 +431,8 @@ func addCdPipelineInProgressIfAny(cdPipelines []*query.CDPipeline, pipelineInPro
 			}
 		}
 
-		log.Info("Adding CD Pipeline which is going to be created to the list", "name", pipelineInProgress)
+		log.Debug("Adding CD Pipeline which is going to be created to the list",
+			zap.String("name", pipelineInProgress))
 		pipeline := query.CDPipeline{
 			Name:   pipelineInProgress,
 			Status: "inactive",
@@ -459,9 +465,7 @@ func (c *CDPipelineController) createOneJenkinsLink(cdPipeline *query.CDPipeline
 	}
 
 	cdPipeline.JenkinsLink = util.CreateCICDPipelineLink(edc.Url, cdPipeline.Name)
-
-	log.Info("Created CD Pipeline Jenkins link", "jenkins link", cdPipeline.JenkinsLink)
-
+	log.Info("Created CD Pipeline Jenkins link", zap.String("jenkins link", cdPipeline.JenkinsLink))
 	return nil
 }
 
@@ -530,7 +534,7 @@ func (c *CDPipelineController) createNonNativeDockerImageLinks(s []*query.Codeba
 }
 
 func (c *CDPipelineController) createPlatformLinks(stages []*query.Stage, cdPipelineName string) error {
-	log.Info("Start creating Platform links forCD Pipeline", "name", cdPipelineName)
+	log.Debug("Start creating Platform links forCD Pipeline", zap.String("name", cdPipelineName))
 
 	if len(stages) == 0 {
 		return errors.New("stages can't be an empty or nil")
@@ -543,7 +547,7 @@ func (c *CDPipelineController) createPlatformLinks(stages []*query.Stage, cdPipe
 }
 
 func (c *CDPipelineController) createNativePlatformLinks(stages []*query.Stage, cdPipelineName string) error {
-	log.Info("Start creating Openshift Platform links forCD Pipeline", "name", cdPipelineName)
+	log.Debug("Start creating Openshift Platform links forCD Pipeline", zap.String("name", cdPipelineName))
 
 	edc, err := c.EDPComponent.GetEDPComponent(consts.Openshift)
 	if err != nil {
@@ -562,7 +566,7 @@ func (c *CDPipelineController) createNativePlatformLinks(stages []*query.Stage, 
 }
 
 func (c *CDPipelineController) createNonNativePlatformLinks(stages []*query.Stage, cdPipelineName string) error {
-	log.Info("Start creating Kubernetes Platform links for CD Pipeline", "name", cdPipelineName)
+	log.Debug("Start creating Kubernetes Platform links for CD Pipeline", zap.String("name", cdPipelineName))
 
 	edc, err := c.EDPComponent.GetEDPComponent(consts.Kubernetes)
 	if err != nil {
@@ -570,7 +574,8 @@ func (c *CDPipelineController) createNonNativePlatformLinks(stages []*query.Stag
 	}
 
 	if edc == nil {
-		log.Info("Creating Kubernetes Platform links has been skipped forCD Pipeline", "name", cdPipelineName)
+		log.Debug("Creating Kubernetes Platform links has been skipped forCD Pipeline",
+			zap.String("name", cdPipelineName))
 		return nil
 	}
 
@@ -598,9 +603,8 @@ func (c *CDPipelineController) createJenkinsLinks(cdPipelines []*query.CDPipelin
 
 	for index, pipeline := range cdPipelines {
 		cdPipelines[index].JenkinsLink = util.CreateCICDPipelineLink(edc.Url, pipeline.Name)
-		log.Info("Created Jenkins link", "link", pipeline.JenkinsLink)
+		log.Debug("Created Jenkins link", zap.String("link", pipeline.JenkinsLink))
 	}
-
 	return nil
 }
 
@@ -613,8 +617,10 @@ func (c CDPipelineController) DeleteCDStage() {
 		c.Abort("500")
 		return
 	}
-	log.V(2).Info("request to delete cd stage has been retrieved",
-		"pipeline", pn, "stage", sn, "order", o)
+	log.Debug("request to delete cd stage has been retrieved",
+		zap.String("pipeline", pn),
+		zap.String("stage", sn),
+		zap.Int("order", o))
 
 	if o == 0 {
 		if err := c.PipelineService.DeleteCDPipeline(pn); err != nil {
@@ -622,15 +628,17 @@ func (c CDPipelineController) DeleteCDStage() {
 				perr := err.(dberror.RemoveCDPipelineRestriction)
 				flash.Error(perr.Message)
 				flash.Store(&c.Controller)
-				log.Error(err, perr.Message)
+				log.Error(perr.Message, zap.Error(err))
 				c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineIsUsedAsSource", pn), 302)
 				return
 			}
-			log.Error(err, "cd pipeline delete process is failed")
+			log.Error("cd pipeline delete process is failed", zap.Error(err))
 			c.Abort("500")
 			return
 		}
-		log.V(2).Info("delete cd stage method is finished", "pipeline", pn, "stage", sn)
+		log.Debug("delete cd stage method is finished",
+			zap.String("pipeline", pn),
+			zap.String("stage", sn))
 		c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineDeletedSuccessModal", pn), 302)
 	}
 
@@ -639,35 +647,37 @@ func (c CDPipelineController) DeleteCDStage() {
 			serr := err.(dberror.RemoveStageRestriction)
 			flash.Error(serr.Message)
 			flash.Store(&c.Controller)
-			log.Error(err, serr.Message)
+			log.Error(serr.Message, zap.Error(err))
 			c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%v/overview?stage=%v#stageIsUsedAsSource", pn, sn), 302)
 			return
 		}
-		log.Error(err, "cd stage delete process is failed")
+		log.Error("cd stage delete process is failed", zap.Error(err))
 		c.Abort("500")
 		return
 	}
-	log.V(2).Info("delete cd stage method is finished", "pipeline", pn, "stage", sn)
+	log.Debug("delete cd stage method is finished",
+		zap.String("pipeline", pn),
+		zap.String("stage", sn))
 	c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%v/overview?stage=%v#stageSuccessModal", pn, sn), 302)
 }
 
 func (c CDPipelineController) DeleteCDPipeline() {
 	n := c.GetString("name")
-	log.V(2).Info("request to delete cd pipeline has been received", "name", n)
+	log.Debug("request to delete cd pipeline has been received", zap.String("name", n))
 	if err := c.PipelineService.DeleteCDPipeline(n); err != nil {
 		flash := beego.NewFlash()
 		if dberror.CDPipelineErrorOccurred(err) {
 			perr := err.(dberror.RemoveCDPipelineRestriction)
 			flash.Error(perr.Message)
 			flash.Store(&c.Controller)
-			log.Error(err, perr.Message)
+			log.Error(perr.Message, zap.Error(err))
 			c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineIsUsedAsSource", n), 302)
 			return
 		}
-		log.Error(err, "cd pipeline delete process is failed")
+		log.Error("cd pipeline delete process is failed", zap.Error(err))
 		c.Abort("500")
 		return
 	}
-	log.V(2).Info("delete cd pipeline method is finished", "name", n)
+	log.Debug("delete cd pipeline method is finished", zap.String("name", n))
 	c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineDeletedSuccessModal", n), 302)
 }

@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
+	"go.uber.org/zap"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -27,7 +28,7 @@ func (c *BranchController) CreateCodebaseBranch() {
 	appName := c.GetString(":codebaseName")
 	errMsg := validCodebaseBranchRequestData(branchInfo)
 	if errMsg != nil {
-		log.Info("Failed to validate request data", "err", errMsg.Message)
+		log.Error("Failed to validate request data", zap.String("err", errMsg.Message))
 		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview", appName), 302)
 		return
 	}
@@ -43,8 +44,9 @@ func (c *BranchController) CreateCodebaseBranch() {
 		}
 	}
 
-	log.Info("Request data to create CR for codebase branch is valid",
-		"branch", branchInfo.Name, "commit hash", branchInfo.Commit)
+	log.Debug("Request data to create CR for codebase branch is valid",
+		zap.String("branch", branchInfo.Name),
+		zap.String("commit hash", branchInfo.Commit))
 
 	exist := c.CodebaseService.ExistCodebaseAndBranch(appName, branchInfo.Name)
 
@@ -60,7 +62,7 @@ func (c *BranchController) CreateCodebaseBranch() {
 		return
 	}
 
-	log.Info("BranchRelease resource is saved into cluster", "name", cb.Name)
+	log.Info("BranchRelease resource is saved into cluster", zap.String("name", cb.Name))
 	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", appName,
 		paramWaitingForBranch, url.PathEscape(branchInfo.Name)), 302)
 }
@@ -107,22 +109,25 @@ func validCodebaseBranchRequestData(requestData command.CreateCodebaseBranch) *v
 func (c *BranchController) Delete() {
 	cn := c.GetString("codebase-name")
 	bn := c.GetString("name")
-	rl := log.WithValues("codebase name", cn, "branch name", bn)
-	rl.V(2).Info("delete codebase branch method is invoked")
+	log.Debug("delete codebase branch method is invoked",
+		zap.String("codebase name", cn),
+		zap.String("branch name", bn))
 	if err := c.BranchService.Delete(cn, bn); err != nil {
 		if dberror.CodebaseBranchErrorOccurred(err) {
 			cberr := err.(dberror.RemoveCodebaseBranchRestriction)
 			f := beego.NewFlash()
 			f.Error(cberr.Message)
 			f.Store(&c.Controller)
-			log.Error(err, cberr.Message)
+			log.Error(cberr.Message, zap.Error(err))
 			c.Redirect(fmt.Sprintf("/admin/edp/codebase/%v/overview?name=%v#branchIsUsedSuccessModal", cn, bn), 302)
 			return
 		}
-		log.Error(err, "delete process is failed")
+		log.Error("delete process is failed", zap.Error(err))
 		c.Abort("500")
 		return
 	}
-	rl.V(2).Info("delete codebase branch method is finished")
+	log.Info("delete codebase branch method is finished",
+		zap.String("codebase name", cn),
+		zap.String("branch name", bn))
 	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%v/overview?name=%v#branchDeletedSuccessModal", cn, bn), 302)
 }

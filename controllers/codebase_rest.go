@@ -28,6 +28,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/satori/go.uuid"
+	"go.uber.org/zap"
 	"net/http"
 	"path"
 )
@@ -104,7 +105,7 @@ func (c *CodebaseRestController) CreateCodebase() {
 
 	errMsg := validation.ValidCodebaseRequestData(codebase)
 	if errMsg != nil {
-		log.Info("Failed to validate request data", "err", errMsg.Message)
+		log.Error("Failed to validate request data", zap.String("err", errMsg.Message))
 		http.Error(c.Ctx.ResponseWriter, errMsg.Message, http.StatusBadRequest)
 		return
 	}
@@ -117,7 +118,7 @@ func (c *CodebaseRestController) CreateCodebase() {
 		return
 	}
 
-	log.Info("Codebase resource is saved into cluster", "codebase", createdObject.Name)
+	log.Info("Codebase resource is saved into cluster", zap.String("codebase", createdObject.Name))
 
 	location := fmt.Sprintf("%s/%s", c.Ctx.Input.URL(), uuid.NewV4().String())
 	c.Ctx.ResponseWriter.WriteHeader(200)
@@ -145,8 +146,7 @@ func (c *CodebaseRestController) Delete() {
 		http.Error(c.Ctx.ResponseWriter, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	rl := log.WithValues("codebase name", cr.Name)
-	rl.Info("delete codebase method is invoked")
+	log.Debug("delete codebase method is invoked", zap.String("codebase name", cr.Name))
 
 	cdb, err := c.CodebaseService.GetCodebaseByName(cr.Name)
 	if err != nil {
@@ -163,15 +163,15 @@ func (c *CodebaseRestController) Delete() {
 	if err := c.CodebaseService.Delete(cr.Name, string(cdb.Type)); err != nil {
 		if dberror.CodebaseIsUsed(err) {
 			cerr := err.(dberror.CodebaseIsUsedByCDPipeline)
-			log.Error(err, cerr.Message)
+			log.Error(cerr.Message, zap.Error(err))
 			http.Error(c.Ctx.ResponseWriter, cerr.Message, http.StatusConflict)
 			return
 		}
-		log.Error(err, "delete process is failed")
+		log.Error("delete process is failed", zap.Error(err))
 		http.Error(c.Ctx.ResponseWriter, "delete process is failed", http.StatusInternalServerError)
 		return
 	}
-	rl.Info("delete codebase method is finished")
+	log.Info("delete codebase method is finished", zap.String("codebase name", cr.Name))
 
 	location := fmt.Sprintf("%s/%s", c.Ctx.Input.URL(), uuid.NewV4().String())
 	c.Ctx.ResponseWriter.WriteHeader(200)

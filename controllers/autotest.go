@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
+	"go.uber.org/zap"
 	"html/template"
 	"net/http"
 	"regexp"
@@ -40,7 +41,7 @@ func (c *AutotestsController) CreateAutotests() {
 	codebase := c.extractAutotestsRequestData()
 	errMsg := validateAutotestsRequestData(codebase)
 	if errMsg != nil {
-		log.Info("Failed to validate autotests request data", "err", errMsg.Message)
+		log.Error("Failed to validate autotests request data", zap.String("err", errMsg.Message))
 		flash := beego.NewFlash()
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
@@ -55,7 +56,7 @@ func (c *AutotestsController) CreateAutotests() {
 		return
 	}
 
-	log.Info("Autotests object is saved into cluster", "name", createdObject.Name)
+	log.Info("Autotests object is saved into cluster", zap.String("name", createdObject.Name))
 	flash.Success("Autotests object is created.")
 	flash.Store(&c.Controller)
 	c.Redirect(fmt.Sprintf("/admin/edp/autotest/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)
@@ -216,7 +217,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 			c.Abort("500")
 			return
 		}
-		log.Info("Fetched Git Servers", "git servers", gitServers)
+		log.Info("Fetched Git Servers", zap.Any("git servers", gitServers))
 
 		c.Data["GitServers"] = gitServers
 	}

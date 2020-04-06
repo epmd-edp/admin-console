@@ -19,11 +19,12 @@ package auth
 import (
 	"context"
 	ctx "edp-admin-console/context"
+	"edp-admin-console/service/logger"
 	"github.com/astaxie/beego"
-	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
+	"go.uber.org/zap"
 )
 
-var log = logf.Log.WithName("auth-controller")
+var log = logger.GetLogger()
 
 type AuthController struct {
 	beego.Controller
@@ -33,9 +34,9 @@ func (this *AuthController) Callback() {
 	authConfig := ctx.GetAuthConfig()
 	log.Info("Start callback flow...")
 	queryState := this.Ctx.Input.Query("state")
-	log.Info("State has been retrieved from query param", "queryState", queryState)
+	log.Info("State has been retrieved from query param", zap.String("queryState", queryState))
 	sessionState := this.Ctx.Input.Session(authConfig.StateAuthKey)
-	log.Info("State has been retrieved from the session", "sessionState", sessionState)
+	log.Info("State has been retrieved from the session", zap.Any("sessionState", sessionState))
 	if queryState != sessionState {
 		log.Info("State does not match")
 		this.Abort("400")
@@ -47,7 +48,7 @@ func (this *AuthController) Callback() {
 	token, err := authConfig.Oauth2Config.Exchange(context.Background(), authCode)
 
 	if err != nil {
-		log.Info("Failed to exchange token with code", "code", authCode)
+		log.Info("Failed to exchange token with code", zap.String("code", authCode))
 		this.Abort("500")
 		return
 	}
