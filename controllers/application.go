@@ -24,11 +24,12 @@ import (
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
 	"fmt"
-	"github.com/astaxie/beego"
 	"html/template"
 	"log"
 	"path"
 	"strings"
+
+	"github.com/astaxie/beego"
 )
 
 type ApplicationController struct {
@@ -73,6 +74,7 @@ func (c *ApplicationController) GetApplicationsOverviewPage() {
 	c.Data["HasRights"] = isAdmin(contextRoles)
 	c.Data["Codebases"] = applications
 	c.Data["Type"] = query.App
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "codebase.html"
 }
 
@@ -145,6 +147,7 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 	c.Data["DeploymentScripts"] = c.DeploymentScript
 	c.Data["IsOpenshift"] = platform.IsOpenshift()
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "create_application.html"
 }
 
@@ -169,7 +172,7 @@ func (c *ApplicationController) CreateApplication() {
 		log.Printf("Failed to validate request data: %s", errMsg.Message)
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/application/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/application/create", context.BasePath), 302)
 		return
 	}
 	logRequestData(codebase)
@@ -180,7 +183,7 @@ func (c *ApplicationController) CreateApplication() {
 		if err.Error() == "CODEBASE_ALREADY_EXISTS" {
 			flash.Error("Application %s name is already exists.", codebase.Name)
 			flash.Store(&c.Controller)
-			c.Redirect("/admin/edp/application/create", 302)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/application/create", context.BasePath), 302)
 			return
 		}
 		c.Abort("500")
@@ -190,7 +193,7 @@ func (c *ApplicationController) CreateApplication() {
 	log.Printf("Application object is saved into k8s: %s", createdObject)
 	flash.Success("Application object is created.")
 	flash.Store(&c.Controller)
-	c.Redirect(fmt.Sprintf("/admin/edp/application/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/application/overview?%s=%s#codebaseSuccessModal", context.BasePath, paramWaitingForCodebase, codebase.Name), 302)
 }
 
 func (c *ApplicationController) extractApplicationRequestData() command.CreateCodebase {

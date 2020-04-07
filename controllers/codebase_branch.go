@@ -1,14 +1,16 @@
 package controllers
 
 import (
+	"edp-admin-console/context"
 	"edp-admin-console/models/command"
 	"edp-admin-console/service"
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
 	"log"
 	"net/http"
 	"regexp"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 )
 
 type BranchController struct {
@@ -23,7 +25,7 @@ func (c *BranchController) CreateCodebaseBranch() {
 	appName := c.GetString(":codebaseName")
 	if errMsg != nil {
 		log.Printf("Failed to validate request data: %s", errMsg.Message)
-		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview", appName), 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/codebase/%s/overview", context.BasePath, appName), 302)
 		return
 	}
 	log.Printf("Request data to create CR for codebase branch is valid: {Branch Name: %s, Commit Hash: %s}", branchInfo.Name, branchInfo.Commit)
@@ -31,7 +33,7 @@ func (c *BranchController) CreateCodebaseBranch() {
 	exist := c.CodebaseService.ExistCodebaseAndBranch(appName, branchInfo.Name)
 
 	if exist {
-		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?errorExistingBranch=%s#branchExistsModal", appName, branchInfo.Name), 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/codebase/%s/overview?errorExistingBranch=%s#branchExistsModal", context.BasePath, appName, branchInfo.Name), 302)
 		return
 	}
 
@@ -42,7 +44,7 @@ func (c *BranchController) CreateCodebaseBranch() {
 	}
 
 	log.Printf("BranchRelease resource is saved into k8s: %s", cb)
-	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", appName, paramWaitingForBranch, branchInfo.Name), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", context.BasePath, appName, paramWaitingForBranch, branchInfo.Name), 302)
 }
 
 func (c *BranchController) extractCodebaseBranchRequestData() command.CreateCodebaseBranch {

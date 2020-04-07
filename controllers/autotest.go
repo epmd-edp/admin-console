@@ -7,14 +7,15 @@ import (
 	"edp-admin-console/service"
 	"edp-admin-console/util"
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
 	"html/template"
 	"log"
 	"net/http"
 	"path"
 	"regexp"
 	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 )
 
 type AutotestsController struct {
@@ -44,7 +45,7 @@ func (c *AutotestsController) CreateAutotests() {
 		flash := beego.NewFlash()
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/autotest/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/autotest/create", context.BasePath), 302)
 		return
 	}
 	logAutotestsRequestData(codebase)
@@ -55,7 +56,7 @@ func (c *AutotestsController) CreateAutotests() {
 		if err.Error() == "CODEBASE_ALREADY_EXISTS" {
 			flash.Error("Autotests %s is already exists.", codebase.Name)
 			flash.Store(&c.Controller)
-			c.Redirect("/admin/edp/autotest/create", 302)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/autotest/create", context.BasePath), 302)
 			return
 		}
 		c.Abort("500")
@@ -65,7 +66,7 @@ func (c *AutotestsController) CreateAutotests() {
 	log.Printf("Autotests object is saved into k8s: %s", createdObject)
 	flash.Success("Autotests object is created.")
 	flash.Store(&c.Controller)
-	c.Redirect(fmt.Sprintf("/admin/edp/autotest/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/autotest/overview?%s=%s#codebaseSuccessModal", context.BasePath, paramWaitingForCodebase, codebase.Name), 302)
 }
 
 func logAutotestsRequestData(autotests command.CreateCodebase) {
@@ -235,6 +236,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 	c.Data["BuildTools"] = c.BuildTools
 	c.Data["JobProvisioners"] = p
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "create_autotest.html"
 }
 
@@ -258,5 +260,6 @@ func (c *AutotestsController) GetAutotestsOverviewPage() {
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["HasRights"] = isAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["Type"] = query.Autotests
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "codebase.html"
 }

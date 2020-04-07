@@ -5,8 +5,8 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/index.css">
-    <link rel="stylesheet" href="/static/css/codebase-overview.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/codebase-overview.css">
 </head>
 <body>
 <main>
@@ -20,11 +20,11 @@
             <div class="edp-form wide col-12 nosidepadding" id="createAppForm">
                 <h1 class="edp-form-header">
                     {{if eq .Type "application"}}
-                    <a href="/admin/edp/application/overview" class="edp-back-link"></a>
+                    <a href="{{ .BasePath }}/admin/edp/application/overview" class="edp-back-link"></a>
                     {{else if eq .Type "autotests"}}
-                    <a href="/admin/edp/autotest/overview" class="edp-back-link"></a>
+                    <a href="{{ .BasePath }}/admin/edp/autotest/overview" class="edp-back-link"></a>
                     {{else}}
-                    <a href="/admin/edp/library/overview" class="edp-back-link"></a>
+                    <a href="{{ .BasePath }}/admin/edp/library/overview" class="edp-back-link"></a>
                     {{end}}
                     {{.TypeCaption}} "{{.Codebase.Name}}"
                 </h1>
@@ -261,7 +261,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="create-branch-action" action="/admin/edp/codebase/{{.Codebase.Name}}/branch"
+                    <form id="create-branch-action" action="{{ .BasePath }}/admin/edp/codebase/{{.Codebase.Name}}/branch"
                           method="post">
                         <div class="form-group">
                             <label for="site">Branch Name</label>
@@ -298,11 +298,11 @@
     </div>
 
 </main>
-<script src="/static/js/jquery-3.3.1.js"></script>
-<script src="/static/js/popper.js"></script>
-<script src="/static/js/bootstrap.js"></script>
-<script src="/static/js/util.js"></script>
-<script src="/static/js/release-branch.js"></script>
-<script src="/static/js/bootstrap-notify.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/util.js"></script>
+<script src="{{ .BasePath }}/static/js/release-branch.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap-notify.js"></script>
 </body>
 </html>

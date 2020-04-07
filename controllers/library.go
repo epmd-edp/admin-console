@@ -7,14 +7,15 @@ import (
 	"edp-admin-console/service"
 	"edp-admin-console/util"
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
 	"html/template"
 	"log"
 	"net/http"
 	"path"
 	"regexp"
 	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 )
 
 type LibraryController struct {
@@ -51,6 +52,7 @@ func (c *LibraryController) GetLibraryListPage() {
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["HasRights"] = isAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["Type"] = query.Library
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "codebase.html"
 }
 
@@ -103,6 +105,7 @@ func (c *LibraryController) GetCreatePage() {
 	c.Data["BuildTools"] = c.BuildTools
 	c.Data["JobProvisioners"] = p
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "create_library.html"
 }
 
@@ -114,7 +117,7 @@ func (c *LibraryController) Create() {
 		log.Printf("Failed to validate library request data: %s", errMsg.Message)
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/library/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/library/create", context.BasePath), 302)
 		return
 	}
 	logLibraryRequestData(codebase)
@@ -125,7 +128,7 @@ func (c *LibraryController) Create() {
 		if err.Error() == "CODEBASE_ALREADY_EXISTS" {
 			flash.Error("Library %s is already exists.", codebase.Name)
 			flash.Store(&c.Controller)
-			c.Redirect("/admin/edp/library/create", 302)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/library/create", context.BasePath), 302)
 			return
 		}
 		c.Abort("500")
@@ -135,7 +138,7 @@ func (c *LibraryController) Create() {
 	log.Printf("Library object is saved into k8s: %s", createdObject)
 	flash.Success("Library object is created.")
 	flash.Store(&c.Controller)
-	c.Redirect(fmt.Sprintf("/admin/edp/library/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/library/overview?%s=%s#codebaseSuccessModal", context.BasePath, paramWaitingForCodebase, codebase.Name), 302)
 }
 
 func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {

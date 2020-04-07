@@ -5,7 +5,7 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
 </head>
 <body>
 <main>
@@ -13,20 +13,20 @@
     <section class="content error">
         <div class="edp-landing-text container">
             <div class="edp-error-image">
-                <img src="/static/img/error.jpg" alt="error" width="540" height="360">
+                <img src="{{ .BasePath }}/static/img/error.jpg" alt="error" width="540" height="360">
             </div>
             <h1>FORBIDDEN</h1>
             <p>You do not have permissions to access page.</p>
             <p>Please contact to the website administrator.</p>
             <div class="edp-landing-button">
-                <a href="/" class="btn btn-success btn-block">GO HOME</a>
+                <a href="{{ .BasePath }}/" class="btn btn-success btn-block">GO HOME</a>
             </div>
         </div>
     </section>
     {{template "template/footer_template.html" .}}
 </main>
-<script src="/static/js/jquery-3.3.1.js"></script>
-<script src="/static/js/popper.js"></script>
-<script src="/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
 </body>
 </html>

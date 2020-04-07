@@ -5,7 +5,7 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
 </head>
 <body>
 <main>
@@ -19,13 +19,13 @@
 
             <div class="edp-form wide nosidepadding cd-pipeline-overview-table" >
                     <h1 class="edp-form-header">
-                        <a href="/admin/edp/cd-pipeline/overview" class="edp-back-link"></a>
+                        <a href="{{ .BasePath }}/admin/edp/cd-pipeline/overview" class="edp-back-link"></a>
                         CD Pipeline:
-                        <a href="{{.CDPipeline.JenkinsLink}}" target="_blank" class="edp-link" rel="noopener noreferrer">
+                        <a href="{{ .BasePath }}{{.CDPipeline.JenkinsLink}}" target="_blank" class="edp-link" rel="noopener noreferrer">
                             {{.CDPipeline.Name}}
                         </a>
 
-                        <a href="/admin/edp/cd-pipeline/{{.CDPipeline.Name}}/update">
+                        <a href="{{ .BasePath }}/admin/edp/cd-pipeline/{{.CDPipeline.Name}}/update">
                             <button class="delete">
                                 <i class="icon-pencil"></i>
                             </button>
@@ -165,7 +165,7 @@
 
                                                                             {{if eq "autotests" .QualityGateType}}
                                                                                 <th>
-                                                                                    <a href="/admin/edp/codebase/{{.Autotest.Name}}/overview" class="edp-link">
+                                                                                    <a href="{{ .BasePath }}/admin/edp/codebase/{{.Autotest.Name}}/overview" class="edp-link">
                                                                                         {{.Autotest.Name}} </a>
                                                                                 </th>
                                                                                 <th>
@@ -334,11 +334,11 @@
 
 </main>
 
-<script src="/static/js/jquery-3.3.1.js"></script>
-<script src="/static/js/popper.js"></script>
-<script src="/static/js/bootstrap.js"></script>
-<script src="/static/js/util.js"></script>
-<script src="/static/js/pipeline-overview.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/util.js"></script>
+<script src="{{ .BasePath }}/static/js/pipeline-overview.js"></script>
 
 </body>
 </html>
