@@ -104,6 +104,7 @@ func (c *CDPipelineController) GetContinuousDeliveryPage() {
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["HasRights"] = auth.IsAdmin(contextRoles)
 	c.Data["Type"] = "delivery"
+	c.Data["BasePath"] = context.BasePath
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "continuous_delivery.html"
 }
@@ -161,6 +162,7 @@ func (c *CDPipelineController) GetCreateCDPipelinePage() {
 	c.Data["Type"] = "delivery"
 	c.Data["Autotests"] = autotests
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "create_cd_pipeline.html"
 }
 
@@ -206,6 +208,7 @@ func (c *CDPipelineController) GetEditCDPipelinePage() {
 	c.Data["Apps"] = applications
 	c.Data["Type"] = "delivery"
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "edit_cd_pipeline.html"
 }
 
@@ -225,7 +228,7 @@ func (c *CDPipelineController) UpdateCDPipeline() {
 		log.Info("Request data is not valid", zap.String("err", errMsg.Message))
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
-		c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%s/update", pipelineName), 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/%s/update", context.BasePath, pipelineName), 302)
 		return
 	}
 	log.Debug("Request data is received to update CD pipeline",
@@ -241,12 +244,12 @@ func (c *CDPipelineController) UpdateCDPipeline() {
 		case *edperror.CDPipelineDoesNotExistError:
 			flash.Error(fmt.Sprintf("cd pipeline %v doesn't exist", pipelineName))
 			flash.Store(&c.Controller)
-			c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%s/update", pipelineName), http.StatusFound)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/%s/update", context.BasePath, pipelineName), http.StatusFound)
 			return
 		case *edperror.NonValidRelatedBranchError:
 			flash.Error(fmt.Sprintf("one or more applications have non valid branches: %v", pipelineUpdateCommand.Applications))
 			flash.Store(&c.Controller)
-			c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%s/update", pipelineName), http.StatusBadRequest)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/%s/update", context.BasePath, pipelineName), http.StatusBadRequest)
 			return
 		default:
 			c.Abort("500")
@@ -256,7 +259,7 @@ func (c *CDPipelineController) UpdateCDPipeline() {
 
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
-	c.Redirect("/admin/edp/cd-pipeline/overview#cdPipelineEditSuccessModal", 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/overview#cdPipelineEditSuccessModal", context.BasePath), 302)
 }
 
 func (c *CDPipelineController) CreateCDPipeline() {
@@ -280,7 +283,7 @@ func (c *CDPipelineController) CreateCDPipeline() {
 		log.Error("Request data is not valid", zap.String("err", errMsg.Message))
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/cd-pipeline/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/create", context.BasePath), 302)
 		return
 	}
 	log.Debug("Request data is received to create CD pipeline",
@@ -296,12 +299,12 @@ func (c *CDPipelineController) CreateCDPipeline() {
 		case *edperror.CDPipelineExistsError:
 			flash.Error(fmt.Sprintf("cd pipeline %v is already exists", cdPipelineCreateCommand.Name))
 			flash.Store(&c.Controller)
-			c.Redirect("/admin/edp/cd-pipeline/create", http.StatusFound)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/create", context.BasePath), http.StatusFound)
 			return
 		case *edperror.NonValidRelatedBranchError:
 			flash.Error(fmt.Sprintf("one or more applications have non valid branches: %v", cdPipelineCreateCommand.Applications))
 			flash.Store(&c.Controller)
-			c.Redirect("/admin/edp/cd-pipeline/create", http.StatusBadRequest)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/create", context.BasePath), http.StatusBadRequest)
 			return
 		default:
 			c.Abort("500")
@@ -312,7 +315,7 @@ func (c *CDPipelineController) CreateCDPipeline() {
 
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
-	c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?%s=%s#cdPipelineSuccessModal", paramWaitingForCdPipeline, pipelineName), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/overview?%s=%s#cdPipelineSuccessModal", context.BasePath, paramWaitingForCdPipeline, pipelineName), 302)
 }
 
 func (c *CDPipelineController) GetCDPipelineOverviewPage() {
@@ -358,6 +361,7 @@ func (c *CDPipelineController) GetCDPipelineOverviewPage() {
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["Type"] = "delivery"
 	c.Data["IsOpenshift"] = platform.IsOpenshift()
+	c.Data["BasePath"] = context.BasePath
 	c.Data["HasRights"] = auth.IsAdmin(contextRoles)
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "cd_pipeline_overview.html"

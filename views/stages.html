@@ -5,7 +5,7 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
 </head>
 <body>
 <main>
@@ -32,7 +32,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="/admin/application">
+                            <a class="nav-link pl-0" href="{{ .BasePath }}/admin/application">
                                 <i class="icon-apps"></i>
                                 <span class="link-name">
                                     APPLICATIONS
@@ -458,8 +458,8 @@
     </section>
     {{template "template/footer_template.html" .}}
 </main>
-<script src="../static/js/jquery-3.3.1.js"></script>
-<script src="../static/js/popper.js"></script>
-<script src="../static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
 </body>
 </html>

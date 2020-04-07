@@ -22,5 +22,6 @@ func (s *ThirdPartyServiceController) GetServicePage() {
 	s.Data["Username"] = s.Ctx.Input.Session("username")
 	s.Data["Services"] = services
 	s.Data["Type"] = "services"
+	s.Data["BasePath"] = context.BasePath
 	s.TplName = "service.html"
 }

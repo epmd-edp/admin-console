@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"edp-admin-console/context"
 	validation2 "edp-admin-console/controllers/validation"
 	"edp-admin-console/models/command"
 	"edp-admin-console/service"
@@ -29,7 +30,7 @@ func (c *BranchController) CreateCodebaseBranch() {
 	errMsg := validCodebaseBranchRequestData(branchInfo)
 	if errMsg != nil {
 		log.Error("Failed to validate request data", zap.String("err", errMsg.Message))
-		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview", appName), 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/codebase/%s/overview", context.BasePath, appName), 302)
 		return
 	}
 
@@ -51,7 +52,7 @@ func (c *BranchController) CreateCodebaseBranch() {
 	exist := c.CodebaseService.ExistCodebaseAndBranch(appName, branchInfo.Name)
 
 	if exist {
-		c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?errorExistingBranch=%s#branchExistsModal",
+		c.Redirect(fmt.Sprintf("%s/admin/edp/codebase/%s/overview?errorExistingBranch=%s#branchExistsModal", context.BasePath,
 			appName, url.PathEscape(branchInfo.Name)), 302)
 		return
 	}
@@ -63,7 +64,7 @@ func (c *BranchController) CreateCodebaseBranch() {
 	}
 
 	log.Info("BranchRelease resource is saved into cluster", zap.String("name", cb.Name))
-	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", appName,
+	c.Redirect(fmt.Sprintf("%s/admin/edp/codebase/%s/overview?%s=%s#branchSuccessModal", context.BasePath, appName,
 		paramWaitingForBranch, url.PathEscape(branchInfo.Name)), 302)
 }
 

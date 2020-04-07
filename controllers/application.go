@@ -83,6 +83,7 @@ func (c *ApplicationController) GetApplicationsOverviewPage() {
 	c.Data["Type"] = query.App
 	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "codebase.html"
 }
 
@@ -157,6 +158,7 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 	c.Data["DeploymentScripts"] = c.DeploymentScript
 	c.Data["IsOpenshift"] = platform.IsOpenshift()
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "create_application.html"
 }
 
@@ -181,7 +183,7 @@ func (c *ApplicationController) CreateApplication() {
 		log.Error("failed to validate request data", zap.String("message", errMsg.Message))
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/application/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/application/create", context.BasePath), 302)
 		return
 	}
 	ld := validation.CreateCodebaseLogRequestData(codebase)
@@ -196,7 +198,7 @@ func (c *ApplicationController) CreateApplication() {
 	log.Info("application object is saved into cluster", zap.String("name", createdObject.Name))
 	flash.Success("Application object is created.")
 	flash.Store(&c.Controller)
-	c.Redirect(fmt.Sprintf("/admin/edp/application/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/application/overview?%s=%s#codebaseSuccessModal", context.BasePath, paramWaitingForCodebase, codebase.Name), 302)
 }
 
 func (c *ApplicationController) checkError(err error, flash *beego.FlashData, name string, url *string) {

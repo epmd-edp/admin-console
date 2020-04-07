@@ -5,8 +5,8 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/index.css">
-    <link rel="stylesheet" href="/static/css/cd-pipeline-list.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/cd-pipeline-list.css">
 </head>
 <body>
 <main>
@@ -37,7 +37,7 @@
                 {{if .HasRights}}
                     <div class="flex-fill">
                         <div class="float-right">
-                            <a href="/admin/edp/cd-pipeline/create">
+                            <a href="{{ .BasePath }}/admin/edp/cd-pipeline/create">
                                 <button class="btn btn-success" {{if not .ActiveApplicationsAndBranches}}disabled{{end}}>Create</button>
                             </a>
                         </div>
@@ -61,11 +61,11 @@
                             {{range .CDPipelines}}
                                 <tr data-cd-pipeline-name="{{.Name}}" data-cd-pipeline-status="{{.Status}}">
                                     <td class="cd-pipeline-status" data-status="{{.Status}}">
-                                        <img src="{{if eq .Status "active"}}/static/img/green_circle.svg{{else if eq .Status "failed"}}/static/img/red_circle.svg{{else}}/static/img/grey_circle.svg{{end}}"
+                                        <img src="{{if eq .Status "active"}}{{ .BasePath }}/static/img/green_circle.svg{{else if eq .Status "failed"}}/static/img/red_circle.svg{{else}}/static/img/grey_circle.svg{{end}}"
                                              alt="" style="width:25px; height:25px;">
                                     </td>
                                     <td class="cd-pipeline-name">
-                                        <a href="/admin/edp/cd-pipeline/{{.Name}}/overview"
+                                        <a href="{{ .BasePath }}/admin/edp/cd-pipeline/{{.Name}}/overview"
                                            class="{{if ne .Status "active"}}disabled{{end}}">{{.Name}}</a>
                                     </td>
                                     <td>
@@ -74,7 +74,7 @@
                                            class="edp-link {{if ne .Status "active"}}disabled{{end}}">Link</a>
                                     </td>
                                     <td>
-                                        <a href="/admin/edp/cd-pipeline/{{.Name}}/update"
+                                        <a href="{{ .BasePath }}/admin/edp/cd-pipeline/{{.Name}}/update"
                                             class="{{if ne .Status "active"}}disabled{{end}}">
                                             <button class="delete">
                                                 <i class="icon-pencil"></i>
@@ -103,12 +103,12 @@
     {{template "template/modal_success_template.html" .}}
 </main>
 {{template "template/delete_confirmation_template.html" params "action" "/admin/edp/cd-pipeline/delete" "kind" "cd-pipeline" "xsrfdata" .xsrfdata "error" .Error}}
-<script src="/static/js/jquery-3.3.1.js"></script>
-<script src="/static/js/popper.js"></script>
-<script src="/static/js/bootstrap.js"></script>
-<script src="/static/js/util.js"></script>
-<script src="/static/js/confirmation-popup.js"></script>
-<script src="/static/js/continuous_delivery.js"></script>
-<script src="/static/js/bootstrap-notify.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/util.js"></script>
+<script src="{{ .BasePath }}/static/js/confirmation-popup.js"></script>
+<script src="{{ .BasePath }}/static/js/continuous_delivery.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap-notify.js"></script>
 </body>
 </html>

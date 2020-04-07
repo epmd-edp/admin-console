@@ -55,7 +55,7 @@ $(function () {
 
     !function () {
         if ($('.db-block').length !== 0) {
-            _sendGetRequest(true, '/api/v1/storage-class',
+            _sendGetRequest(true, $('input[name="basepath"]').val() + '/api/v1/storage-class',
                 function (storageClasses) {
                     var $select = $('#dbPersistentStorage');
 
@@ -473,7 +473,7 @@ $(function () {
                     }
                 }
 
-                _sendPostRequest.bind(this)(false, '/api/v1/repository/available', creds, $('input[name="_xsrf"]').val(),
+                _sendPostRequest.bind(this)(false, $('input[name="basepath"]').val() + '/api/v1/repository/available', creds, $('input[name="_xsrf"]').val(),
                     function (isAvailable) {
                         if (isRepoPrivate) {
                             if (isAvailable) {
