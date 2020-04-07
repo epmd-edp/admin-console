@@ -27,7 +27,8 @@ type MainController struct {
 	EDPTenantService service.EDPTenantService
 }
 
-func (с *MainController) Index() {
-	с.Data["EDPVersion"] = context.EDPVersion
-	с.TplName = "index.html"
+func (c *MainController) Index() {
+	c.Data["EDPVersion"] = context.EDPVersion
+	c.Data["BasePath"] = context.BasePath
+	c.TplName = "index.html"
 }

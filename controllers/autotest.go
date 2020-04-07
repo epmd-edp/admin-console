@@ -19,6 +19,9 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 )
 
 type AutotestsController struct {
@@ -45,7 +48,7 @@ func (c *AutotestsController) CreateAutotests() {
 		flash := beego.NewFlash()
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/autotest/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/autotest/create", context.BasePath), 302)
 		return
 	}
 	logAutotestsRequestData(codebase)
@@ -59,7 +62,7 @@ func (c *AutotestsController) CreateAutotests() {
 	log.Info("Autotests object is saved into cluster", zap.String("name", createdObject.Name))
 	flash.Success("Autotests object is created.")
 	flash.Store(&c.Controller)
-	c.Redirect(fmt.Sprintf("/admin/edp/autotest/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/autotest/overview?%s=%s#codebaseSuccessModal", context.BasePath, paramWaitingForCodebase, codebase.Name), 302)
 }
 
 func (c *AutotestsController) checkError(err error, flash *beego.FlashData, name string, url *string) {
@@ -248,6 +251,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 	c.Data["JobProvisioners"] = p
 	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "create_autotest.html"
 }
 
@@ -273,6 +277,7 @@ func (c *AutotestsController) GetAutotestsOverviewPage() {
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["Type"] = query.Autotests
+	c.Data["BasePath"] = context.BasePath
 	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "codebase.html"

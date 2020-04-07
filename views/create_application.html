@@ -5,8 +5,8 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/index.css">
-    <link rel="stylesheet" href="/static/css/validation.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/validation.css">
 </head>
 <body>
 <main>
@@ -17,9 +17,9 @@
         </aside>
         <div class="flex-fill pl-4 pr-4 wrapper">
 
-            <form class="edp-form" id="createAppForm" method="post" action="/admin/edp/application">
+            <form class="edp-form" id="createAppForm" method="post" action="{{ .BasePath }}/admin/edp/application">
                 <h1 class="edp-form-header">
-                    <a href="/admin/edp/application/overview" class="edp-back-link"></a>
+                    <a href="{{ .BasePath }}/admin/edp/application/overview" class="edp-back-link"></a>
                     Create Application
                 </h1>
                 <p>
@@ -87,7 +87,7 @@
                                                     <span class="form__radio-btn--outer-circle">
                                                         <span class="form__radio-btn--inner-circle "></span>
                                                     </span>
-                                                    <img class="form__radio-label-icon" src="/static/img/React.png"
+                                                    <img class="form__radio-label-icon" src="{{ .BasePath }}/static/img/React.png"
                                                          alt="logo">
                                                 </label>
                                             </div>
@@ -104,7 +104,7 @@
                                                     <span class="form__radio-btn--outer-circle">
                                                         <span class="form__radio-btn--inner-circle "></span>
                                                     </span>
-                                                    <img class="form__radio-label-icon" src="/static/img/netcore.png"
+                                                    <img class="form__radio-label-icon" src="{{ .BasePath }}/static/img/netcore.png"
                                                          alt="logo">
                                                 </label>
                                             </div>
@@ -121,7 +121,7 @@
                                                     <span class="form__radio-btn--outer-circle">
                                                         <span class="form__radio-btn--inner-circle "></span>
                                                     </span>
-                                                    <img class="form__radio-label-icon" src="/static/img/groovy.png"
+                                                    <img class="form__radio-label-icon" src="{{ .BasePath }}/static/img/groovy.png"
                                                          alt="logo">
                                                 </label>
                                             </div>
@@ -308,12 +308,12 @@
 
 </main>
 
-<script src="/static/js/jquery-3.3.1.js"></script>
-<script src="/static/js/popper.js"></script>
-<script src="/static/js/bootstrap.js"></script>
-<script src="/static/js/util.js"></script>
-<script src="/static/js/branch-util.js"></script>
-<script src="/static/js/codebase-validation.js"></script>
-<script src="/static/js/bootstrap-notify.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/util.js"></script>
+<script src="{{ .BasePath }}/static/js/branch-util.js"></script>
+<script src="{{ .BasePath }}/static/js/codebase-validation.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap-notify.js"></script>
 </body>
 </html>

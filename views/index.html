@@ -5,14 +5,14 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
 </head>
 <body>
 <main>
     {{template "template/header_template.html" .}}
     <section class="content">
         <div class="edp-landing-image">
-            <img src="../static/img/Screenshot.png" alt="bg">
+            <img src="{{ .BasePath }}/static/img/Screenshot.png" alt="bg">
         </div>
         <div class="edp-landing-text container">
             <h1>Design your project </h1>
@@ -23,14 +23,14 @@
                 You can add your applications, tests, services and finally configure stages
             </p>
             <div class="edp-landing-button">
-                <a href="/admin/edp/overview" class="btn btn-success btn-block">Start</a>
+                <a href="{{ .BasePath }}/admin/edp/overview" class="btn btn-success btn-block">Start</a>
             </div>
         </div>
     </section>
     {{template "template/footer_template.html" .}}
 </main>
-<script src="../static/js/jquery-3.3.1.js"></script>
-<script src="../static/js/popper.js"></script>
-<script src="../static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
 </body>
 </html>

@@ -59,6 +59,7 @@ func (c *LibraryController) GetLibraryListPage() {
 	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
 	c.Data["Type"] = query.Library
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "codebase.html"
 }
 
@@ -112,6 +113,7 @@ func (c *LibraryController) GetCreatePage() {
 	c.Data["JobProvisioners"] = p
 	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "create_library.html"
 }
 
@@ -123,7 +125,7 @@ func (c *LibraryController) Create() {
 		log.Error("Failed to validate library request data", zap.String("err", errMsg.Message))
 		flash.Error(errMsg.Message)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/library/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/library/create", context.BasePath), 302)
 		return
 	}
 	logLibraryRequestData(codebase)
@@ -137,7 +139,7 @@ func (c *LibraryController) Create() {
 	log.Info("Library object is saved into cluster", zap.String("library", createdObject.Name))
 	flash.Success("Library object is created.")
 	flash.Store(&c.Controller)
-	c.Redirect(fmt.Sprintf("/admin/edp/library/overview?%s=%s#codebaseSuccessModal", paramWaitingForCodebase, codebase.Name), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/library/overview?%s=%s#codebaseSuccessModal", context.BasePath, paramWaitingForCodebase, codebase.Name), 302)
 }
 
 func (c *LibraryController) checkError(err error, flash *beego.FlashData, name string, url *string) {

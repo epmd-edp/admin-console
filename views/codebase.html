@@ -5,7 +5,7 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
 </head>
 <body>
 <main>
@@ -51,15 +51,15 @@
                     <div class="flex-fill">
                         <div class="float-right">
                             {{if eq .Type "application"}}
-                                <a href="/admin/edp/application/create">
+                                <a href="{{ .BasePath }}/admin/edp/application/create">
                                     <button class="btn btn-primary">Create</button>
                                 </a>
                             {{else if eq .Type "autotests"}}
-                                <a href="/admin/edp/autotest/create">
+                                <a href="{{ .BasePath }}/admin/edp/autotest/create">
                                     <button class="btn btn-primary">Create</button>
                                 </a>
                             {{else}}
-                                <a href="/admin/edp/library/create">
+                                <a href="{{ .BasePath }}/admin/edp/library/create">
                                     <button class="btn btn-primary">Create</button>
                                 </a>
                             {{end}}
@@ -84,11 +84,11 @@
                         {{range .Codebases}}
                             <tr data-codebase-name="{{.Name}}" data-codebase-status="{{.Status}}">
                                 <td class="codebase-status" data-status="{{.Status}}">
-                                    <img src="{{if eq .Status "active"}}/static/img/green_circle.svg{{else if eq .Status "failed"}}/static/img/red_circle.svg{{else}}/static/img/grey_circle.svg{{end}}"
+                                    <img src="{{if eq .Status "active"}}{{ .BasePath }}/static/img/green_circle.svg{{else if eq .Status "failed"}}/static/img/red_circle.svg{{else}}/static/img/grey_circle.svg{{end}}"
                                          alt="" style="width:25px; height:25px;">
                                 </td>
                                 <td class="codebase-name">
-                                    <a href="/admin/edp/codebase/{{.Name}}/overview">
+                                    <a href="{{ .BasePath }}/admin/edp/codebase/{{.Name}}/overview">
                                         {{.Name}}
                                     </a>
                                 </td>
@@ -114,12 +114,12 @@
     {{template "template/modal_success_template.html" .}}
 </main>
 {{template "template/delete_confirmation_template.html" params "action" "/admin/edp/codebase" "kind" "codebase" "xsrfdata" .xsrfdata "type" .Type "error" .DeletionError}}
-<script src="/static/js/jquery-3.3.1.js"></script>
-<script src="/static/js/popper.js"></script>
-<script src="/static/js/bootstrap.js"></script>
-<script src="/static/js/util.js"></script>
-<script src="/static/js/confirmation-popup.js"></script>
-<script src="/static/js/codebase-overview.js"></script>
-<script src="/static/js/bootstrap-notify.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/util.js"></script>
+<script src="{{ .BasePath }}/static/js/confirmation-popup.js"></script>
+<script src="{{ .BasePath }}/static/js/codebase-overview.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap-notify.js"></script>
 </body>
 </html>
