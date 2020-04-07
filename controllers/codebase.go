@@ -95,6 +95,7 @@ func (c *CodebaseController) GetCodebaseOverviewPage() {
 		}
 	}
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
 	c.TplName = "codebase_overview.html"
 }
 

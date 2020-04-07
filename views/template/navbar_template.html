@@ -5,37 +5,37 @@
     <div class="navbar-collapse">
         <ul class="flex-column flex-row navbar-nav w-100 justify-content-between">
             <li class="nav-item {{if eq .Type "overview"}}active{{end}}" >
-                <a class="nav-link pl-0" href="/admin/edp/overview">
+                <a class="nav-link pl-0" href="{{ .BasePath }}/admin/edp/overview">
                     <i class="icon-dashboard"></i>
                     <span class="link-name">OVERVIEW</span>
                 </a>
             </li>
             <li class="nav-item {{if eq .Type "delivery"}}active{{end}}" >
-                <a class="nav-link pl-0" href="/admin/edp/cd-pipeline/overview">
+                <a class="nav-link pl-0" href="{{ .BasePath }}/admin/edp/cd-pipeline/overview">
                     <i class="icon-continuous_delivery"></i>
                     <span class="link-name">CONTINUOUS DELIVERY</span>
                 </a>
             </li>
             <li class="nav-item {{if eq .Type "application"}}active{{end}}" >
-                <a class="nav-link pl-0 " href="/admin/edp/application/overview">
+                <a class="nav-link pl-0 " href="{{ .BasePath }}/admin/edp/application/overview">
                     <i class="icon-apps"></i>
                     <span class="link-name">APPLICATIONS</span>
                 </a>
             </li>
             <li class="nav-item {{if eq .Type "services"}}active{{end}}" >
-                <a class="nav-link pl-0" href="/admin/edp/service/overview">
+                <a class="nav-link pl-0" href="{{ .BasePath }}/admin/edp/service/overview">
                     <i class="icon-services"></i>
                     <span class="link-name">SERVICES</span>
                 </a>
             </li>
             <li class="nav-item {{if eq .Type "autotests"}}active{{end}}" >
-                <a class="nav-link pl-0" href="/admin/edp/autotest/overview">
+                <a class="nav-link pl-0" href="{{ .BasePath }}/admin/edp/autotest/overview">
                     <i class="icon-autotest"></i>
                     <span class="link-name">AUTOTESTS</span>
                 </a>
             </li>
             <li class="nav-item {{if eq .Type  "library"}}active{{end}}" >
-                <a class="nav-link pl-0" href="/admin/edp/library/overview">
+                <a class="nav-link pl-0" href="{{ .BasePath }}/admin/edp/library/overview">
                     <i class="icon-apps"></i>
                     <span class="link-name">LIBRARIES</span>
                 </a>

@@ -19,6 +19,7 @@ package auth
 import (
 	"context"
 	ctx "edp-admin-console/context"
+	"fmt"
 	"github.com/astaxie/beego"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 )
@@ -64,7 +65,7 @@ func (this *AuthController) Callback() {
 func (this *AuthController) getRedirectPath() string {
 	requestPath := this.Ctx.Input.Session("request_path")
 	if requestPath == nil {
-		return "/admin/edp/overview"
+		return fmt.Sprintf("%s/admin/edp/overview", ctx.BasePath)
 	}
 	this.Ctx.Output.Session("request_path", nil)
 	return requestPath.(string)
