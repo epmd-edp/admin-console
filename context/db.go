@@ -19,6 +19,8 @@ package context
 import (
 	"edp-admin-console/models/query"
 	"fmt"
+	"log"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/golang-migrate/migrate"
@@ -26,7 +28,6 @@ import (
 	_ "github.com/golang-migrate/migrate/database/postgres"
 	_ "github.com/golang-migrate/migrate/source/file"
 	_ "github.com/lib/pq"
-	"log"
 )
 
 func InitDb() {

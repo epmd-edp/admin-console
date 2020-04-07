@@ -5,7 +5,7 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
 </head>
 <body>
 <main>
@@ -43,7 +43,7 @@
                         {{range .Services}}
                             <tr>
                                 <td width="25px">
-                                    <img src="/static/img/{{.Name}}.svg" alt="{{.Name}}" height="45" width="42">
+                                    <img src="{{ .BasePath }}/static/img/{{.Name}}.svg" alt="{{.Name}}" height="45" width="42">
                                 </td>
                                 <td>{{.Name}}</td>
                                 <td>{{.Version}}</td>
@@ -59,8 +59,8 @@
     {{template "template/footer_template.html" .}}
 
 </main>
-<script src="/static/js/jquery-3.3.1.js"></script>
-<script src="/static/js/popper.js"></script>
-<script src="/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
 </body>
 </html>

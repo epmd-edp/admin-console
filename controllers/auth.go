@@ -19,8 +19,9 @@ package controllers
 import (
 	"context"
 	ctx "edp-admin-console/context"
-	"github.com/astaxie/beego"
 	"log"
+
+	"github.com/astaxie/beego"
 )
 
 type AuthController struct {
@@ -62,7 +63,7 @@ func (this *AuthController) Callback() {
 func (this *AuthController) getRedirectPath() string {
 	requestPath := this.Ctx.Input.Session("request_path")
 	if requestPath == nil {
-		return "/admin/edp/overview"
+		return ctx.BasePath + "/admin/edp/overview"
 	}
 	this.Ctx.Output.Session("request_path", nil)
 	return requestPath.(string)

@@ -5,8 +5,8 @@
     <title>EDP Admin Console</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/static/css/index.css">
-    <link rel="stylesheet" href="/static/css/validation.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/validation.css">
 </head>
 <body>
 <main>
@@ -17,9 +17,9 @@
         </aside>
         <div class="flex-fill pl-4 pr-4 wrapper">
 
-            <form class="edp-form" id="createAutotest" method="post" action="/admin/edp/autotest">
+            <form class="edp-form" id="createAutotest" method="post" action="{{ .BasePath }}/admin/edp/autotest">
                 <h1 class="edp-form-header">
-                    <a href="/admin/edp/autotest/overview" class="edp-back-link"></a>
+                    <a href="{{ .BasePath }}/admin/edp/autotest/overview" class="edp-back-link"></a>
                     Create Autotest
                 </h1>
                 <p>
@@ -130,11 +130,11 @@
     {{template "template/confirmation_popup_template.html" .}}
 
 </main>
-<script src="/static/js/jquery-3.3.1.js"></script>
-<script src="/static/js/popper.js"></script>
-<script src="/static/js/bootstrap.js"></script>
-<script src="/static/js/util.js"></script>
-<script src="/static/js/codebase-validation.js"></script>
-<script src="/static/js/bootstrap-notify.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/util.js"></script>
+<script src="{{ .BasePath }}/static/js/codebase-validation.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap-notify.js"></script>
 </body>
 </html>
