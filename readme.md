@@ -20,6 +20,7 @@ Admin Console is a complete tool allowing to manage and control the added applic
 3. [Add Autotests](documentation/add_autotests.md) 
 4. [Add Libraries](documentation/add_libraries.md)
 5. [Add CD Pipelines](documentation/add_CD_pipelines.md)
+6. [Adjust Import Strategy](documentation/import-strategy.md)
 
 
 _**NOTE**: The Admin Console link is available on the OpenShift overview page for your CI/CD project._
