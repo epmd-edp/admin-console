@@ -6261,6 +6261,9 @@ button.close {
     background-color: transparent;
     border: 0;
     -webkit-appearance: none;
+    margin-left: auto;
+    order: 2;
+    margin-top: -50px;
 }
 
 .modal-open {
@@ -11225,8 +11228,8 @@ li.nav-item.active {
 .alert-success span[data-notify="message"],
 .alert-error span[data-notify="message"] {
     color: black;
-    top: -16px;
     position: relative;
+    top: 15px;
 }
 
 .form-buttons-footer-block {

@@ -65,6 +65,9 @@ function showNotification(ok, msg, delay) {
             animate: {
                 enter: 'animated fadeInRight',
                 exit: 'animated fadeOutRight'
-            }
+            },
+            onShow: function() {
+                this.css({'width':'auto', 'display': 'flex'});
+            },
         });
 }

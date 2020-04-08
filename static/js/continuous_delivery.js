@@ -78,6 +78,9 @@ function showNotification(ok, delay, successMsg, failMsg) {
             animate: {
                 enter: 'animated fadeInRight',
                 exit: 'animated fadeOutRight'
-            }
+            },
+            onShow: function() {
+                this.css({'width':'auto', 'display': 'flex'});
+            },
         });
 }

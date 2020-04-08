@@ -230,7 +230,10 @@ function showNotification(ok, delay, successMsg) {
             animate: {
                 enter: 'animated fadeInRight',
                 exit: 'animated fadeOutRight'
-            }
+            },
+            onShow: function() {
+                this.css({'width':'auto', 'display': 'flex'});
+            },
         });
 }
 
