@@ -28,6 +28,7 @@ type AutotestsController struct {
 
 	IntegrationStrategies []string
 	BuildTools            []string
+	TestReport            []string
 	DeploymentScript      []string
 }
 
@@ -88,6 +89,7 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 	codebase := command.CreateCodebase{
 		Lang:             c.GetString("appLang"),
 		BuildTool:        c.GetString("buildTool"),
+		TestReport:       c.GetString("testReport"),
 		Strategy:         strings.ToLower(c.GetString("strategy")),
 		Type:             "autotests",
 		JenkinsSlave:     c.GetString("jenkinsSlave"),
@@ -233,6 +235,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 	c.Data["CodeBaseIntegrationStrategy"] = true
 	c.Data["JenkinsSlaves"] = s
 	c.Data["BuildTools"] = c.BuildTools
+	c.Data["TestReport"] = c.TestReport
 	c.Data["JobProvisioners"] = p
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "create_autotest.html"
