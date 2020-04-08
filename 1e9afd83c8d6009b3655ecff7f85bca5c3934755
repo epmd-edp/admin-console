@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f0d231b9_9c188f0a",
+        "filename": "views/template/accordion_codebase_template.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-04-08T12:44:15Z",
+      "side": 1,
+      "message": "id\u003dbasepath - does it work properly?",
+      "revId": "1e9afd83c8d6009b3655ecff7f85bca5c3934755",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
