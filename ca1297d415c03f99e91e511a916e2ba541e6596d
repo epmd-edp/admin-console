@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c492000b_af133d9f",
+        "filename": "routers/router.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-04-08T09:47:41Z",
+      "side": 1,
+      "message": "may we use it from context variable ?",
+      "revId": "ca1297d415c03f99e91e511a916e2ba541e6596d",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    }
+  ]
+}
