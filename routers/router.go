@@ -31,9 +31,9 @@ import (
 	edpComponentService "edp-admin-console/service/edp-component"
 	"edp-admin-console/service/logger"
 	"edp-admin-console/util"
+	"fmt"
 	"github.com/astaxie/beego"
 	"go.uber.org/zap"
-	"fmt"
 )
 
 var log = logger.GetLogger()
@@ -42,6 +42,7 @@ const (
 	integrationStrategies = "integrationStrategies"
 	buildTools            = "buildTools"
 	versioningTypes       = "versioningTypes"
+	testReportTools       = "testReportTools"
 	deploymentScript      = "deploymentScript"
 
 	CreateStrategy = "Create"
@@ -139,6 +140,11 @@ func init() {
 		log.Fatal("versioningTypes config variable is empty.")
 	}
 
+	testReportTools := util.GetValuesFromConfig(testReportTools)
+	if testReportTools == nil {
+		log.Fatalf("testReportTools config variable is empty.")
+	}
+
 	ds := util.GetValuesFromConfig(deploymentScript)
 	if ds == nil {
 		log.Fatal("deploymentScript config variable is empty.")
@@ -175,6 +181,7 @@ func init() {
 		IntegrationStrategies: util.RemoveElByValue(autis, CreateStrategy),
 		BuildTools:            buildTools,
 		VersioningTypes:       vt,
+		TestReportTools:       testReportTools,
 		DeploymentScript:      ds,
 	}
 
