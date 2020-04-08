@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "35f7be91_5ad502d7",
+        "filename": "conf/app.conf",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000006
+      },
+      "writtenOn": "2020-04-08T13:39:13Z",
+      "side": 1,
+      "message": "let\u0027s name it testReportTools everywhere",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 10
+      },
+      "revId": "49d36b9b911a64a80d25a08754ac7bc84e7f476f",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
