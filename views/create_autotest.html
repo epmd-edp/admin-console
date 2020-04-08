@@ -100,7 +100,9 @@
                                                   title="Autotest Report Framework"></span>
                                         </label>
                                         <select class="form-control test-report-framework" name="testReportFramework">
-                                            <option value="allure">Allure</option>
+                                            {{range $report := .TestReportTools}}
+                                                <option value="{{$report}}">{{$report}}</option>
+                                            {{end}}
                                         </select>
                                     </div>
                                 </div>
