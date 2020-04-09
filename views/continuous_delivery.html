@@ -60,11 +60,11 @@
                             {{range .CDPipelines}}
                                 <tr data-cd-pipeline-name="{{.Name}}" data-cd-pipeline-status="{{.Status}}">
                                     <td class="cd-pipeline-status" data-status="{{.Status}}">
-                                        <img src="{{if eq .Status "active"}}{{ .BasePath }}/static/img/green_circle.svg{{else if eq .Status "failed"}}/static/img/red_circle.svg{{else}}/static/img/grey_circle.svg{{end}}"
+                                        <img src="{{if eq .Status "active"}}{{ $.BasePath }}/static/img/green_circle.svg{{else if eq .Status "failed"}}{{ $.BasePath }}/static/img/red_circle.svg{{else}}{{ $.BasePath }}/static/img/grey_circle.svg{{end}}"
                                              alt="" style="width:25px; height:25px;">
                                     </td>
                                     <td class="cd-pipeline-name">
-                                        <a href="{{ .BasePath }}/admin/edp/cd-pipeline/{{.Name}}/overview"
+                                        <a href="{{ $.BasePath }}/admin/edp/cd-pipeline/{{.Name}}/overview"
                                            class="{{if ne .Status "active"}}disabled{{end}}">{{.Name}}</a>
                                     </td>
                                     <td>
@@ -73,7 +73,7 @@
                                            class="edp-link {{if ne .Status "active"}}disabled{{end}}">Link</a>
                                     </td>
                                     <td>
-                                        <a href="{{ .BasePath }}/admin/edp/cd-pipeline/{{.Name}}/update"
+                                        <a href="{{ $.BasePath }}/admin/edp/cd-pipeline/{{.Name}}/update"
                                             class="{{if ne .Status "active"}}disabled{{end}}">
                                             <button class="delete">
                                                 <i class="icon-pencil"></i>

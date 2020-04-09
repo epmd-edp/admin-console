@@ -75,11 +75,11 @@
                         {{range .Codebases}}
                             <tr data-codebase-name="{{.Name}}" data-codebase-status="{{.Status}}">
                                 <td class="codebase-status" data-status="{{.Status}}">
-                                    <img src="{{if eq .Status "active"}}{{ .BasePath }}/static/img/green_circle.svg{{else if eq .Status "failed"}}/static/img/red_circle.svg{{else}}/static/img/grey_circle.svg{{end}}"
+                                    <img src="{{if eq .Status "active"}}{{ $.BasePath }}/static/img/green_circle.svg{{else if eq .Status "failed"}}{{ $.BasePath }}/static/img/red_circle.svg{{else}}{{ $.BasePath }}/static/img/grey_circle.svg{{end}}"
                                          alt="" style="width:25px; height:25px;">
                                 </td>
                                 <td class="codebase-name">
-                                    <a href="{{ .BasePath }}/admin/edp/codebase/{{.Name}}/overview">
+                                    <a href="{{ $.BasePath }}/admin/edp/codebase/{{.Name}}/overview">
                                         {{.Name}}
                                     </a>
                                 </td>
