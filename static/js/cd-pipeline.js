@@ -120,6 +120,15 @@ $(function () {
         }
     });
 
+    function isPipelineValid() {
+        let $pipelineNameEl = $('#pipelineName');
+        return !(!$pipelineNameEl.val() || !checkPipelineName($pipelineNameEl.val()));
+    }
+
+    function checkPipelineName(pipelineName) {
+        return /^[a-z0-9]([-a-z0-9]*[a-z0-9])$/.test(pipelineName);
+    }
+
     $('.pipeline-info-button').click(function (event) {
         validatePipelineInfo(event);
     });
