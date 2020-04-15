@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "078b07be_d5e6a945",
+        "filename": "service/codebase.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000006
+      },
+      "writtenOn": "2020-04-15T08:32:07Z",
+      "side": 1,
+      "message": "Shouldn\u0027t it go before setting cs.Versioning?",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 263,
+        "endChar": 2
+      },
+      "revId": "f709cea7070d5d37128e8c3cee343d0355148db7",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
