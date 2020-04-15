@@ -1,0 +1,7 @@
+Code-Review+2: Alexander Morozov <alexander_morozov@epam.com>
+Verified+1: CI Jenkins
+Submitted-by: Alexander Morozov <alexander_morozov@epam.com>
+Submitted-at: Wed, 15 Apr 2020 12:23:08 +0000
+Reviewed-on: https://gerrit-oc-green-edp-cicd.delivery.aws.main.edp.projects.epam.com/c/edp-admin-console/+/933
+Project: edp-admin-console
+Branch: refs/heads/release-2.3
