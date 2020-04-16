@@ -69,7 +69,6 @@ func (s *CodebaseBranchService) CreateCodebaseBranch(branchInfo command.CreateCo
 		return nil, err
 	}
 
-	spec := convertBranchInfoData(branchInfo, appName)
 	branch := &edpv1alpha1.CodebaseBranch{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: "v2.edp.epam.com/v1alpha1",
@@ -88,8 +87,15 @@ func (s *CodebaseBranchService) CreateCodebaseBranch(branchInfo command.CreateCo
 				},
 			},
 		},
-		Spec: spec,
+		Spec: edpv1alpha1.CodebaseBranchSpec{
+			BranchName:   branchInfo.Name,
+			FromCommit:   branchInfo.Commit,
+			Version:      branchInfo.Version,
+			Release:      branchInfo.Release,
+			CodebaseName: appName,
+		},
 		Status: edpv1alpha1.CodebaseBranchStatus{
+			Build:               branchInfo.Build,
 			Status:              "initialized",
 			LastTimeUpdated:     time.Now(),
 			LastSuccessfulBuild: nil,
@@ -151,17 +157,6 @@ func (s *CodebaseBranchService) GetCodebaseBranchesByCriteria(criteria query.Cod
 		return nil, errors.Wrap(err, "an error has occurred while getting branch entities")
 	}
 	return codebaseBranches, nil
-}
-
-func convertBranchInfoData(branchInfo command.CreateCodebaseBranch, appName string) edpv1alpha1.CodebaseBranchSpec {
-	return edpv1alpha1.CodebaseBranchSpec{
-		BranchName:   branchInfo.Name,
-		FromCommit:   branchInfo.Commit,
-		Version:      branchInfo.Version,
-		Build:        branchInfo.Build,
-		Release:      branchInfo.Release,
-		CodebaseName: appName,
-	}
 }
 
 func getReleaseBranchCR(edpRestClient *rest.RESTClient, branchName string, appName string, namespace string) (*edpv1alpha1.CodebaseBranch, error) {
