@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16cce979_4708cb53",
+        "filename": "version.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000006
+      },
+      "writtenOn": "2020-04-21T12:30:27Z",
+      "side": 1,
+      "message": "Forgot about version.go",
+      "range": {
+        "startLine": 2,
+        "startChar": 30,
+        "endLine": 3,
+        "endChar": 0
+      },
+      "revId": "d3c1e02d09471259aeb7de980c04581f76b77927",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
