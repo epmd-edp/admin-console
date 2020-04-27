@@ -125,14 +125,12 @@ $(function () {
     function checkVersioningType(value) {
         let $startVersioningFromEl = $('.start-versioning-from');
         if (value === 'default') {
-            $('#startVersioning').attr("disabled", true);
             $('.form-group.startVersioningFrom').addClass('hide-element');
-            $('#startVersioningFrom').removeAttr("value", "0.0.0");
+            $('#startVersioningFrom').attr("disabled", true).removeAttr("value", "0.0.0");
             resetErrors($startVersioningFromEl);
         } else {
-            $('#startVersioning').attr("disabled", false);
             $('.form-group.startVersioningFrom').removeClass('hide-element');
-            $('#startVersioningFrom').attr("value", "0.0.0");
+            $('#startVersioningFrom').attr("disabled", false).attr("value", "0.0.0");
             resetErrors($startVersioningFromEl);
         }
     }
