@@ -8,6 +8,7 @@ import (
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	cbs "edp-admin-console/service/codebasebranch"
+	jiraservice "edp-admin-console/service/jira-server"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
 	"edp-admin-console/util/consts"
@@ -29,6 +30,7 @@ type AutotestsController struct {
 	GitServerService service.GitServerService
 	SlaveService     service.SlaveService
 	JobProvisioning  service.JobProvisioning
+	JiraServer       jiraservice.JiraServer
 
 	IntegrationStrategies []string
 	BuildTools            []string
@@ -104,6 +106,10 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
 		Name:             c.GetString("appName"),
+	}
+
+	if s := c.GetString("jiraServer"); len(s) > 0 {
+		codebase.JiraServer = &s
 	}
 
 	codebase.Versioning.Type = c.GetString("versioningType")
@@ -235,6 +241,13 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 		return
 	}
 
+	servers, err := c.JiraServer.GetJiraServers()
+	if err != nil {
+		log.Error(err.Error())
+		c.Abort("500")
+		return
+	}
+
 	log.Info("Create strategy is removed from list due to Autotest")
 
 	c.Data["EDPVersion"] = context.EDPVersion
@@ -251,6 +264,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["JiraServer"] = servers
 	c.TplName = "create_autotest.html"
 }
 

@@ -14,7 +14,7 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/epmd-edp/cd-pipeline-operator/v2 v2.2.0-52
-	github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200416135035-a8dc7f65f401
+	github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200428155321-a8c3659a4809
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/lib/pq v1.0.0
 	github.com/mitchellh/go-homedir v1.1.0 // indirect

@@ -68,6 +68,30 @@ $(function () {
         }
     }();
 
+
+    $('#jiraServerToggle').change(function () {
+        let $jiraEl = $('.jiraServerBlock');
+        if ($(this).is(':checked')) {
+            $jiraEl.removeClass('hide-element')
+                .find('select[name="jiraServer"]')
+                .prop('disabled', false);
+            return;
+        }
+        $jiraEl.addClass('hide-element')
+            .find('select[name="jiraServer"]')
+            .prop('disabled', true);
+    });
+
+   /* !function () {
+        if ($('#jiraServerToggle').is(':disabled')) {
+            $('.jiraServerBlock')
+                .addClass('hide-element')
+                .find('select[name="jiraServer"]')
+                .prop('disabled', true);
+            return;
+        }
+    }();*/
+
     function activateCloneBlock() {
         $('.other-language').removeClass('button-disable');
 

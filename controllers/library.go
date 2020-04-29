@@ -8,6 +8,7 @@ import (
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	cbs "edp-admin-console/service/codebasebranch"
+	jiraservice "edp-admin-console/service/jira-server"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
 	"edp-admin-console/util/consts"
@@ -21,6 +22,8 @@ import (
 	"strings"
 )
 
+const otherLanguage = "other"
+
 type LibraryController struct {
 	beego.Controller
 	EDPTenantService service.EDPTenantService
@@ -29,6 +32,7 @@ type LibraryController struct {
 	GitServerService service.GitServerService
 	SlaveService     service.SlaveService
 	JobProvisioning  service.JobProvisioning
+	JiraServer       jiraservice.JiraServer
 
 	IntegrationStrategies []string
 	BuildTools            []string
@@ -101,6 +105,13 @@ func (c *LibraryController) GetCreatePage() {
 		return
 	}
 
+	servers, err := c.JiraServer.GetJiraServers()
+	if err != nil {
+		log.Error(err.Error())
+		c.Abort("500")
+		return
+	}
+
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
@@ -114,6 +125,7 @@ func (c *LibraryController) GetCreatePage() {
 	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["JiraServer"] = servers
 	c.TplName = "create_library.html"
 }
 
@@ -169,12 +181,16 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 		Name:             c.GetString("appName"),
 	}
 
+	if s := c.GetString("jiraServer"); len(s) > 0 {
+		library.JiraServer = &s
+	}
+
 	library.Versioning.Type = c.GetString("versioningType")
 	startVersioningFrom := c.GetString("startVersioningFrom")
 	sp := c.GetString("snapshotStaticField")
 	library.Versioning.StartFrom = util.GetVersionOrNil(startVersioningFrom, sp)
 
-	if consts.LanguageJava == library.Lang || OtherLanguage == library.Lang {
+	if consts.LanguageJava == library.Lang || otherLanguage == library.Lang {
 		framework := c.GetString("framework")
 		library.Framework = &framework
 	}

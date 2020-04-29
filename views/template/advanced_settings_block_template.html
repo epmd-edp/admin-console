@@ -4,7 +4,7 @@
          data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
         <h5 class="mb-0">
             <button class="btn btn-link" type="button">
-                Advanced CI Settings
+                Advanced Settings
             </button>
         </h5>
     </div>
@@ -55,13 +55,14 @@
                 </label>
                 <div class="d-flex">
                     <input name="startVersioningFrom" type="text" class="start-versioning-from form-control pull-right"
-                       id="startVersioningFrom"
-                       placeholder="Type desired initial version">
+                           id="startVersioningFrom"
+                           placeholder="Type desired initial version">
                     <input name="snapshotStaticField" type="text" class="snapshot-static-field form-control pull-right"
-                       id="snapshotStaticField" value="SNAPSHOT" readonly="readonly">
+                           id="snapshotStaticField" value="SNAPSHOT" readonly="readonly">
                 </div>
                 <div class="invalid-feedback startVersioningFrom">
-                    The branch version field cannot be empty and should be filled out in compliance with the semantic versioning rules. The correct example: 1.2.3 or 10.10.10.
+                    The branch version field cannot be empty and should be filled out in compliance with the semantic
+                    versioning rules. The correct example: 1.2.3 or 10.10.10.
                 </div>
             </div>
 
@@ -78,6 +79,24 @@
                     </select>
                 </div>
             {{end}}
+
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="jiraServerToggle"
+                       {{if not .JiraServer}}disabled{{end}}>
+                <label class="form-check-label" for="jiraServerToggle">Integrate with Jira server</label>
+            </div>
+
+            <div class="form-group jiraServerBlock hide-element">
+                <label for="jiraServer">Select Jira Server
+                    <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                          title="Select Jira Server you want to integrate application with."></span>
+                </label>
+                <select class="form-control jiraServer" name="jiraServer" disabled>
+                    {{range .JiraServer}}
+                        <option>{{.Name}}</option>
+                    {{end}}
+                </select>
+            </div>
 
             {{if eq .Type "application" }}
                 <button type="button" class="advanced-settings-submit edp-submit-form-btn btn btn-primary"

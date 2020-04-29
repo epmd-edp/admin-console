@@ -8,7 +8,7 @@ Once clicked, the six-step menu will appear:
 
 * The Codebase Info Menu
 * The Application Info Menu
-* The Advanced CI Settings Menu
+* The Advanced Settings Menu
 * The Version Control System Info Menu
 * The Exposing Service Info Menu
 * The Database Menu
@@ -66,7 +66,7 @@ _**NOTE**: The Version Control System Info menu is available in case this option
 
 9. Click the Proceed button to be switched to the next menu.
 
-    ## The Advanced CI Settings Menu
+    ## The Advanced Settings Menu
 
     ![add-app3](../readme-resource/addapp3.png "add-app3")
 

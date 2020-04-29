@@ -8,7 +8,7 @@ Once clicked, the four-step menu will appear:
 
 * The Codebase Info Menu 
 * The Autotest Info Menu
-* The Advanced CI Settings Menu
+* The Advanced Settings Menu
 * The Version Control System Info Menu
 
 ## The Codebase Info Menu 
@@ -50,7 +50,7 @@ There are two available strategies: clone and import. The Clone strategy flow is
 
 8. All the autotest reports will be created in the Allure framework that is available In the **Autotest Report Framework** field by default. Click the Proceed button to be switched to the next menu.
 
-    ## The Advanced CI Settings Menu
+    ## The Advanced Settings Menu
 
     ![addtest4](../readme-resource/addtest4.png "addtest4")
 

@@ -125,7 +125,7 @@ function createConfirmTable(formName) {
         delete advancedBlock['Start Versioning From'];
     }
 
-    addBlock(null, "ADVANCED CI SETTINGS", advancedBlock);
+    addBlock(null, "ADVANCED SETTINGS", advancedBlock);
 
     if (!isFound('strategy') || getValue('strategy') === "clone") {
         addBlock(

@@ -218,6 +218,7 @@ func convertData(codebase command.CreateCodebase) edpv1alpha1.CodebaseSpec {
 		JenkinsSlave:     codebase.JenkinsSlave,
 		JobProvisioning:  codebase.JobProvisioning,
 		DeploymentScript: codebase.DeploymentScript,
+		JiraServer:       codebase.JiraServer,
 	}
 	if cs.Strategy == "import" {
 		cs.GitUrlPath = codebase.GitUrlPath

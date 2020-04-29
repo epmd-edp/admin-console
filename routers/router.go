@@ -25,10 +25,12 @@ import (
 	"edp-admin-console/k8s"
 	"edp-admin-console/repository"
 	edpComponentRepo "edp-admin-console/repository/edp-component"
+	jirarepo "edp-admin-console/repository/jira-server"
 	"edp-admin-console/service"
 	"edp-admin-console/service/cd_pipeline"
 	cbs "edp-admin-console/service/codebasebranch"
 	edpComponentService "edp-admin-console/service/edp-component"
+	jiraservice "edp-admin-console/service/jira-server"
 	"edp-admin-console/service/logger"
 	"edp-admin-console/util"
 	"fmt"
@@ -88,6 +90,7 @@ func init() {
 	sr := repository.SlaveRepository{}
 	pr := repository.JobProvisioning{}
 	ecr := edpComponentRepo.EDPComponent{}
+	jsr := jirarepo.JiraServer{}
 
 	ecs := edpComponentService.EDPComponentService{IEDPComponent: ecr}
 	edpService := service.EDPTenantService{Clients: clients}
@@ -120,6 +123,7 @@ func init() {
 	gitServerService := service.GitServerService{IGitServerRepository: gitServerRepository}
 	ss := service.SlaveService{ISlaveRepository: sr}
 	ps := service.JobProvisioning{IJobProvisioningRepository: pr}
+	js := jiraservice.JiraServer{IJiraServer: jsr}
 
 	beego.ErrorController(&controllers.ErrorController{})
 	beego.Router(fmt.Sprintf("%s/", context.BasePath), &controllers.MainController{EDPTenantService: edpService}, "get:Index")
@@ -160,6 +164,7 @@ func init() {
 		GitServerService: gitServerService,
 		SlaveService:     ss,
 		JobProvisioning:  ps,
+		JiraServer:       js,
 
 		IntegrationStrategies: is,
 		BuildTools:            buildTools,
@@ -177,6 +182,7 @@ func init() {
 		GitServerService: gitServerService,
 		SlaveService:     ss,
 		JobProvisioning:  ps,
+		JiraServer:       js,
 
 		IntegrationStrategies: util.RemoveElByValue(autis, CreateStrategy),
 		BuildTools:            buildTools,
@@ -191,6 +197,7 @@ func init() {
 		GitServerService: gitServerService,
 		SlaveService:     ss,
 		JobProvisioning:  ps,
+		JiraServer:       js,
 
 		IntegrationStrategies: is,
 		BuildTools:            buildTools,

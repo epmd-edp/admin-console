@@ -24,6 +24,7 @@ import (
 	"edp-admin-console/models/query"
 	"edp-admin-console/service"
 	cbs "edp-admin-console/service/codebasebranch"
+	jiraservice "edp-admin-console/service/jira-server"
 	"edp-admin-console/service/logger"
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
@@ -45,6 +46,7 @@ type ApplicationController struct {
 	GitServerService service.GitServerService
 	SlaveService     service.SlaveService
 	JobProvisioning  service.JobProvisioning
+	JiraServer       jiraservice.JiraServer
 
 	IntegrationStrategies []string
 	BuildTools            []string
@@ -54,8 +56,6 @@ type ApplicationController struct {
 
 const (
 	paramWaitingForCodebase = "waitingforcodebase"
-
-	OtherLanguage = "other"
 )
 
 func (c *ApplicationController) GetApplicationsOverviewPage() {
@@ -109,27 +109,22 @@ func addCodebaseInProgressIfAny(codebases []*query.Codebase, codebaseInProgress 
 func (c *ApplicationController) GetCreateApplicationPage() {
 	flash := beego.ReadFromRequest(&c.Controller)
 	isVcsEnabled, err := c.EDPTenantService.GetVcsIntegrationValue()
-
 	if err != nil {
 		c.Abort("500")
 		return
 	}
-
 	if flash.Data["error"] != "" {
 		c.Data["Error"] = flash.Data["error"]
 	}
 
-	contains := doesIntegrationStrategiesContainImportStrategy(c.IntegrationStrategies)
-	if contains {
+	if doesIntegrationStrategiesContainImportStrategy(c.IntegrationStrategies) {
 		log.Info("Import strategy is used.")
-
 		gitServers, err := c.GitServerService.GetServers(query.GitServerCriteria{Available: true})
 		if err != nil {
 			c.Abort("500")
 			return
 		}
 		log.Debug("fetched Git Servers", zap.Any("git servers", gitServers))
-
 		c.Data["GitServers"] = gitServers
 	}
 
@@ -141,6 +136,13 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 
 	p, err := c.JobProvisioning.GetAllJobProvisioners()
 	if err != nil {
+		c.Abort("500")
+		return
+	}
+
+	servers, err := c.JiraServer.GetJiraServers()
+	if err != nil {
+		log.Error(err.Error())
 		c.Abort("500")
 		return
 	}
@@ -159,6 +161,7 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 	c.Data["IsOpenshift"] = platform.IsOpenshift()
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["JiraServer"] = servers
 	c.TplName = "create_application.html"
 }
 
@@ -226,6 +229,10 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
 		Name:             c.GetString("appName"),
+	}
+
+	if s := c.GetString("jiraServer"); len(s) > 0 {
+		codebase.JiraServer = &s
 	}
 
 	codebase.Versioning.Type = c.GetString("versioningType")

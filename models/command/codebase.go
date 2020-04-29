@@ -21,6 +21,7 @@ type CreateCodebase struct {
 	JenkinsSlave        string      `json:"jenkinsSlave"`
 	JobProvisioning     string      `json:"jobProvisioning"`
 	DeploymentScript    string      `json:"deploymentScript"`
+	JiraServer          *string     `json:"jiraServer,omitempty"`
 }
 
 type Repository struct {
