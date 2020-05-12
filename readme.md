@@ -26,4 +26,5 @@ _**NOTE**: The Admin Console link is available on the OpenShift overview page fo
 ### Related Articles
 
 * [Adjust Import Strategy](documentation/import-strategy.md)
+* [Adjust Integration with Jira Server](documentation/jira-server.md)
 * [Local Development](documentation/local_development.md)
