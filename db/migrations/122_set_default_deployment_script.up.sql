@@ -1,0 +1,1 @@
+update job_provisioning set scope = 'ci';
