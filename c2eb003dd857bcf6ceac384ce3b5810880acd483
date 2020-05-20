@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf8a4294_a9b884cb",
+        "filename": "controllers/application.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-05-20T09:49:16Z",
+      "side": 1,
+      "message": "move to util package /util",
+      "revId": "c2eb003dd857bcf6ceac384ce3b5810880acd483",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34a69a21_e6eb0d37",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-05-20T09:49:16Z",
+      "side": 1,
+      "message": "use from util",
+      "revId": "c2eb003dd857bcf6ceac384ce3b5810880acd483",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86e8b2e0_44278f4f",
+        "filename": "repository/job_provisioning_repository.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-05-20T09:49:16Z",
+      "side": 1,
+      "message": "add check for empty string",
+      "revId": "c2eb003dd857bcf6ceac384ce3b5810880acd483",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
