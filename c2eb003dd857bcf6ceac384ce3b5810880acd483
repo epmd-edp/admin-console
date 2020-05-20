@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a244790f_983476bd",
+        "filename": "controllers/application.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2020-05-20T11:56:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf8a4294_a9b884cb",
+      "revId": "c2eb003dd857bcf6ceac384ce3b5810880acd483",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "34a69a21_e6eb0d37",
         "filename": "controllers/cd-pipeline/cd_pipeline.go",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "1f3d5ec5_97a43206",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2020-05-20T11:56:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34a69a21_e6eb0d37",
+      "revId": "c2eb003dd857bcf6ceac384ce3b5810880acd483",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "86e8b2e0_44278f4f",
         "filename": "repository/job_provisioning_repository.go",
         "patchSetId": 1
@@ -50,6 +86,24 @@
       "revId": "c2eb003dd857bcf6ceac384ce3b5810880acd483",
       "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0649c2f_2a7e4b9e",
+        "filename": "repository/job_provisioning_repository.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000027
+      },
+      "writtenOn": "2020-05-20T11:56:49Z",
+      "side": 1,
+      "message": "I change type of Scope, because \"\" can\u0027t convert to *string, and nil can\u0027t convert to string.",
+      "parentUuid": "86e8b2e0_44278f4f",
+      "revId": "c2eb003dd857bcf6ceac384ce3b5810880acd483",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": false
     }
   ]
 }
