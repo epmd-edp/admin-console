@@ -35,13 +35,14 @@ import (
 	dberror "edp-admin-console/util/error/db-errors"
 	"errors"
 	"fmt"
-	"github.com/astaxie/beego"
-	edppipelinesv1alpha1 "github.com/epmd-edp/cd-pipeline-operator/v2/pkg/apis/edp/v1alpha1"
-	"go.uber.org/zap"
 	"html/template"
 	"net/http"
 	"regexp"
 	"sort"
+
+	"github.com/astaxie/beego"
+	edppipelinesv1alpha1 "github.com/epmd-edp/cd-pipeline-operator/v2/pkg/apis/edp/v1alpha1"
+	"go.uber.org/zap"
 )
 
 var log = logger.GetLogger()
@@ -54,10 +55,12 @@ type CDPipelineController struct {
 	BranchService     cbs.CodebaseBranchService
 	ThirdPartyService service.ThirdPartyService
 	EDPComponent      ec.EDPComponentService
+	JobProvisioning   service.JobProvisioning
 }
 
 const (
 	paramWaitingForCdPipeline = "waitingforcdpipeline"
+	scope                     = "cd"
 )
 
 func (c *CDPipelineController) GetContinuousDeliveryPage() {
@@ -152,6 +155,12 @@ func (c *CDPipelineController) GetCreateCDPipelinePage() {
 		return
 	}
 
+	jp, err := c.JobProvisioning.GetAllJobProvisioners(query.JobProvisioningCriteria{Scope: getStringP(scope)})
+	if err != nil {
+		c.Abort("500")
+		return
+	}
+
 	autotests = filterAutotestsWithActiveBranches(autotests)
 
 	c.Data["Services"] = services
@@ -163,7 +172,12 @@ func (c *CDPipelineController) GetCreateCDPipelinePage() {
 	c.Data["Autotests"] = autotests
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["JobProvisioners"] = jp
 	c.TplName = "create_cd_pipeline.html"
+}
+
+func getStringP(val string) *string {
+	return &val
 }
 
 func filterAutotestsWithActiveBranches(autotests []*query.Codebase) []*query.Codebase {

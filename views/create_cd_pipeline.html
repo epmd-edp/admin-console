@@ -391,6 +391,25 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="job-provisioner-row">
+                        <div class="d-flex flex-column justify-content-start">
+                            <div class="d-flex">
+                                <div class="form-group w-25 mr-4 mb-2">
+                                    <label for="jobProvisioning">Job Provisioner
+                                        <span class="tooltip-icon" data-toggle="tooltip"
+                                              data-placement="top" title=""
+                                              data-original-title="CD Job Provisioner for Pipeline"></span>
+                                    </label>
+                                    <select class="form-control element-width jobProvisioning" name="jobProvisioning">
+                                        {{range .JobProvisioners}}
+                                            <option>{{.Name}}</option>
+                                        {{end}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="modal-footer">

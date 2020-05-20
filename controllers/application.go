@@ -30,10 +30,11 @@ import (
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
 	"fmt"
-	"github.com/astaxie/beego"
-	"go.uber.org/zap"
 	"html/template"
 	"strings"
+
+	"github.com/astaxie/beego"
+	"go.uber.org/zap"
 )
 
 var log = logger.GetLogger()
@@ -56,6 +57,7 @@ type ApplicationController struct {
 
 const (
 	paramWaitingForCodebase = "waitingforcodebase"
+	scope                   = "ci"
 )
 
 func (c *ApplicationController) GetApplicationsOverviewPage() {
@@ -134,7 +136,7 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 		return
 	}
 
-	p, err := c.JobProvisioning.GetAllJobProvisioners()
+	p, err := c.JobProvisioning.GetAllJobProvisioners(query.JobProvisioningCriteria{Scope: getStringP(scope)})
 	if err != nil {
 		c.Abort("500")
 		return
@@ -163,6 +165,10 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 	c.Data["BasePath"] = context.BasePath
 	c.Data["JiraServer"] = servers
 	c.TplName = "create_application.html"
+}
+
+func getStringP(val string) *string {
+	return &val
 }
 
 func doesIntegrationStrategiesContainImportStrategy(integrationStrategies []string) bool {
