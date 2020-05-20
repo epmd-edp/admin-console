@@ -13,13 +13,14 @@ import (
 	"edp-admin-console/util/auth"
 	"edp-admin-console/util/consts"
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
-	"go.uber.org/zap"
 	"html/template"
 	"net/http"
 	"regexp"
 	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
+	"go.uber.org/zap"
 )
 
 type AutotestsController struct {
@@ -243,7 +244,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 		return
 	}
 
-	p, err := c.JobProvisioning.GetAllJobProvisioners()
+	p, err := c.JobProvisioning.GetAllJobProvisioners(query.JobProvisioningCriteria{Scope: util.GetStringP(scope)})
 	if err != nil {
 		c.Abort("500")
 		return

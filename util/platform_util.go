@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/astaxie/beego"
 	"go.uber.org/zap"
-	"strings"
 )
 
 func GetValuesFromConfig(name string) []string {
@@ -52,4 +53,8 @@ func TrimSuffix(v, s string) string {
 
 func ProcessNameToKubernetesConvention(name string) string {
 	return strings.Replace(name, "/", "-", -1)
+}
+
+func GetStringP(val string) string {
+	return val
 }

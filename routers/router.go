@@ -34,6 +34,7 @@ import (
 	"edp-admin-console/service/logger"
 	"edp-admin-console/util"
 	"fmt"
+
 	"github.com/astaxie/beego"
 	"go.uber.org/zap"
 )
@@ -225,6 +226,7 @@ func init() {
 		BranchService:     branchService,
 		ThirdPartyService: thirdPartyService,
 		EDPComponent:      ecs,
+		JobProvisioning:   ps,
 	}
 
 	cbc := controllers.BranchController{
