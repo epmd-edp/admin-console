@@ -1,17 +1,18 @@
 package query
 
 type Stage struct {
-	Id                     int           `json:"id" orm:"column(id)"`
-	Name                   string        `json:"name" orm:"column(name)"`
-	Description            string        `json:"description" orm:"column(description)"`
-	TriggerType            string        `json:"triggerType" orm:"column(trigger_type)"`
-	Order                  int           `json:"order" orm:"column(order)"`
-	PlatformProjectLink    string        `json:"platformProjectLink" orm:"-"`
-	PlatformProjectName    string        `json:"platformProjectName" orm:"-"`
-	CDPipeline             *CDPipeline   `json:"-" orm:"rel(fk);column(cd_pipeline_id)"`
-	QualityGates           []QualityGate `json:"qualityGates" orm:"-"`
-	SourceCodebaseBranchId *int          `json:"-" orm:"codebase_branch_id;column(codebase_branch_id)"`
-	Source                 Source        `json:"source" orm:"-"`
+	Id                     int              `json:"id" orm:"column(id)"`
+	Name                   string           `json:"name" orm:"column(name)"`
+	Description            string           `json:"description" orm:"column(description)"`
+	TriggerType            string           `json:"triggerType" orm:"column(trigger_type)"`
+	Order                  int              `json:"order" orm:"column(order)"`
+	PlatformProjectLink    string           `json:"platformProjectLink" orm:"-"`
+	PlatformProjectName    string           `json:"platformProjectName" orm:"-"`
+	CDPipeline             *CDPipeline      `json:"-" orm:"rel(fk);column(cd_pipeline_id)"`
+	QualityGates           []QualityGate    `json:"qualityGates" orm:"-"`
+	SourceCodebaseBranchId *int             `json:"-" orm:"codebase_branch_id;column(codebase_branch_id)"`
+	Source                 Source           `json:"source" orm:"-"`
+	JobProvisioning        *JobProvisioning `orm:"null;rel(one)"`
 }
 
 type Source struct {

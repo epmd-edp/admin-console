@@ -20,6 +20,7 @@ import (
 	"edp-admin-console/models/query"
 	"edp-admin-console/service/logger"
 	"fmt"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/golang-migrate/migrate"
@@ -68,8 +69,8 @@ func InitDb() {
 	}
 	orm.Debug = debug
 	orm.RegisterModel(new(query.Codebase), new(query.ActionLog), new(query.CodebaseBranch), new(query.ThirdPartyService),
-		new(query.CDPipeline), new(query.Stage), new(query.QualityGate), new(query.ApplicationsToPromote),
-		new(query.CodebaseDockerStream), new(query.GitServer), new(query.JenkinsSlave), new(query.JobProvisioning),
+		new(query.CDPipeline), new(query.JobProvisioning), new(query.Stage), new(query.QualityGate), new(query.ApplicationsToPromote),
+		new(query.CodebaseDockerStream), new(query.GitServer), new(query.JenkinsSlave),
 		new(query.EDPComponent), new(query.JiraServer))
 }
 
