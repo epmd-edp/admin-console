@@ -1,0 +1,1 @@
+alter table codebase alter column commit_message_pattern set not null;

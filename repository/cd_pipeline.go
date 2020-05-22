@@ -20,8 +20,9 @@ import (
 	"edp-admin-console/models"
 	"edp-admin-console/models/dto"
 	"edp-admin-console/models/query"
-	"github.com/astaxie/beego/orm"
 	"strconv"
+
+	"github.com/astaxie/beego/orm"
 )
 
 type ICDPipelineRepository interface {
@@ -126,6 +127,10 @@ func (this CDPipelineRepository) GetCDPipelineByName(pipelineName string) (*quer
 		}
 
 		if err := loadRelatedSource(s); err != nil {
+			return nil, err
+		}
+		_, err = o.LoadRelated(s, "JobProvisioning", false, 100, 0, "Name")
+		if err != nil {
 			return nil, err
 		}
 	}

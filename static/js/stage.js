@@ -33,7 +33,7 @@ $(function () {
             stageToEdit.find('#stageNameForm').val(stageData.stageName);
             stageToEdit.find('#stageDescForm').val(stageData.stageDesc).attr('name', stageData.stageName + '-stageDesc');
             stageToEdit.find('#triggerTypeForm').val(stageData.triggerType).attr('name', stageData.stageName + '-triggerType');
-
+            stageToEdit.find('#jobProvisioningForm').val(stageData.jobProvisioning).attr('name', stageData.stageName + '-jobProvisioning');
             stageToEdit.find('#pipelineLibraryNameForm').val(stageData.pipelineLibraryName);
             stageToEdit.find('#pipelineLibraryBranchForm').val(stageData.pipelineLibraryBranch);
 
@@ -165,6 +165,7 @@ function appendStage(stageData) {
         '<input data-mode="add" id="stageNameForm" name="stageName" type="hidden" value="' + stageData.stageName + '">' +
         '<input id="stageDescForm" name="' + stageData.stageName + '-stageDesc" type="hidden" value="' + stageData.stageDesc + '">' +
         '<input id="triggerTypeForm" name="' + stageData.stageName + '-triggerType" type="hidden" value="' + stageData.triggerType + '">' +
+        '<input id="jobProvisioningForm" name="' + stageData.stageName + '-jobProvisioning" type="hidden" value="' + stageData.jobProvisioning + '">' +
         '<input id="pipelineLibraryNameForm" name="' + stageData.stageName + '-pipelineLibraryName" type="hidden" value="' + stageData.pipelineLibraryName + '">' +
         '<input id="pipelineLibraryBranchForm" name="' + stageData.stageName + '-pipelineLibraryBranch" type="hidden" value="' + stageData.pipelineLibraryBranch + '">' +
         '    </div>').appendTo($('.stages-list'));
@@ -219,7 +220,7 @@ function fillFields(stageName) {
     $('#stageName').val($stageEl.find('#stageNameForm').val());
     $('#stageDesc').val($stageEl.find('#stageDescForm').val());
     $("#triggerType").val($stageEl.find('#triggerTypeForm').val());
-
+    $("#jobProvisioning").val($stageEl.find('#jobProvisioningForm').val());
     $('#pipeline-library').val($stageEl.find('#pipelineLibraryNameForm').val()).change();
     $('#pipeline-library-branches').val($stageEl.find('#pipelineLibraryBranchForm').val()).change();
 
@@ -295,6 +296,7 @@ function collectStageData() {
         pipelineLibraryName: $('#pipeline-library').val(),
         pipelineLibraryBranch: pipelineLibrary === 'default' ? null : $('.pipeline-library-row').find('[data-selected-pipeline-library="' + pipelineLibrary + '"]').val(),
         triggerType: $('#triggerType').val(),
+        jobProvisioning: $('#jobProvisioning').val(),
         qualityGates: collectQualityGates(),
     };
 }

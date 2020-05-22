@@ -410,7 +410,7 @@ func (s *CDPipelineService) getCDPipelineCR(pipelineName string) (*edppipelinesv
 	return cdPipeline, nil
 }
 
-func createCrd(cdPipelineName string, stage command.CDStageCommand) edppipelinesv1alpha1.Stage {
+func createCr(cdPipelineName string, stage command.CDStageCommand) edppipelinesv1alpha1.Stage {
 	return edppipelinesv1alpha1.Stage{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: "v2.edp.epam.com/v1alpha1",
@@ -421,13 +421,14 @@ func createCrd(cdPipelineName string, stage command.CDStageCommand) edppipelines
 			Namespace: context.Namespace,
 		},
 		Spec: edppipelinesv1alpha1.StageSpec{
-			Name:         stage.Name,
-			Description:  stage.Description,
-			TriggerType:  stage.TriggerType,
-			Order:        stage.Order,
-			CdPipeline:   cdPipelineName,
-			QualityGates: stage.QualityGates,
-			Source:       stage.Source,
+			Name:            stage.Name,
+			Description:     stage.Description,
+			TriggerType:     stage.TriggerType,
+			Order:           stage.Order,
+			CdPipeline:      cdPipelineName,
+			QualityGates:    stage.QualityGates,
+			Source:          stage.Source,
+			JobProvisioning: stage.JobProvisioning,
 		},
 		Status: edppipelinesv1alpha1.StageStatus{
 			Available:       false,
@@ -445,7 +446,7 @@ func saveStagesIntoK8s(edpRestClient *rest.RESTClient, cdPipelineName string, st
 	var stagesCr []edppipelinesv1alpha1.Stage
 	for _, stage := range stages {
 		stage.Username = username
-		crd := createCrd(cdPipelineName, stage)
+		crd := createCr(cdPipelineName, stage)
 		stageCr := edppipelinesv1alpha1.Stage{}
 		err := edpRestClient.Post().Namespace(context.Namespace).Resource("stages").Body(&crd).Do().Into(&stageCr)
 		if err != nil {

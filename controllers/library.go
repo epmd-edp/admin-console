@@ -88,7 +88,7 @@ func (c *LibraryController) GetCreatePage() {
 		return
 	}
 
-	p, err := c.JobProvisioning.GetAllJobProvisioners()
+	p, err := c.JobProvisioning.GetAllJobProvisioners(query.JobProvisioningCriteria{Scope: util.GetStringP(ciScope)})
 	if err != nil {
 		c.Abort("500")
 		return

@@ -24,12 +24,11 @@ import (
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
 	"fmt"
+	"github.com/astaxie/beego"
 	"html/template"
 	"log"
 	"path"
 	"strings"
-
-	"github.com/astaxie/beego"
 )
 
 type ApplicationController struct {
@@ -49,8 +48,8 @@ type ApplicationController struct {
 const (
 	paramWaitingForBranch   = "waitingforbranch"
 	paramWaitingForCodebase = "waitingforcodebase"
-
-	OtherLanguage = "other"
+	ciScope                 = "ci"
+	OtherLanguage           = "other"
 )
 
 func (c *ApplicationController) GetApplicationsOverviewPage() {
@@ -129,7 +128,7 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 		return
 	}
 
-	p, err := c.JobProvisioning.GetAllJobProvisioners()
+	p, err := c.JobProvisioning.GetAllJobProvisioners(query.JobProvisioningCriteria{Scope: util.GetStringP(ciScope)})
 	if err != nil {
 		c.Abort("500")
 		return

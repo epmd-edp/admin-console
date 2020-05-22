@@ -3,14 +3,15 @@ package models
 import "edp-admin-console/models/query"
 
 type StageView struct {
-	Id           int64               `json:"-"`
-	Name         string              `json:"name"`
-	CDPipeline   string              `json:"cdPipeline"`
-	Description  string              `json:"description"`
-	TriggerType  string              `json:"triggerType"`
-	Order        string              `json:"order"`
-	Applications []ApplicationStage  `json:"applications"`
-	QualityGates []query.QualityGate `json:"qualityGates"`
+	Id              int64               `json:"-"`
+	Name            string              `json:"name"`
+	CDPipeline      string              `json:"cdPipeline"`
+	Description     string              `json:"description"`
+	TriggerType     string              `json:"triggerType"`
+	Order           string              `json:"order"`
+	Applications    []ApplicationStage  `json:"applications"`
+	QualityGates    []query.QualityGate `json:"qualityGates"`
+	JobProvisioning string              `json:"jobProvisioning"`
 }
 
 type ApplicationStage struct {

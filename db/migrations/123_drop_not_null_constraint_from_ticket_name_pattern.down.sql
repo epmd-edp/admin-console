@@ -1,0 +1,1 @@
+alter table codebase alter column ticket_name_pattern set not null;

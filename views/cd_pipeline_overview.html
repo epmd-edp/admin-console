@@ -118,6 +118,7 @@
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Library</th>
                                                     <th scope="col">Branch</th>
+                                                    <th scope="col">Job provision</th>
                                                     <th scope="col">Quality Gates</th>
                                                 </tr>
                                                 </thead>
@@ -147,6 +148,7 @@
                                                                 {{.Source.Library.Branch}}
                                                             {{end}}
                                                         </td>
+                                                        <td>{{.JobProvisioning.Name}}</td>
                                                         <td>
                                                             {{if .QualityGates}}
                                                                 <table>

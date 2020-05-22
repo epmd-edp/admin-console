@@ -2,23 +2,28 @@ package repository
 
 import (
 	"edp-admin-console/models/query"
+
 	"github.com/astaxie/beego/orm"
 )
 
 type IJobProvisioningRepository interface {
-	GetAllJobProvisioners() ([]*query.JobProvisioning, error)
+	GetAllJobProvisioners(criteria query.JobProvisioningCriteria) ([]*query.JobProvisioning, error)
 }
 
 type JobProvisioning struct {
 }
 
-func (JobProvisioning) GetAllJobProvisioners() ([]*query.JobProvisioning, error) {
+func (JobProvisioning) GetAllJobProvisioners(criteria query.JobProvisioningCriteria) ([]*query.JobProvisioning, error) {
 	o := orm.NewOrm()
 	var jobsProvisioning []*query.JobProvisioning
 
-	_, err := o.QueryTable(new(query.JobProvisioning)).
-		OrderBy("name").
-		All(&jobsProvisioning)
+	qs := o.QueryTable(new(query.JobProvisioning))
+
+	if criteria.Scope != nil && *criteria.Scope != "" {
+		qs = qs.Filter("scope", criteria.Scope)
+	}
+
+	_, err := qs.OrderBy("name").All(&jobsProvisioning)
 	if err != nil {
 		return nil, err
 	}

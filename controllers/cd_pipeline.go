@@ -46,10 +46,12 @@ type CDPipelineController struct {
 	BranchService     service.CodebaseBranchService
 	ThirdPartyService service.ThirdPartyService
 	EDPComponent      ec.EDPComponentService
+	JobProvisioning   service.JobProvisioning
 }
 
 const (
 	paramWaitingForCdPipeline = "waitingforcdpipeline"
+	cdScope                   = "cd"
 )
 
 func (c *CDPipelineController) GetContinuousDeliveryPage() {
@@ -139,6 +141,12 @@ func (c *CDPipelineController) GetCreateCDPipelinePage() {
 		return
 	}
 
+	jp, err := c.JobProvisioning.GetAllJobProvisioners(query.JobProvisioningCriteria{Scope: util.GetStringP(cdScope)})
+	if err != nil {
+		c.Abort("500")
+		return
+	}
+
 	autotests = filterAutotestsWithActiveBranches(autotests)
 
 	c.Data["Services"] = services
@@ -150,6 +158,7 @@ func (c *CDPipelineController) GetCreateCDPipelinePage() {
 	c.Data["Autotests"] = autotests
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["JobProvisioners"] = jp
 	c.TplName = "create_cd_pipeline.html"
 }
 
@@ -354,11 +363,12 @@ func retrieveStagesFromRequest(this *CDPipelineController) []command.CDStageComm
 			}
 		}
 		stageRequest := command.CDStageCommand{
-			Name:        stageName,
-			Description: this.GetString(stageName + "-stageDesc"),
-			TriggerType: this.GetString(stageName + "-triggerType"),
-			Source:      stgSrc,
-			Order:       index,
+			Name:            stageName,
+			Description:     this.GetString(stageName + "-stageDesc"),
+			TriggerType:     this.GetString(stageName + "-triggerType"),
+			Source:          stgSrc,
+			Order:           index,
+			JobProvisioning: this.GetString(stageName + "-jobProvisioning"),
 		}
 
 		for _, stepName := range this.GetStrings(stageName + "-stageStepName") {

@@ -190,6 +190,7 @@ func init() {
 		BranchService:     branchService,
 		ThirdPartyService: thirdPartyService,
 		EDPComponent:      ecs,
+		JobProvisioning:   ps,
 	}
 
 	adminEdpNamespace := beego.NewNamespace(fmt.Sprintf("%s/admin/edp", context.BasePath),

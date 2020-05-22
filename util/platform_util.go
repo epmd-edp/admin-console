@@ -1,9 +1,10 @@
 package util
 
 import (
+	"strings"
+
 	"github.com/astaxie/beego"
 	"log"
-	"strings"
 )
 
 func GetValuesFromConfig(name string) []string {
@@ -16,4 +17,8 @@ func GetValuesFromConfig(name string) []string {
 	s := strings.Split(values, ",")
 	log.Printf("Fetched data from %v env variable: %v", name, s)
 	return s
+}
+
+func GetStringP(val string) *string {
+	return &val
 }
