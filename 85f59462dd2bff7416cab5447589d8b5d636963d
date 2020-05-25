@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0584c234_d7c3f6fa",
+        "filename": "views/cd_pipeline_overview.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1000006
+      },
+      "writtenOn": "2020-05-25T06:45:30Z",
+      "side": 1,
+      "message": "Where do we set this value?",
+      "range": {
+        "startLine": 176,
+        "startChar": 60,
+        "endLine": 176,
+        "endChar": 80
+      },
+      "revId": "85f59462dd2bff7416cab5447589d8b5d636963d",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
