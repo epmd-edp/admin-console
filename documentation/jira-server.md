@@ -15,4 +15,7 @@ In order to adjust the Jira server integration, first add JiraServer CR by perfo
 3. Being in Admin Console, navigate to the Advanced Settings menu to check that the Integrate with Jira Server check box became available:  
 
     ![jira-server-integration](../readme-resource/jira_integration_ac.png "jira-server-integration")
+    
+### Related Articles
+- [Adjust VCS Integration With Jira Server](../documentation/jira_vcs_integration.md)
 

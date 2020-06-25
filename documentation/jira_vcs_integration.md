@@ -32,7 +32,8 @@ Add the repositories links and fill in the *Keep Informed* field as this request
 
     ![crucible_project](../readme-resource/crucible_project_1.png "crucible_project")
 
- 
+### Related Articles
+- [Adjust Integration With Jira Server](../documentation/jira-server.md)
 
 
 

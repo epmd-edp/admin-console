@@ -72,19 +72,25 @@ There are two available strategies: clone and import. The Clone strategy flow is
          
     _**NOTE**: The Start Version From field should be filled out in compliance with the semantic versioning rules, e.g. 1.2.3 or 10.10.10._
     
-    _**INFO**: Click the Create button to create an autotest or click the Proceed button to be switched to the next VCS menu that can be predefined._ 
-
+12. Select the **Integrate with Jira Server** checkbox in case it is required to connect Jira tickets with the commits and have a respective label in the Fix Version field.
+       >_**NOTE**: To adjust the Jira integration functionality, first apply the necessary changes described on the [Adjust Integration With Jira Server](../documentation/jira-server.md) page, and setup the [VCS Integration With Jira Server](../documentation/jira_vcs_integration.md)._ 
+    
+       ![add-app3_2](../readme-resource/add_test3_ji2.png "add-app3_2")
+13. As soon as the Jira server is set, select it in the **Select Jira Server** field.
+14. Indicate the pattern using any character, which is followed on the project, to validate a commit message.
+15. Indicate the pattern using any character, which is followed on the project, to find a Jira ticket number in a commit message.
+16. Click the Create button to create an autotest or click the Proceed button to be switched to the next VCS menu that can be predefined.
     ## The Version Control System Info Menu
 
     Once navigated to the VCS Info menu, perform the following:
     
     ![addtest5](../readme-resource/addtest5.png "addtest5")
 
-12. Enter the login credentials into the **VCS Login** field.
+17. Enter the login credentials into the **VCS Login** field.
 
-13. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
+18. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
 
-14. Click the Create button, check the CONFIRMATION summary, click Continue to add an autotest to the Autotests list. 
+19. Click the Create button, check the CONFIRMATION summary, click Continue to add an autotest to the Autotests list. 
 
 >_**NOTE**: After the complete adding of the autotest, inspect the [Inspect Autotest](../documentation/inspect_autotest.md) part._
 
@@ -92,3 +98,5 @@ There are two available strategies: clone and import. The Clone strategy flow is
 
 * [Inspect Autotest](../documentation/inspect_autotest.md)
 * [Add CD Pipelines](../documentation/add_CD_pipelines.md)
+* [Adjust Integration With Jira Server](../documentation/jira-server.md)
+* [Adjust VCS Integration With Jira Server](../documentation/jira_vcs_integration.md)
