@@ -52,7 +52,7 @@ There are two available strategies: clone and import. The Clone strategy flow is
 
     ## The Advanced Settings Menu
 
-    ![addtest4](../readme-resource/addtest4.png "addtest4")
+    ![addtest4](../readme-resource/addtest_4.png "addtest4")
 
 9. Select job provisioner that will be used to handle a codebase. For details, refer to the [Add Job Provision](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/add-job-provision.md#add-job-provision) instruction and become familiar with the main steps to add an additional job provisioner.
 
@@ -84,7 +84,7 @@ There are two available strategies: clone and import. The Clone strategy flow is
 
     Once navigated to the VCS Info menu, perform the following:
     
-    ![addtest5](../readme-resource/addtest5.png "addtest5")
+    ![addtest5](../readme-resource/addtest_5.png "addtest5")
 
 17. Enter the login credentials into the **VCS Login** field.
 

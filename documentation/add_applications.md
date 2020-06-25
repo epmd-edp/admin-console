@@ -99,7 +99,7 @@ _**NOTE**: The Version Control System Info menu is available in case this option
 
     ## The Version Control System Info Menu
 
-    ![add-app4](../readme-resource/addapp4.png "add-app4")
+    ![add-app4](../readme-resource/addapp_4.png "add-app4")
     
 19. Enter the login credentials into the **VCS Login** field.
 20. Enter the password into the **VCS Password (or API Token)** field OR add the API Token.
@@ -109,7 +109,7 @@ _**NOTE**: The Version Control System Info menu is available in case this option
 
     ## The Exposing Service Info Menu
 
-    ![add-app5](../readme-resource/addapp5.png "add-app5")
+    ![add-app5](../readme-resource/addapp_5.png "add-app5")
 
 22. Select the **Need Route** check box to create a route component in the OpenShift project for the externally reachable host name. As a result, the added application will be accessible in a browser.
     
@@ -122,7 +122,7 @@ _**NOTE**: The Version Control System Info menu is available in case this option
 
     ## The Database Menu
 
-    ![add-app6](../readme-resource/addapp6.png "add-app6")
+    ![add-app6](../readme-resource/addapp_6.png "add-app6")
 
 24. Select the **Need Database** check box in case you need a database. Fill in the required fields:
     
