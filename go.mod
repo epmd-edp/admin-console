@@ -1,6 +1,6 @@
 module edp-admin-console
 
-go 1.12
+go 1.14.3
 
 replace github.com/openshift/api => github.com/openshift/api v0.0.0-20180801171038-322a19404e37
 
