@@ -160,11 +160,11 @@ func (c *LibraryController) checkError(err error, flash *beego.FlashData, name s
 	case *edperror.CodebaseAlreadyExistsError:
 		flash.Error("Library %v already exists.", name)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/library/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/library/create", context.BasePath), 302)
 	case *edperror.CodebaseWithGitUrlPathAlreadyExistsError:
 		flash.Error("Library %v with %v project path already exists.", name, *url)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/library/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/library/create", context.BasePath), 302)
 	default:
 		c.Abort("500")
 	}

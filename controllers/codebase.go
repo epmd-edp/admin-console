@@ -30,9 +30,10 @@ import (
 	dberror "edp-admin-console/util/error/db-errors"
 	"errors"
 	"fmt"
+	"html/template"
+
 	"github.com/astaxie/beego"
 	"go.uber.org/zap"
-	"html/template"
 )
 
 type CodebaseController struct {
@@ -211,7 +212,7 @@ func createCodebaseIsUsedURL(codebaseName, codebaseType string) string {
 	if codebaseType == consts.Autotest {
 		codebaseType = "autotest"
 	}
-	return fmt.Sprintf("/admin/edp/%v/overview?codebase=%v#codebaseIsUsed",
+	return fmt.Sprintf("%s/admin/edp/%v/overview?codebase=%v#codebaseIsUsed", context.BasePath,
 		codebaseType, codebaseName)
 }
 
@@ -219,7 +220,7 @@ func createCodebaseIsDeletedURL(codebaseName, codebaseType string) string {
 	if codebaseType == consts.Autotest {
 		codebaseType = "autotest"
 	}
-	return fmt.Sprintf("/admin/edp/%v/overview?codebase=%v#codebaseIsDeleted", codebaseType, codebaseName)
+	return fmt.Sprintf("%s/admin/edp/%v/overview?codebase=%v#codebaseIsDeleted", context.BasePath, codebaseType, codebaseName)
 }
 
 func (c *CodebaseController) GetEditCodebasePage() {

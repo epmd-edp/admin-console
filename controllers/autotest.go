@@ -71,11 +71,11 @@ func (c *AutotestsController) checkError(err error, flash *beego.FlashData, name
 	case *edperror.CodebaseAlreadyExistsError:
 		flash.Error("Autotest %v already exists.", name)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/autotest/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/autotest/create", context.BasePath), 302)
 	case *edperror.CodebaseWithGitUrlPathAlreadyExistsError:
 		flash.Error("Autotest %v with %v project path already exists.", name, *url)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/autotest/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/autotest/create", context.BasePath), 302)
 	default:
 		c.Abort("500")
 	}

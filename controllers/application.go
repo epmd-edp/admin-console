@@ -211,11 +211,11 @@ func (c *ApplicationController) checkError(err error, flash *beego.FlashData, na
 	case *edperror.CodebaseAlreadyExistsError:
 		flash.Error("Application %v already exists.", name)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/application/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/application/create", context.BasePath), 302)
 	case *edperror.CodebaseWithGitUrlPathAlreadyExistsError:
 		flash.Error("Application %v with %v project path already exists.", name, *url)
 		flash.Store(&c.Controller)
-		c.Redirect("/admin/edp/application/create", 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/application/create", context.BasePath), 302)
 	default:
 		c.Abort("500")
 	}

@@ -10,12 +10,13 @@ import (
 	"edp-admin-console/util/consts"
 	dberror "edp-admin-console/util/error/db-errors"
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
-	"go.uber.org/zap"
 	"net/http"
 	"net/url"
 	"regexp"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
+	"go.uber.org/zap"
 )
 
 type BranchController struct {
@@ -120,7 +121,7 @@ func (c *BranchController) Delete() {
 			f.Error(cberr.Message)
 			f.Store(&c.Controller)
 			log.Error(cberr.Message, zap.Error(err))
-			c.Redirect(fmt.Sprintf("/admin/edp/codebase/%v/overview?name=%v#branchIsUsedSuccessModal", cn, bn), 302)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/codebase/%v/overview?name=%v#branchIsUsedSuccessModal", context.BasePath, cn, bn), 302)
 			return
 		}
 		log.Error("delete process is failed", zap.Error(err))
@@ -130,5 +131,5 @@ func (c *BranchController) Delete() {
 	log.Info("delete codebase branch method is finished",
 		zap.String("codebase name", cn),
 		zap.String("branch name", bn))
-	c.Redirect(fmt.Sprintf("/admin/edp/codebase/%v/overview?name=%v#branchDeletedSuccessModal", cn, bn), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/codebase/%v/overview?name=%v#branchDeletedSuccessModal", context.BasePath, cn, bn), 302)
 }

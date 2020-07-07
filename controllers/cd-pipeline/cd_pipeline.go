@@ -654,7 +654,7 @@ func (c CDPipelineController) DeleteCDStage() {
 				flash.Error(perr.Message)
 				flash.Store(&c.Controller)
 				log.Error(perr.Message, zap.Error(err))
-				c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineIsUsedAsSource", pn), 302)
+				c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/overview?name=%v#cdPipelineIsUsedAsSource", context.BasePath, pn), 302)
 				return
 			}
 			log.Error("cd pipeline delete process is failed", zap.Error(err))
@@ -664,7 +664,7 @@ func (c CDPipelineController) DeleteCDStage() {
 		log.Debug("delete cd stage method is finished",
 			zap.String("pipeline", pn),
 			zap.String("stage", sn))
-		c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineDeletedSuccessModal", pn), 302)
+		c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/overview?name=%v#cdPipelineDeletedSuccessModal", context.BasePath, pn), 302)
 	}
 
 	if err := c.PipelineService.DeleteCDStage(pn, sn); err != nil {
@@ -673,7 +673,7 @@ func (c CDPipelineController) DeleteCDStage() {
 			flash.Error(serr.Message)
 			flash.Store(&c.Controller)
 			log.Error(serr.Message, zap.Error(err))
-			c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%v/overview?stage=%v#stageIsUsedAsSource", pn, sn), 302)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/%v/overview?stage=%v#stageIsUsedAsSource", context.BasePath, pn, sn), 302)
 			return
 		}
 		log.Error("cd stage delete process is failed", zap.Error(err))
@@ -683,7 +683,7 @@ func (c CDPipelineController) DeleteCDStage() {
 	log.Debug("delete cd stage method is finished",
 		zap.String("pipeline", pn),
 		zap.String("stage", sn))
-	c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/%v/overview?stage=%v#stageSuccessModal", pn, sn), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/%v/overview?stage=%v#stageSuccessModal", context.BasePath, pn, sn), 302)
 }
 
 func (c CDPipelineController) DeleteCDPipeline() {
@@ -696,7 +696,7 @@ func (c CDPipelineController) DeleteCDPipeline() {
 			flash.Error(perr.Message)
 			flash.Store(&c.Controller)
 			log.Error(perr.Message, zap.Error(err))
-			c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineIsUsedAsSource", n), 302)
+			c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/overview?name=%v#cdPipelineIsUsedAsSource", context.BasePath, n), 302)
 			return
 		}
 		log.Error("cd pipeline delete process is failed", zap.Error(err))
@@ -704,5 +704,5 @@ func (c CDPipelineController) DeleteCDPipeline() {
 		return
 	}
 	log.Debug("delete cd pipeline method is finished", zap.String("name", n))
-	c.Redirect(fmt.Sprintf("/admin/edp/cd-pipeline/overview?name=%v#cdPipelineDeletedSuccessModal", n), 302)
+	c.Redirect(fmt.Sprintf("%s/admin/edp/cd-pipeline/overview?name=%v#cdPipelineDeletedSuccessModal", context.BasePath, n), 302)
 }
