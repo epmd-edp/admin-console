@@ -420,7 +420,7 @@
         </div>
     </div>
 </main>
-{{template "template/delete_confirmation_template.html" params "action" "{{ .BasePath }}/admin/edp/codebase/branch/delete" "kind" "codebase-branch" "codebasename" .Codebase.Name "xsrfdata" .xsrfdata "error" .ErrorBranch}}
+{{template "template/delete_confirmation_template.html" params "action" (print .BasePath "/admin/edp/codebase/branch/delete") "kind" "codebase-branch" "codebasename" .Codebase.Name "xsrfdata" .xsrfdata "error" .ErrorBranch}}
 <script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
 <script src="{{ .BasePath }}/static/js/popper.js"></script>
 <script src="{{ .BasePath }}/static/js/bootstrap.js"></script>

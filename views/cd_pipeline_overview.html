@@ -359,7 +359,7 @@
     </div>
 
 </main>
-{{template "template/delete_confirmation_template.html" params "action" "{{ .BasePath }}/admin/edp/stage" "kind" "stage" "pipeline" .CDPipeline.Name "xsrfdata" .xsrfdata "error" .Error}}
+{{template "template/delete_confirmation_template.html" params "action" (print .BasePath "/admin/edp/stage") "kind" "stage" "pipeline" .CDPipeline.Name "xsrfdata" .xsrfdata "error" .Error}}
 <script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
 <script src="{{ .BasePath }}/static/js/popper.js"></script>
 <script src="{{ .BasePath }}/static/js/bootstrap.js"></script>

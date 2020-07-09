@@ -113,7 +113,7 @@
     {{template "template/footer_template.html" .}}
     {{template "template/modal_success_template.html" .}}
 </main>
-{{template "template/delete_confirmation_template.html" params "action" "{{ .BasePath }}/admin/edp/codebase" "kind" "codebase" "xsrfdata" .xsrfdata "type" .Type "error" .DeletionError}}
+{{template "template/delete_confirmation_template.html" params "action" (print .BasePath "/admin/edp/codebase") "kind" "codebase" "xsrfdata" .xsrfdata "type" .Type "error" .DeletionError}}
 <script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
 <script src="{{ .BasePath }}/static/js/popper.js"></script>
 <script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
