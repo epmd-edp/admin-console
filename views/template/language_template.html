@@ -50,6 +50,19 @@
             </div>
         {{end}}
 
+        {{if eq .Type "application" }}
+        <div class="form__radio-btn-wrapper">
+            <input name="appLang" type="radio" class="form__radio-btn"
+                   id="appLang-go"
+                   value="Go" data-target=".formSubsection-go">
+            <label class="form__radio-label" for="appLang-go">
+                <img class="form__radio-label-icon" src="{{ .BasePath }}/static/img/go-logo.png"
+                     alt="logo">
+                <span class="form__radio-label-text">Go</span>
+            </label>
+        </div>
+        {{end}}
+
         <div class="form__radio-btn-wrapper other-language">
             <input name="appLang" type="radio" class="form__radio-btn"
                    id="appLang-other" value="other"

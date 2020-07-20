@@ -192,6 +192,7 @@ $(function () {
             if ($(this).hasClass($(e.target).data('target').substring(1))) {
                 $(this).show();
                 $(this).find('select').attr('disabled', false);
+                $(this).find('select.buildTool').val($(this).find('select.buildTool option:first').val());
             } else {
                 $(this).find('select').attr('disabled', true);
             }

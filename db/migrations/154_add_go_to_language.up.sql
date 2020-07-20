@@ -1,0 +1,1 @@
+alter type "language" add value 'go';
