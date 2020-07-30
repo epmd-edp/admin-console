@@ -63,6 +63,19 @@
         </div>
         {{end}}
 
+        {{if or (eq .Type "application") (eq .Type "library")}}
+            <div class="form__radio-btn-wrapper">
+                <input name="appLang" type="radio" class="form__radio-btn"
+                       id="appLang-python"
+                       value="Python" data-target=".formSubsection-python">
+                <label class="form__radio-label" for="appLang-python">
+                    <img class="form__radio-label-icon" src="{{ .BasePath }}/static/img/python-logo.png"
+                         alt="logo">
+                    <span class="form__radio-label-text">Python</span>
+                </label>
+            </div>
+        {{end}}
+
         <div class="form__radio-btn-wrapper other-language">
             <input name="appLang" type="radio" class="form__radio-btn"
                    id="appLang-other" value="other"
