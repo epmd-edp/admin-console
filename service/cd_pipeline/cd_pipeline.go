@@ -595,3 +595,13 @@ func (s CDPipelineService) deleteCDPipeline(name string) error {
 	log.Info("end executing cd pipeline delete request", zap.String("name", name))
 	return nil
 }
+
+func (s CDPipelineService) GetAllCodebaseDockerStreams() ([]string, error) {
+	log.Debug("start fetching CodebaseDockerStreams")
+	streams, err := s.ICDPipelineRepository.GetAllCodebaseDockerStreams()
+	if err != nil {
+		return nil, errors.Wrap(err, "an error has occurred while getting CodebaseDockerStreams from DB")
+	}
+	log.Info("CodebaseDockerStreams were fetched", zap.Strings("streams", streams))
+	return streams, nil
+}

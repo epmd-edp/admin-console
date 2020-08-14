@@ -275,6 +275,7 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
 	c.Data["JiraServer"] = servers
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "create_autotest.html"
 }
 
@@ -303,5 +304,6 @@ func (c *AutotestsController) GetAutotestsOverviewPage() {
 	c.Data["BasePath"] = context.BasePath
 	c.Data["VersioningTypes"] = c.VersioningTypes
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "codebase.html"
 }

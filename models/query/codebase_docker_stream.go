@@ -6,6 +6,7 @@ type CodebaseDockerStream struct {
 	CodebaseBranch    *CodebaseBranch `json:"-" orm:"rel(fk)"`
 	ImageLink         string          `json:"imageLink" orm:"-"`
 	CICDLink          string          `json:"jenkinsLink" orm:"-"`
+	CdPipelines       []*CDPipeline   `orm:"reverse(many)"`
 }
 
 func (c *CodebaseDockerStream) TableName() string {

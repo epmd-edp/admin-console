@@ -65,6 +65,7 @@ func (c *LibraryController) GetLibraryListPage() {
 	c.Data["Type"] = query.Library
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "codebase.html"
 }
 
@@ -127,6 +128,7 @@ func (c *LibraryController) GetCreatePage() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
 	c.Data["JiraServer"] = servers
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "create_library.html"
 }
 

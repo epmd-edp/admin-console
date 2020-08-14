@@ -109,6 +109,7 @@ func (c *CDPipelineController) GetContinuousDeliveryPage() {
 	c.Data["Type"] = "delivery"
 	c.Data["BasePath"] = context.BasePath
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "continuous_delivery.html"
 }
 
@@ -173,6 +174,7 @@ func (c *CDPipelineController) GetCreateCDPipelinePage() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
 	c.Data["JobProvisioners"] = jp
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "create_cd_pipeline.html"
 }
 
@@ -219,6 +221,7 @@ func (c *CDPipelineController) GetEditCDPipelinePage() {
 	c.Data["Type"] = "delivery"
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "edit_cd_pipeline.html"
 }
 
@@ -374,6 +377,7 @@ func (c *CDPipelineController) GetCDPipelineOverviewPage() {
 	c.Data["BasePath"] = context.BasePath
 	c.Data["HasRights"] = auth.IsAdmin(contextRoles)
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "cd_pipeline_overview.html"
 }
 

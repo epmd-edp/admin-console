@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EDP Admin Console</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/edp-instance.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/diagram.css">
+</head>
+<body>
+<main>
+    {{template "template/header_template.html" .}}
+    <section class="content d-flex">
+        <aside class="p-0 bg-dark active js-aside-menu aside-menu active">
+            {{template "template/navbar_template.html" .}}
+        </aside>
+        <div id="diagram" class="diagram-canvas"
+             codebase-attr="{{.CodebasesJson}}"
+             pipeline-attr="{{.PipelinesJson}}"
+             codebase-docker-stream-attr="{{.CodebaseDockerStreamsJson}}">
+        </div>
+    </section>
+    {{template "template/footer_template.html" .}}
+</main>
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script src="https://unpkg.com/dagre@0.7.4/dist/dagre.js"></script>
+<script src="{{ .BasePath }}/static/js/cytoscape-dagre.js"></script>
+<script src="{{ .BasePath }}/static/js/popper.js"></script>
+<script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
+<script src="{{ .BasePath }}/static/js/jquery-3.3.1.js"></script>
+<script src="{{ .BasePath }}/static/js/diagram.js"></script>
+</body>
+</html>
