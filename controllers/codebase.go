@@ -100,6 +100,7 @@ func (c *CodebaseController) GetCodebaseOverviewPage() {
 	}
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "codebase_overview.html"
 }
 
@@ -243,6 +244,7 @@ func (c *CodebaseController) GetEditCodebasePage() {
 	c.Data["BasePath"] = context.BasePath
 	c.Data["Codebase"] = codebase
 	c.Data["Type"] = codebase.Type
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "edit_codebase.html"
 }
 

@@ -234,6 +234,15 @@ func init() {
 		CodebaseService: codebaseService,
 	}
 
+	tpsc := controllers.ThirdPartyServiceController{
+		ThirdPartyService: thirdPartyService,
+	}
+
+	dc := controllers.DiagramController{
+		CodebaseService: codebaseService,
+		PipelineService: pipelineService,
+	}
+
 	adminEdpNamespace := beego.NewNamespace(fmt.Sprintf("%s/admin/edp", context.BasePath),
 		beego.NSRouter("/overview", &ec, "get:GetEDPComponents"),
 		beego.NSRouter("/application/overview", &appc, "get:GetApplicationsOverviewPage"),
@@ -262,7 +271,10 @@ func init() {
 		beego.NSRouter("/library/overview", &lc, "get:GetLibraryListPage"),
 		beego.NSRouter("/library/create", &lc, "get:GetCreatePage"),
 		beego.NSRouter("/library", &lc, "post:Create"),
-		beego.NSRouter("/service/overview", &controllers.ThirdPartyServiceController{ThirdPartyService: thirdPartyService}, "get:GetServicePage"),
+
+		beego.NSRouter("/service/overview", &tpsc, "get:GetServicePage"),
+
+		beego.NSRouter("/diagram/overview", &dc, "get:GetDiagramPage"),
 	)
 	beego.AddNamespace(adminEdpNamespace)
 

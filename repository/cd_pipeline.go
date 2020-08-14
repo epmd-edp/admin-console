@@ -40,6 +40,7 @@ type ICDPipelineRepository interface {
 	GetCDPipelinesUsingApplicationAndBranch(codebase, branch string) ([]string, error)
 	GetCDPipelinesUsingAutotestAndBranch(codebase, branch string) ([]string, error)
 	GetCDPipelinesUsingLibraryAndBranch(codebase, branch string) ([]string, error)
+	GetAllCodebaseDockerStreams() ([]string, error)
 }
 
 const (
@@ -147,13 +148,20 @@ const (
 		"  and c.name = ? " +
 		"  and cb.name = ? " +
 		"group by cp.name;"
+	selectCodebaseDockerStream      = "select oc_image_stream_name from codebase_docker_stream;"
+	selectStageCodebaseDockerStream = "select " +
+		" cd_stage_id, cds.oc_image_stream_name as input, cds1.oc_image_stream_name as output" +
+		" from stage_codebase_docker_stream scds " +
+		" left join codebase_docker_stream cds on scds.input_codebase_docker_stream_id = cds.id" +
+		" left join codebase_docker_stream cds1 on scds.output_codebase_docker_stream_id = cds1.id " +
+		" where cd_stage_id = ?;"
 )
 
 type CDPipelineRepository struct {
 	ICDPipelineRepository
 }
 
-func (this CDPipelineRepository) GetCDPipelineByName(pipelineName string) (*query.CDPipeline, error) {
+func (r CDPipelineRepository) GetCDPipelineByName(pipelineName string) (*query.CDPipeline, error) {
 	o := orm.NewOrm()
 	cdPipeline := query.CDPipeline{Name: pipelineName}
 
@@ -364,7 +372,7 @@ func loadRelatedBranch(gates []query.QualityGate) error {
 	return nil
 }
 
-func (this CDPipelineRepository) GetCDPipelines(criteria query.CDPipelineCriteria) ([]*query.CDPipeline, error) {
+func (r CDPipelineRepository) GetCDPipelines(criteria query.CDPipelineCriteria) ([]*query.CDPipeline, error) {
 	o := orm.NewOrm()
 	var pipelines []*query.CDPipeline
 
@@ -381,7 +389,35 @@ func (this CDPipelineRepository) GetCDPipelines(criteria query.CDPipelineCriteri
 		}
 		return nil, err
 	}
+
+	for _, p := range pipelines {
+		if err = loadRelatedStage(p); err != nil {
+			return nil, err
+		}
+
+		if _, err = o.LoadRelated(p, "CodebaseDockerStream"); err != nil {
+			return nil, err
+		}
+
+		for _, s := range p.Stage {
+			ds, err := r.getStageCodebaseDockerStream(s.Id)
+			if err != nil {
+				return nil, err
+			}
+			s.StageCodebaseDockerStream = ds
+		}
+	}
+
 	return pipelines, nil
+}
+
+func loadRelatedStage(pipeline *query.CDPipeline) error {
+	o := orm.NewOrm()
+	qs := o.QueryTable(new(query.Stage))
+	_, err := qs.Filter("cd_pipeline_id", pipeline.Id).
+		OrderBy("Name").
+		All(&pipeline.Stage)
+	return err
 }
 
 func loadRelatedActionLogForCDPipeline(cdPipeline *query.CDPipeline) error {
@@ -397,7 +433,7 @@ func loadRelatedActionLogForCDPipeline(cdPipeline *query.CDPipeline) error {
 	return err
 }
 
-func (this CDPipelineRepository) GetStage(cdPipelineName, stageName string) (*models.StageView, error) {
+func (r CDPipelineRepository) GetStage(cdPipelineName, stageName string) (*models.StageView, error) {
 	o := orm.NewOrm()
 	var stage models.StageView
 	var maps []orm.Params
@@ -575,4 +611,22 @@ func (CDPipelineRepository) GetCDPipelinesUsingLibraryAndBranch(codebase, branch
 		return nil, err
 	}
 	return p, nil
+}
+
+func (CDPipelineRepository) GetAllCodebaseDockerStreams() ([]string, error) {
+	o := orm.NewOrm()
+	var cds []string
+	if _, err := o.Raw(selectCodebaseDockerStream).QueryRows(&cds); err != nil {
+		return nil, err
+	}
+	return cds, nil
+}
+
+func (CDPipelineRepository) getStageCodebaseDockerStream(stageId int) ([]query.StageCodebaseDockerStream, error) {
+	o := orm.NewOrm()
+	var ds []query.StageCodebaseDockerStream
+	if _, err := o.Raw(selectStageCodebaseDockerStream, stageId).QueryRows(&ds); err != nil {
+		return nil, err
+	}
+	return ds, nil
 }

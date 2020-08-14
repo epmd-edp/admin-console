@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Oswald:500&display=swap');
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+/*@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
@@ -8,8 +9,7 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-@import url('https://fonts.googleapis.com/css?family=Oswald:500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oswald:500&display=swap');*/
 
 
 @font-face {
@@ -50,7 +50,10 @@
 @font-face {
     font-family: 'icomoon';
     src: url("./assets/icomoon/icomoon.eot?rkcn6x");
-    src: url("./assets/icomoon/icomoon.eot?rkcn6x#iefix") format("embedded-opentype"), url("./assets/icomoon/icomoon.ttf?rkcn6x") format("truetype"), url("./assets/icomoon/icomoon.woff?rkcn6x") format("woff"), url("./assets/icomoon/icomoon.svg?rkcn6x#icomoon") format("svg");
+    src: url("./assets/icomoon/icomoon.eot?rkcn6x#iefix") format("embedded-opentype"),
+    url("./assets/icomoon/icomoon.ttf?rkcn6x") format("truetype"),
+    url("./assets/icomoon/icomoon.woff?rkcn6x") format("woff"),
+    url("./assets/icomoon/icomoon.svg?rkcn6x#icomoon") format("svg");
     src: url('./assets/icomoon/icomoon.eot?14ijkd#iefix') format('embedded-opentype'),
     url('assets/icomoon/icomoon-pencil.woff?14ijkd') format('woff');
     font-weight: normal;
@@ -60,9 +63,24 @@
 @font-face {
     font-family: 'icomoon';
     src: url("./assets/icomoon/icomoon.eot?rkcn6x");
-    src: url("./assets/icomoon/icomoon.eot?rkcn6x#iefix") format("embedded-opentype"), url("./assets/icomoon/icomoon.ttf?rkcn6x") format("truetype"), url("./assets/icomoon/icomoon.woff?rkcn6x") format("woff"), url("./assets/icomoon/icomoon.svg?rkcn6x#icomoon") format("svg");
+    src: url("./assets/icomoon/icomoon.eot?rkcn6x#iefix") format("embedded-opentype"),
+    url("./assets/icomoon/icomoon.ttf?rkcn6x") format("truetype"),
+    url("./assets/icomoon/icomoon.woff?rkcn6x") format("woff"),
+    url("./assets/icomoon/icomoon.svg?rkcn6x#icomoon") format("svg");
     font-weight: normal;
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'icomoon';
+    src:  url('./assets/icomoon/diagram/icomoon.eot?dx3pt3');
+    src:  url('./assets/icomoon/diagram/icomoon.eot?dx3pt3#iefix') format('embedded-opentype'),
+    url('./assets/icomoon/diagram/icomoon.ttf?dx3pt3') format('truetype'),
+    url('./assets/icomoon/diagram/icomoon.woff?dx3pt3') format('woff'),
+    url('./assets/icomoon/diagram/icomoon.svg?dx3pt3#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
 }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -96,6 +114,10 @@
     color: #B6C0C8;
 }
 
+.icon-enlarge:before {
+    content: "\e989";
+}
+
 .icon-trashcan:hover:before,
 .icon-trashcan:hover:active {
     content: "\e903";
@@ -113,6 +135,10 @@
     color: #f15c43;
 }
 
+.icon-frustrated2:before {
+    content: "\ea00";
+}
+
 .icon-continuous_delivery:before {
     content: "\e907";
 }
@@ -125,7 +151,11 @@
     font-family: 'Glyphicons Halflings';
 
     src: url('./assets/glyphicons/glyphicons-halflings-regular.eot');
-    src: url('./assets/glyphicons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('./assets/glyphicons/glyphicons-halflings-regular.woff2') format('woff2'), url('./assets/glyphicons/glyphicons-halflings-regular.woff') format('woff'), url('./assets/glyphicons/glyphicons-halflings-regular.ttf') format('truetype'), url('./assets/glyphicons/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+    src: url('./assets/glyphicons/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+    url('./assets/glyphicons/glyphicons-halflings-regular.woff2') format('woff2'),
+    url('./assets/glyphicons/glyphicons-halflings-regular.woff') format('woff'),
+    url('./assets/glyphicons/glyphicons-halflings-regular.ttf') format('truetype'),
+    url('./assets/glyphicons/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
 .glyphicon {
@@ -11331,4 +11361,8 @@ div#kubernetes-component {
 
 .form-error {
     color: red;
+}
+
+.navbar-text-padding {
+    padding-left: 15px;
 }

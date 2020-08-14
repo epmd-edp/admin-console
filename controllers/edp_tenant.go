@@ -45,6 +45,7 @@ func (c *EDPTenantController) GetEDPComponents() {
 	c.Data["EDPComponents"] = comp
 	c.Data["Type"] = "overview"
 	c.Data["BasePath"] = context.BasePath
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "edp_components.html"
 }
 

@@ -23,5 +23,6 @@ func (s *ThirdPartyServiceController) GetServicePage() {
 	s.Data["Services"] = services
 	s.Data["Type"] = "services"
 	s.Data["BasePath"] = context.BasePath
+	s.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	s.TplName = "service.html"
 }
