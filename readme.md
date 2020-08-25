@@ -26,8 +26,8 @@ _**NOTE**: The Admin Console link is available on the OpenShift overview page fo
 ### Related Articles
 
 * [Local Development](documentation/local_development.md)
-* [GitHub Integration](documentation)  !!!!
-* [GitLab Integration]()
+* [GitHub Integration](documentation/github-integration.md)
+* [GitLab Integration](documentation/gitlab-integration.md)
 ---
 * [Adjust Import Strategy](documentation/import-strategy.md)
 * [Adjust Integration With Jira Server](documentation/jira-server.md)
