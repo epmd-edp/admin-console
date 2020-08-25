@@ -25,12 +25,16 @@ _**NOTE**: The Admin Console link is available on the OpenShift overview page fo
 
 ### Related Articles
 
+* [Local Development](documentation/local_development.md)
+* [GitHub Integration](documentation)  !!!!
+* [GitLab Integration]()
+---
 * [Adjust Import Strategy](documentation/import-strategy.md)
 * [Adjust Integration With Jira Server](documentation/jira-server.md)
 * [Add Jenkins Slave](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/add-jenkins-slave.md#add-jenkins-slave)
 * [Add Job Provision](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/add-job-provision.md#add-job-provision)
 * [Add Other Code Language](documentation/add_other_code_language.md)
 * [Adjust VCS Integration With Jira Server](documentation/jira_vcs_integration.md)
-* [Local Development](documentation/local_development.md)
-* [GitHub Integration](https://github.com/epmd-edp/jenkins-operator/blob/release-2.3/documentation/github-integration.md#github-integration)
-* [GitLab Integration](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/gitlab-integration.md#gitlab-integration)
+---
+* [Customize CD Pipeline](documentation/cicd_customization/customize-deploy-pipeline.md)
+
