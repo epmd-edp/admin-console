@@ -93,23 +93,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="js-form-subsection form-subsection formSubsection-dotnet">
-                                        <div class="form__input-wrapper with-circle"><span
-                                                    class="form__input-heading"></span>
-                                            <div class="form__radio-btn-wrapper">
-                                                <input name="framework" type="radio" class="form__radio-btn framework"
-                                                       id="framework-dotNet" value="netcore">
-                                                <label
-                                                        class="form__radio-label" for="framework-dotNet">
-                                                    <span class="form__radio-btn--outer-circle">
-                                                        <span class="form__radio-btn--inner-circle "></span>
-                                                    </span>
-                                                    <img class="form__radio-label-icon" src="{{ .BasePath }}/static/img/netcore.png"
-                                                         alt="logo">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    {{template "template/dotnet_framework_template.html" .}}
 
                                     {{template "template/go_framework_template.html" .}}
 
