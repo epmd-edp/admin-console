@@ -160,8 +160,8 @@ func (s *CDPipelineService) GetCDPipelineByName(pipelineName string) (*query.CDP
 
 		applicationsToPromote, err := s.CodebaseService.GetApplicationsToPromote(cdPipeline.Id)
 		if err != nil {
-			return nil, errors.Wrapf(err, "an error has occurred while getting Applications To Promote for CD Pipeline",
-				"pipe id", cdPipeline.Id)
+			return nil, errors.Wrapf(err, "an error has occurred while getting Applications To Promote for CD Pipeline %v",
+				"pipe id %v")
 		}
 		cdPipeline.ApplicationsToPromote = applicationsToPromote
 		log.Debug("CD Pipeline has been fetched from DB", zap.String("pipe", cdPipeline.Name))

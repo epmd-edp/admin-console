@@ -89,7 +89,7 @@ func ValidCodebaseRequestData(codebase command.CreateCodebase) *ErrMsg {
 
 func CreateCodebaseLogRequestData(app command.CreateCodebase) strings.Builder {
 	var result strings.Builder
-	result.WriteString(fmt.Sprintf("Request data to create CR is valid. name=%s, strategy=%s, lang=%s, buildTool=%s, multiModule=%s, framework=%s",
+	result.WriteString(fmt.Sprintf("Request data to create CR is valid. name=%v, strategy=%v, lang=%v, buildTool=%v, multiModule=%v, framework=%v",
 		app.Name, app.Strategy, app.Lang, app.BuildTool, app.MultiModule, app.Framework))
 
 	if app.Repository != nil {
