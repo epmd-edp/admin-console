@@ -237,6 +237,30 @@ $(function () {
     $('#strategy').change(function () {
         toggleStrategy(this.value.toLowerCase());
         toggleCiToolView(this.value.toLowerCase());
+
+        $('div.jenkins-slave').removeClass('hide-element')
+            .find('select[name="jenkinsSlave"]');
+
+        $('div.ci-provision').removeClass('hide-element')
+            .find('select[name="jobProvisioning"]');
+
+        let $jiraEl = $('#jiraServerToggle'),
+            $jiraDivEl = $('div.jiraServerToggle');
+        if ($jiraEl.is(':checked')) {
+            $jiraEl.click();
+        }
+
+        $jiraDivEl.removeClass('hide-element');
+
+        $('div.jenkins-slave')
+            .find('select[name="jenkinsSlave"]')
+            .attr('disabled', false);
+
+        $('div.ci-provision')
+            .find('select[name="jobProvisioning"]')
+            .attr('disabled', false);
+
+        $jiraEl.attr('disabled', false);
     });
 
     function toggleCiToolView(strategy) {
@@ -250,6 +274,53 @@ $(function () {
             .find('select[name="ciTool"]')
             .val('Jenkins');
 
+    }
+
+    $('select.ciTool').change(function () {
+        toggleJenkinsSlaveView($(this).val());
+        toggleCiProvisionView($(this).val());
+        toggleJiraIntegrationView($(this).val());
+    });
+
+    function toggleJenkinsSlaveView(ciTool) {
+        let $jsEl = $('div.jenkins-slave');
+        if (ciTool === "GitlabCI") {
+            $jsEl.addClass('hide-element')
+                .find('select[name="jenkinsSlave"]')
+                .attr('disabled', true);
+            return
+        }
+        $jsEl.removeClass('hide-element')
+            .find('select[name="jenkinsSlave"]')
+            .attr('disabled', false);
+    }
+
+    function toggleCiProvisionView(ciTool) {
+        let $pEl = $('div.ci-provision');
+        if (ciTool === "GitlabCI") {
+            $pEl.addClass('hide-element')
+                .find('select[name="jobProvisioning"]')
+                .attr('disabled', true);
+            return
+        }
+        $pEl.removeClass('hide-element')
+            .find('select[name="jobProvisioning"]')
+            .attr('disabled', false);
+    }
+
+    function toggleJiraIntegrationView(ciTool) {
+        let $jiraEl = $('#jiraServerToggle'),
+            $jiraDivEl = $('div.jiraServerToggle');
+        if (ciTool === "GitlabCI") {
+            if ($jiraEl.is(':checked')) {
+                $jiraEl.click();
+            }
+            $jiraDivEl.addClass('hide-element');
+            $jiraEl.attr('disabled', true);
+            return
+        }
+        $jiraDivEl.removeClass('hide-element');
+        $jiraEl.attr('disabled', false);
     }
 
     $('#btn-modal-continue').click(function () {

@@ -12,7 +12,7 @@
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionCreateCodebase">
         <div class="card-body">
 
-            <div class="form-group">
+            <div class="form-group ci-provision">
                 <label for="jobProvisioning">Select CI pipeline provisioner
                     <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
                           title="Select Job Provisioner which will be used to handle codebase."></span>
@@ -92,7 +92,7 @@
                 </select>
             </div>
 
-            <div class="form-check">
+            <div class="form-check jiraServerToggle">
                 <input type="checkbox" class="form-check-input" id="jiraServerToggle"
                        {{if not .JiraServer}}disabled{{end}}>
                 <label class="form-check-label" for="jiraServerToggle">Integrate with Jira server</label>
