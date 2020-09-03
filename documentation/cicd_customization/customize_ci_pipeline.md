@@ -95,7 +95,7 @@ To add a new stage for a particular application, perform the steps below:
 
 ## Redefine a Default Stage Logic via Custom Global Pipeline Libraries <a name="redefine_stage_global_pipe_lib"></a>
 
->_**NOTE**: To add a new Custom Global Pipeline Library, please refer to the [Add a New Custom Global Pipeline Library](documentation/cicd_customization/add_new_custom_global_pipeline_lib.md) page._ 
+>_**NOTE**: To add a new Custom Global Pipeline Library, please refer to the [Add a New Custom Global Pipeline Library](../documentation/cicd_customization/add_new_custom_global_pipeline_lib.md) page._ 
 
 To redefine any stage and add custom logic using global pipeline libraries, perform the steps below:
 
@@ -158,7 +158,7 @@ Mandatory points:
 
 ## Add a New Stage Using Shared Library via Custom Global Pipeline Libraries <a name="add_stage_shared_lib"></a>
 
->_**NOTE**: To add a new Custom Global Pipeline Library, please refer to the [Add a New Custom Global Pipeline Library](documentation/cicd_customization/add_new_custom_global_pipeline_lib.md) page._ 
+>_**NOTE**: To add a new Custom Global Pipeline Library, please refer to the [Add a New Custom Global Pipeline Library](../documentation/cicd_customization/add_new_custom_global_pipeline_lib.md) page._ 
 
 To redefine any stage and add custom logic using global pipeline libraries, perform the steps below:
 
