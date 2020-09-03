@@ -16,8 +16,8 @@ _**NOTE**: To interact with Admin Console via REST API, explore the [Create Code
 Admin Console is a complete tool allowing to manage and control the added applications, services, autotests, and libraries to the environment as well as to create a CD pipeline and perform the following actions:
 
 1. [Add Applications](documentation/add_applications.md)
-2. [Add Services](documentation/add_services.md) 
-3. [Add Autotests](documentation/add_autotests.md) 
+2. [Add Services](documentation/add_services.md)
+3. [Add Autotests](documentation/add_autotests.md)
 4. [Add Libraries](documentation/add_libraries.md)
 5. [Add CD Pipelines](documentation/add_CD_pipelines.md)
 
@@ -36,5 +36,6 @@ _**NOTE**: The Admin Console link is available on the OpenShift overview page fo
 * [Add Other Code Language](documentation/add_other_code_language.md)
 * [Adjust VCS Integration With Jira Server](documentation/jira_vcs_integration.md)
 ---
+* [Customize CI Pipeline](documentation/cicd_customization/customize_ci_pipeline.md)
 * [Customize CD Pipeline](documentation/cicd_customization/customize-deploy-pipeline.md)
-
+* [Add a New Custom Global Pipeline Library](documentation/cicd_customization/add_new_custom_global_pipeline_lib.md)
