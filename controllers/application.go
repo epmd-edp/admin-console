@@ -232,11 +232,17 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 		BuildTool:        c.GetString("buildTool"),
 		Strategy:         strings.ToLower(c.GetString("strategy")),
 		Type:             "application",
-		JenkinsSlave:     c.GetString("jenkinsSlave"),
-		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
 		CiTool:           c.GetString("ciTool"),
 		Name:             c.GetString("appName"),
+	}
+
+	if js := c.GetString("jenkinsSlave"); len(js) > 0 {
+		codebase.JenkinsSlave = &js
+	}
+
+	if jp := c.GetString("jobProvisioning"); len(jp) > 0 {
+		codebase.JobProvisioning = &jp
 	}
 
 	if s := c.GetString("jiraServer"); len(s) > 0 {

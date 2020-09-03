@@ -105,11 +105,17 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 		BuildTool:        c.GetString("buildTool"),
 		Strategy:         strings.ToLower(c.GetString("strategy")),
 		Type:             "autotests",
-		JenkinsSlave:     c.GetString("jenkinsSlave"),
-		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
 		Name:             c.GetString("appName"),
 		CiTool:           c.GetString("ciTool"),
+	}
+
+	if js := c.GetString("jenkinsSlave"); len(js) > 0 {
+		codebase.JenkinsSlave = &js
+	}
+
+	if jp := c.GetString("jobProvisioning"); len(jp) > 0 {
+		codebase.JobProvisioning = &jp
 	}
 
 	if s := c.GetString("jiraServer"); len(s) > 0 {

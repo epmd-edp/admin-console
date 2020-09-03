@@ -181,11 +181,17 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 		BuildTool:        c.GetString("buildTool"),
 		Strategy:         strings.ToLower(c.GetString("strategy")),
 		Type:             "library",
-		JenkinsSlave:     c.GetString("jenkinsSlave"),
-		JobProvisioning:  c.GetString("jobProvisioning"),
 		DeploymentScript: c.GetString("deploymentScript"),
 		Name:             c.GetString("appName"),
 		CiTool:           c.GetString("ciTool"),
+	}
+
+	if js := c.GetString("jenkinsSlave"); len(js) > 0 {
+		library.JenkinsSlave = &js
+	}
+
+	if jp := c.GetString("jobProvisioning"); len(jp) > 0 {
+		library.JobProvisioning = &jp
 	}
 
 	if s := c.GetString("jiraServer"); len(s) > 0 {

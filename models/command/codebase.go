@@ -18,8 +18,8 @@ type CreateCodebase struct {
 	GitServer           string      `json:"gitServer"`
 	Versioning          Versioning  `json:"versioning"`
 	GitUrlPath          *string     `json:"gitUrlPath"`
-	JenkinsSlave        string      `json:"jenkinsSlave"`
-	JobProvisioning     string      `json:"jobProvisioning"`
+	JenkinsSlave        *string     `json:"jenkinsSlave,omitempty"`
+	JobProvisioning     *string     `json:"jobProvisioning,omitempty"`
 	DeploymentScript    string      `json:"deploymentScript"`
 	JiraServer          *string     `json:"jiraServer,omitempty"`
 	CommitMessageRegex  *string     `json:"commitMessagePattern"`
