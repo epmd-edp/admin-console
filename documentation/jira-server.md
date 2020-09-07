@@ -7,11 +7,11 @@ In order to adjust the Jira server integration, first add JiraServer CR by perfo
     ```yaml
     apiVersion: v1
     data:
-    password: passwordInBase64
-    username: usernameInBase64
+      password: passwordInBase64
+      username: usernameInBase64
     kind: Secret
     metadata:
-    name: epam-jira-user
+      name: epam-jira-user
     type: kubernetes.io/basic-auth
     ```
 2. Create JiraServer CR in the OpenShift/K8S namespace with the **apiUrl**, **credentialName** and **rootUrl** fields:
