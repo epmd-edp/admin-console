@@ -88,7 +88,11 @@ spec:
             - name: BUILD_TOOLS
               value: maven
             - name: DEPLOYMENT_SCRIPT
+{{ if eq .Values.platform "openshift" }}
               value: 'helm-chart,openshift-template'
+{{ else }}
+              value: 'helm-chart'
+{{ end }}
             - name: PLATFORM_TYPE
               value: {{ .Values.platform }}
             - name: VCS_INTEGRATION_ENABLED
