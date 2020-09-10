@@ -14,7 +14,11 @@ var (
 )
 
 func convertToBool() bool {
-	b, err := strconv.ParseBool(beego.AppConfig.String("diagramPageEnabled"))
+	s := beego.AppConfig.String("diagramPageEnabled")
+	if s == "" {
+		return false
+	}
+	b, err := strconv.ParseBool(s)
 	if err != nil {
 		panic(err)
 	}
