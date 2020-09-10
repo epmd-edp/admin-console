@@ -132,13 +132,12 @@ func (s *CodebaseService) GetCodebasesByCriteria(criteria query.CodebaseCriteria
 }
 
 func (s CodebaseService) GetCodebaseByName(name string) (*query.Codebase, error) {
-	codebase, err := s.ICodebaseRepository.GetCodebaseByName(name)
+	c, err := s.ICodebaseRepository.GetCodebaseByName(name)
 	if err != nil {
-		clog.Error("an error has occurred while getting codebase object", zap.Error(err), zap.String("name", name))
-		return nil, err
+		return nil, errors.Wrapf(err, "an error has occurred while getting %v codebase from db", name)
 	}
-	clog.Info("fetched codebase info", zap.String("name", codebase.Name))
-	return codebase, nil
+	clog.Info("codebase has been fetched from db", zap.String("name", c.Name))
+	return c, nil
 }
 
 func (s *CodebaseService) findCodebaseByName(name string) bool {
