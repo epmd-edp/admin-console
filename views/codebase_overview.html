@@ -145,10 +145,12 @@
                             <div class="card-body">
                                 <table class="edp-card-table">
                                     <tbody>
-                                    <tr>
-                                        <th style="width: 50%">Job Provisioner</th>
-                                        <td>{{.Codebase.JobProvisioning}}</td>
-                                    </tr>
+                                    {{if .Codebase.JobProvisioning}}
+                                        <tr>
+                                            <th style="width: 50%">Job Provisioner</th>
+                                            <td>{{.Codebase.JobProvisioning}}</td>
+                                        </tr>
+                                    {{end}}
                                     {{if .Codebase.JenkinsSlave}}
                                         <tr>
                                             <th>Jenkins Slave</th>

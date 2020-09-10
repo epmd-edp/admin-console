@@ -36,3 +36,7 @@ func CreateGerritLink(domain, codebaseName, branchName string) string {
 func CreateGitLink(hostname, path, branch string) string {
 	return fmt.Sprintf("https://%s%s/commits/%s", hostname, path, branch)
 }
+
+func CreateGitlabCILink(domain, relativePath string) string {
+	return fmt.Sprintf("https://%v%v/pipelines?scope=branches&page=1", domain, relativePath)
+}

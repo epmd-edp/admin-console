@@ -50,21 +50,23 @@ const (
 )
 
 func (c *CodebaseController) GetCodebaseOverviewPage() {
-	codebaseName := c.GetString(":codebaseName")
-	codebase, err := c.CodebaseService.GetCodebaseByName(codebaseName)
+	cn := c.GetString(":codebaseName")
+	log.Debug("start GetCodebaseOverviewPage method from controller", zap.String("name", cn))
+	codebase, err := c.CodebaseService.GetCodebaseByName(cn)
 	if err != nil {
+		log.Error(err.Error())
 		c.Abort("500")
 		return
 	}
 
 	if codebase == nil {
+		log.Error("codebase wasn't found", zap.String("name", cn))
 		c.Abort("404")
 		return
 	}
 
-	err = c.createBranchLinks(*codebase, context.Tenant)
-	if err != nil {
-		log.Error("an error has occurred while creating link to Git Server", zap.Error(err))
+	if err := c.createBranchLinks(*codebase, context.Tenant); err != nil {
+		log.Error("an error has occurred while creating link to Git provider", zap.Error(err))
 		c.Abort("500")
 		return
 	}
@@ -75,13 +77,21 @@ func (c *CodebaseController) GetCodebaseOverviewPage() {
 	if flash.Data["error"] != "" {
 		c.Data["ErrorBranch"] = flash.Data["error"]
 	}
+
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["Codebase"] = codebase
 	c.Data["Type"] = codebase.Type
-	contextRoles := c.GetSession("realm_roles").([]string)
-	c.Data["HasRights"] = auth.IsAdmin(contextRoles)
-	switch codebase.Type {
+	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
+	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Data["BasePath"] = context.BasePath
+	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
+	c.setCodebaseTypeCaptions(string(codebase.Type))
+	c.TplName = "codebase_overview.html"
+}
+
+func (c *CodebaseController) setCodebaseTypeCaptions(codebaseType string) {
+	switch codebaseType {
 	case "application":
 		{
 			c.Data["TypeCaption"] = "Application"
@@ -98,10 +108,6 @@ func (c *CodebaseController) GetCodebaseOverviewPage() {
 			c.Data["TypeSingular"] = "library"
 		}
 	}
-	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
-	c.Data["BasePath"] = context.BasePath
-	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
-	c.TplName = "codebase_overview.html"
 }
 
 func addCodebaseBranchInProgressIfAny(branches []*query.CodebaseBranch, branchInProgress string) []*query.CodebaseBranch {
@@ -143,6 +149,7 @@ func (c CodebaseController) createLinksForGitProvider(codebase query.Codebase, t
 	if err != nil {
 		return err
 	}
+
 	if jc == nil {
 		return fmt.Errorf("jenkin link can't be created for %v codebase because of edp-component %v is absent in DB",
 			codebase.Name, consts.Jenkins)
@@ -150,11 +157,17 @@ func (c CodebaseController) createLinksForGitProvider(codebase query.Codebase, t
 
 	for i, b := range codebase.CodebaseBranch {
 		codebase.CodebaseBranch[i].VCSLink = util.CreateGitLink(g.Hostname, *codebase.GitProjectPath, b.Name)
-		codebase.CodebaseBranch[i].CICDLink = util.CreateCICDApplicationLink(jc.Url, codebase.Name,
-			util.ProcessNameToKubernetesConvention(b.Name))
+		codebase.CodebaseBranch[i].CICDLink = getCiLink(codebase, jc.Url, b.Name, g.Hostname)
 	}
 
 	return nil
+}
+
+func getCiLink(codebase query.Codebase, jenkinsHost, branch, gitHost string) string {
+	if consts.JenkinsCITool == codebase.CiTool {
+		return util.CreateCICDApplicationLink(jenkinsHost, codebase.Name, util.ProcessNameToKubernetesConvention(branch))
+	}
+	return util.CreateGitlabCILink(gitHost, *codebase.GitProjectPath)
 }
 
 func (c CodebaseController) createLinksForGerritProvider(codebase query.Codebase, tenant string) error {

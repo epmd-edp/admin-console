@@ -22,6 +22,8 @@ const (
 	LanguageJava   = "Java"
 
 	DefaultVersioningType = "default"
+
+	JenkinsCITool = "Jenkins"
 )
 
 var DefaultBuildNumber = "0"
