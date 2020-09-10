@@ -53,7 +53,7 @@ when pushing a new code to the repository.
 
 6. Create change using the Gerrit web console: open the rest-autotests project → create change → click the Publish button → 
 hit Edit and Add → type the run.json to open this file.
-      
+    >_**NOTE**: To get more information on how to add a change using the Gerrit web console, please refer to the [Creating a Change in Gerrit](https://charm.cs.illinois.edu/gerrit/Documentation/user-inline-edit.html#create-change) page._ 
 7. Open the deployed environment in OpenShift and copy the external URL address for zuul application:  
     ![configure_autotest](../customization_resources/configure_autotest.png)
 8. Define another command value by pasting the copied URL address, click Save and then Publish button to trigger the CI pipeline in Jenkins:
@@ -72,8 +72,9 @@ hit Edit and Add → type the run.json to open this file.
 ## Local Launch of Autotests <a name="local_launch_autotest"></a>
 
 There is an ability to run the autotests locally using the IntelliJIDEA application. To launch the rest-autotests project for the local verification, perform the following steps:
-1. Clone the project to the local machine.
-    
+
+1. Clone the project to the local machine. For detailed information on how to clone the project, please refer [here](../documentation/cicd_customization/clone_project_using_gitbash.md).
+
 2. Open the project in IntelliJIDEA and find the **run.json** file to copy out the necessary command value, then click the Add Configuration button, hit the plus sign → go to Maven and paste the copied command value into the Command line field→ click Apply and OK → hit the necessary button to run the added command value:
     ![launch_autotest](../customization_resources/launch_autotest.png) 
 3. As a result, all launched tests will be successfully passed:

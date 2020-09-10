@@ -36,6 +36,8 @@ _**NOTE**: The Admin Console link is available on the OpenShift overview page fo
 * [Add Other Code Language](documentation/add_other_code_language.md)
 * [Adjust VCS Integration With Jira Server](documentation/jira_vcs_integration.md)
 ---
+* [Add a New Custom Global Pipeline Library](documentation/cicd_customization/add_new_custom_global_pipeline_lib.md)
 * [Customize CI Pipeline](documentation/cicd_customization/customize_ci_pipeline.md)
 * [Customize CD Pipeline](documentation/cicd_customization/customize-deploy-pipeline.md)
-* [Add a New Custom Global Pipeline Library](documentation/cicd_customization/add_new_custom_global_pipeline_lib.md)
+* [Run Functional Autotest](documentation/cicd_customization/run_functional_autotest.md)
+* [Clone Project via Git Bash Terminal](documentation/cicd_customization/clone_project_using_gitbash.md)
