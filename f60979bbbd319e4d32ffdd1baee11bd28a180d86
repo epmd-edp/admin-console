@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "32f4c7a2_1967919a",
+        "filename": "db/migrations/4_create_enum_framework.up.sql",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-09-15T11:22:34Z",
+      "side": 1,
+      "message": "u must create new migration script",
+      "revId": "f60979bbbd319e4d32ffdd1baee11bd28a180d86",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
