@@ -1,1 +1,1 @@
-create type framework as enum ('springboot', 'react', 'netcore');
+create type framework as enum ('springboot', 'react', 'dotnet-2.1');
