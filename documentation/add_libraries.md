@@ -44,7 +44,7 @@ _**NOTE**: The Version Control System Info menu is available in case this option
     - Java – selecting Java allows specify Java 8 or Java 11, and further usage of the Gradle or Maven tool.
     - JavaScript - selecting JavaScript allows using the NPM tool.
     - .Net - selecting .Net allows using the .Net tool.
-    - Groovy-pipeline - selecting Groovy-pipeline allows having the ability to customize a stages logic. For details, please refer to the [Customize CD Pipeline](https://github.com/epmd-edp/jenkins-operator/blob/master/documentation/customize-deploy-pipeline.md#customize-cd-pipeline) page.
+    - Groovy-pipeline - selecting Groovy-pipeline allows having the ability to customize a stages logic. For details, please refer to the [Customize CD Pipeline](https://github.com/epmd-edp/admin-console/blob/master/documentation/cicd_customization/customize-deploy-pipeline.md#customize-cd-pipeline) page.
     - Other - selecting Other allows extending the default code languages when creating a codebase with the clone/import strategy. To add another code language, inspect the ([Add Other Code Language](add_other_code_language.md) page.
 
     _**NOTE**: The Create strategy does not allow to customize the default code language set._
