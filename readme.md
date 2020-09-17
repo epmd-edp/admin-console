@@ -41,3 +41,4 @@ _**NOTE**: The Admin Console link is available on the OpenShift overview page fo
 * [Customize CD Pipeline](documentation/cicd_customization/customize-deploy-pipeline.md)
 * [Run Functional Autotest](documentation/cicd_customization/run_functional_autotest.md)
 * [Clone Project via Git Bash Terminal](documentation/cicd_customization/clone_project_using_gitbash.md)
+* [Adjust CI tool](documentation/ci-tool.md)
