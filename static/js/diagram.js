@@ -79,6 +79,21 @@ function buildCdPipeline() {
                 },
             );
 
+
+            $.each(sv.qualityGates, function (qgi, qgv) {
+                if (qgv.qualityGateType === 'autotests') {
+                    elements.push(
+                        {
+                            data: {
+                                id: 'from' + sv.id + '_stage' + 'to' + qgv.branchId + '_branch',
+                                source: sv.id + '_stage',
+                                target: qgv.branchId + '_branch'
+                            }
+                        },
+                    );
+                }
+            });
+
             $.each(sv.stageCodebaseDockerStream, function (cdsi, cdsv) {
                 elements.push(
                     {
@@ -120,8 +135,12 @@ function initDiagram() {
             {
                 selector: 'node[type="codebase"]',
                 style: {
-                    'shape': 'round-triangle',
-                    'background-color': '#39c2d7',
+                    'background-fit': 'cover cover',
+                    'background-image': '/static/img/codebase.png',
+                    'background-color': '#ffffff',
+                    'background-width': '0.1px',
+                    'background-height': '0.1px',
+                    'shape': 'square',
                     'width': '40px',
                     'height': '40px'
                 }
@@ -130,18 +149,23 @@ function initDiagram() {
             {
                 selector: 'node[type="branch"]',
                 style: {
-                    'shape': 'ellipse',
-                    'background-color': '#7a797b',
-                    'width': '20px',
-                    'height': '20px'
+                    'background-fit': 'cover cover',
+                    'background-image': '/static/img/branch.png',
+                    'background-color': '#ffffff',
+                    'background-width': '0.1px',
+                    'background-height': '0.1px',
+                    'shape': 'square',
+                    'width': '15px',
+                    'height': '15px'
                 }
             },
             //codebase docker stream style
             {
                 selector: 'node[type="codebase_docker_stream"]',
                 style: {
-                    'shape': 'barrel',
-                    'background-color': '#39c2d7'
+                    'background-fit': 'cover cover',
+                    'background-image': '/static/img/registry.png',
+                    'background-color': '#ffffff',
                 }
             },
             //codebase docker stream line style
@@ -155,20 +179,28 @@ function initDiagram() {
             {
                 selector: 'node[type="pipeline"]',
                 style: {
-                    'shape': 'roundrectangle',
-                    'background-color': '#a3c644',
-                    'height': 30,
-                    'width': 50,
+                    'background-fit': 'cover cover',
+                    'background-image': '/static/img/cd-pipeline.png',
+                    'background-color': '#ffffff',
+                    'background-width': '0.1px',
+                    'background-height': '0.1px',
+                    'shape': 'square',
+                    'height': 70,
+                    'width': 70,
                 }
             },
             //stage style
             {
                 selector: 'node[type="stage"]',
                 style: {
-                    'shape': 'circle',
-                    'background-color': '#b22746',
+                    'background-fit': 'cover cover',
+                    'background-image': '/static/img/stage.png',
+                    'background-color': '#ffffff',
+                    'background-width': '0.1px',
+                    'background-height': '0.1px',
+                    'shape': 'square',
                     'height': 20,
-                    'width': 30,
+                    'width': 20,
                 }
             },
             //edge style

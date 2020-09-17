@@ -406,6 +406,10 @@ func (r CDPipelineRepository) GetCDPipelines(criteria query.CDPipelineCriteria) 
 			}
 			s.StageCodebaseDockerStream = ds
 		}
+
+		if err = loadRelatedQualityGates(p.Stage); err != nil {
+			return nil, err
+		}
 	}
 
 	return pipelines, nil
