@@ -221,7 +221,11 @@ $(function () {
     $('.formSubsection-java .java-frameworks').change(function () {
         setJenkinsSlave($('.buildTool:enabled'));
     });
-
+	
+    $('.formSubsection-dotnet .form__input-wrapper').change(function () {
+        setJenkinsSlave($('.buildTool:enabled'));
+    });
+	
     $('#isRepoPrivate').change(function () {
         let $login = $('.repoLogin'),
             $pass = $('.repoPassword');
@@ -439,9 +443,13 @@ $(function () {
     }
 
     function getSlaveElement(el) {
-        let $javaVersion = $('input[name="framework"]:checked').val();
-        if (!!$javaVersion) {
-            return $(`.jenkinsSlave option:contains(${el.find(':selected').data('build-tool') + "-" + $javaVersion})`);
+        let $frameworkVersion = $('input[name="framework"]:checked').val();
+		
+        if ($frameworkVersion.includes("dotnet") && !!$frameworkVersion) {
+            return $(`.jenkinsSlave option:contains(${$frameworkVersion})`);
+        }
+        if ($frameworkVersion.includes("java") && !!$frameworkVersion) {
+            return $(`.jenkinsSlave option:contains(${el.find(':selected').data('build-tool') + "-" + $frameworkVersion})`);
         }
         return $(`.jenkinsSlave option:contains(${el.find(':selected').data('build-tool')})`);
     }
