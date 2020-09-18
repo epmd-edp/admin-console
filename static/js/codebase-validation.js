@@ -221,7 +221,11 @@ $(function () {
     $('.formSubsection-java .java-frameworks').change(function () {
         setJenkinsSlave($('.buildTool:enabled'));
     });
-
+	
+    $('.formSubsection-dotnet .form__input-wrapper').change(function () {
+        setJenkinsSlave($('.buildTool:enabled'));
+    });
+	
     $('#isRepoPrivate').change(function () {
         let $login = $('.repoLogin'),
             $pass = $('.repoPassword');
