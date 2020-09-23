@@ -155,8 +155,8 @@ function initDiagram() {
                     'background-width': '0.1px',
                     'background-height': '0.1px',
                     'shape': 'square',
-                    'width': '15px',
-                    'height': '15px'
+                    'width': '40px',
+                    'height': '40px'
                 }
             },
             //codebase docker stream style
@@ -185,8 +185,8 @@ function initDiagram() {
                     'background-width': '0.1px',
                     'background-height': '0.1px',
                     'shape': 'square',
-                    'height': 70,
-                    'width': 70,
+                    'height': '40px',
+                    'width': '40px',
                 }
             },
             //stage style
@@ -199,8 +199,8 @@ function initDiagram() {
                     'background-width': '0.1px',
                     'background-height': '0.1px',
                     'shape': 'square',
-                    'height': 20,
-                    'width': 20,
+                    'height': '40px',
+                    'width': '40px',
                 }
             },
             //edge style
