@@ -20,7 +20,7 @@ Follow the steps below to adjust the GitLab CI tool:
     |DOCKER_REGISTRY_USER| user name|
     |OPENSHIFT_SA_TOKEN| token that can be used to log in to OpenShift|
 
-    >**INFO**: If using ServiceAccount for getting access to Docker registry and OpenShift, it is possible to find credentials in the SA description, and get secrets under the **secrets** block: 
+    >**INFO**: Use **gitlab-ci** ServiceAccount for getting access to Docker registry and OpenShift, it is possible to find credentials in the SA description, and get secrets under the **secrets** block: 
     >
     >![secrets-sa](../readme-resource/secrets-sa.png "secrets-sa")
 
