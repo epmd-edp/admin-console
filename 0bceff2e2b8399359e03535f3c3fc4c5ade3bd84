@@ -1,0 +1,7 @@
+Verified+1: CI Jenkins
+Code-Review+2: Mykola Marusenko <mykola_marusenko@epam.com>
+Submitted-by: Mykola Marusenko <mykola_marusenko@epam.com>
+Submitted-at: Fri, 25 Sep 2020 16:09:41 +0000
+Reviewed-on: https://gerrit-oc-green-edp-cicd.delivery.aws.main.edp.projects.epam.com/c/edp-admin-console/+/5063
+Project: edp-admin-console
+Branch: refs/heads/master
