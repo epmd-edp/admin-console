@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e65d0f9_94186778",
+        "filename": "conf/app.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000012
+      },
+      "writtenOn": "2020-09-25T10:24:49Z",
+      "side": 1,
+      "message": "Please correct the Gitlab CI to GitLab CI",
+      "range": {
+        "startLine": 47,
+        "startChar": 16,
+        "endLine": 47,
+        "endChar": 25
+      },
+      "revId": "c30448cd4ecf2c416d9d5d6ceb420dfeb062aa6a",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
