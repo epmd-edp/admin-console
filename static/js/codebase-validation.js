@@ -288,7 +288,7 @@ $(function () {
 
     function toggleJenkinsSlaveView(ciTool) {
         let $jsEl = $('div.jenkins-slave');
-        if (ciTool === "GitlabCI") {
+        if (ciTool === "GitLab CI") {
             $jsEl.addClass('hide-element')
                 .find('select[name="jenkinsSlave"]')
                 .attr('disabled', true);
@@ -301,7 +301,7 @@ $(function () {
 
     function toggleCiProvisionView(ciTool) {
         let $pEl = $('div.ci-provision');
-        if (ciTool === "GitlabCI") {
+        if (ciTool === "GitLab CI") {
             $pEl.addClass('hide-element')
                 .find('select[name="jobProvisioning"]')
                 .attr('disabled', true);
@@ -315,7 +315,7 @@ $(function () {
     function toggleJiraIntegrationView(ciTool) {
         let $jiraEl = $('#jiraServerToggle'),
             $jiraDivEl = $('div.jiraServerToggle');
-        if (ciTool === "GitlabCI") {
+        if (ciTool === "GitLab CI") {
             if ($jiraEl.is(':checked')) {
                 $jiraEl.click();
             }
