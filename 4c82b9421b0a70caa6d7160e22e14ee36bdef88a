@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "432519ac_1f89039a",
+        "filename": "db/migrations/168_drop_unnecessary_jenkins_slaves.down.sql",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-09-29T12:57:34Z",
+      "side": 1,
+      "message": "u should add those slaves in down script instead of deleting",
+      "revId": "4c82b9421b0a70caa6d7160e22e14ee36bdef88a",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
