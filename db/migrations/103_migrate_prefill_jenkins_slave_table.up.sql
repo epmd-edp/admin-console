@@ -1,6 +1,3 @@
 insert into jenkins_slave(name)
-VALUES ('maven'),
-       ('gradle'),
-       ('npm'),
-       ('dotnet')
+VALUES ('npm')
 on conflict (name) do nothing;
