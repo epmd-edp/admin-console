@@ -75,24 +75,10 @@
                                 </p>
                                 <div class="form__input-wrapper">
                                     {{template "template/language_template.html" .}}
+
                                     {{template "template/java_framework_template.html" .}}
-                                    <div class="js-form-subsection form-subsection formSubsection-js">
-                                        <div class="form__input-wrapper with-circle"><span
-                                                    class="form__input-heading"></span>
-                                            <div class="form__radio-btn-wrapper">
-                                                <input name="framework" type="radio" class="form__radio-btn framework"
-                                                       id="framework-react" value="React">
-                                                <label
-                                                        class="form__radio-label" for="framework-react">
-                                                    <span class="form__radio-btn--outer-circle">
-                                                        <span class="form__radio-btn--inner-circle "></span>
-                                                    </span>
-                                                    <img class="form__radio-label-icon" src="{{ .BasePath }}/static/img/React.png"
-                                                         alt="logo">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    {{template "template/java_script_framework_template.html" .}}
 
                                     {{template "template/dotnet_framework_template.html" .}}
 
@@ -100,23 +86,8 @@
 
                                     {{template "template/python_framework_template.html" .}}
 
-                                    <div class="js-form-subsection form-subsection formSubsection-groovy-pipeline">
-                                        <div class="form__input-wrapper with-circle"><span
-                                                    class="form__input-heading"></span>
-                                            <div class="form__radio-btn-wrapper">
-                                                <input name="framework" type="radio" class="form__radio-btn framework"
-                                                       id="framework-Groovy" value="groovy">
-                                                <label
-                                                        class="form__radio-label" for="framework-Groovy">
-                                                    <span class="form__radio-btn--outer-circle">
-                                                        <span class="form__radio-btn--inner-circle "></span>
-                                                    </span>
-                                                    <img class="form__radio-label-icon" src="{{ .BasePath }}/static/img/groovy.png"
-                                                         alt="logo">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{template "template/groovy_framework_template.html" .}}
+
                                     <input name="framework" type="hidden" id="framework-other" value="other" disabled>
                                 </div>
                                 <div class="invalid-feedback appLangError">
