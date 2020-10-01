@@ -100,6 +100,8 @@ There are two available strategies: clone and import. The Clone strategy flow is
 ### Related Articles
 
 * [Inspect Autotest](../documentation/inspect_autotest.md)
+* [Delivery Dashboard Diagram](../documentation/d_d_diagram.md)
+---
 * [Add CD Pipelines](../documentation/add_CD_pipelines.md)
 * [Adjust Integration With Jira Server](../documentation/jira-server.md)
 * [Adjust VCS Integration With Jira Server](../documentation/jira_vcs_integration.md)

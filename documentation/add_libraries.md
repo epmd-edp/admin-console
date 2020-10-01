@@ -100,6 +100,8 @@ _**NOTE**: The Version Control System Info menu is available in case this option
 ### Related Articles
 
 * [Inspect Library](../documentation/inspect_library.md)
+* [Delivery Dashboard Diagram](../documentation/d_d_diagram.md)
+---
 * [Add CD Pipelines](../documentation/add_CD_pipelines.md)
 * [Adjust Integration With Jira Server](../documentation/jira-server.md)
 * [Adjust VCS Integration With Jira Server](../documentation/jira_vcs_integration.md)

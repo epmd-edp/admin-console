@@ -120,3 +120,4 @@ As soon as the CD pipeline is provisioned and added to the CD Pipelines list, th
 ### Related Articles
 
 * [EDP Admin Console](https://github.com/epmd-edp/admin-console#edp-admin-console)
+* [Delivery Dashboard Diagram](../documentation/d_d_diagram.md)

@@ -147,6 +147,8 @@ the GitLab CI tool can be additionally adjusted. For details, please refer to th
 ### Related Articles
 
 * [Inspect Application](../documentation/inspect_application.md)
+* [Delivery Dashboard Diagram](../documentation/d_d_diagram.md)
+---
 * [Add CD Pipelines](../documentation/add_CD_pipelines.md)
 * [Adjust Integration With Jira Server](../documentation/jira-server.md)
 * [Adjust VCS Integration With Jira Server](../documentation/jira_vcs_integration.md)
