@@ -25,6 +25,12 @@ type CreateCodebase struct {
 	CommitMessageRegex  *string     `json:"commitMessagePattern"`
 	TicketNameRegex     *string     `json:"ticketNamePattern"`
 	CiTool              string      `json:"ciTool" valid:"Required"`
+	Perf                *Perf       `json:"perf,omitempty"`
+}
+
+type Perf struct {
+	Name        string   `json:"name" valid:"Required"`
+	DataSources []string `json:"dataSources" valid:"Required"`
 }
 
 type Repository struct {

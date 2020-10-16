@@ -373,11 +373,9 @@ $(function () {
 
     $('.application-submit,.autotest-submit,.library-submit').click(function (event) {
         validateMainInfo(event);
-        validateAdvancedInfo(event);
     });
 
     $('.advanced-settings-submit').click(function (event) {
-        validateMainInfo(event);
         validateAdvancedInfo(event);
     });
 
@@ -385,7 +383,9 @@ $(function () {
         if ($(this).hasClass('create-autotest') || $(this).hasClass('create-library')) {
             event.preventDefault();
 
-            let canCreateAutotest = validateCodebaseInfo(event) & validateMainInfo(event) & validateVCSInfo(event) & validateAdvancedInfo(event);
+            let canCreateAutotest = validateCodebaseInfo(event) & validateMainInfo(event)
+                & validateVCSInfo(event) & validateAdvancedInfo(event)
+                & validatePerfIntegrationBlock(event);
             if (canCreateAutotest) {
                 createConfirmTable($(this).hasClass('create-autotest') ? '#createAutotest' : '#createLibrary');
                 $('#confirmationPopup').modal('show');
@@ -402,7 +402,8 @@ $(function () {
     $('.db-submit').click(function (event) {
         let canCreateApplication = validateCodebaseInfo(event) &
             validateMainInfo(event) & validateVCSInfo(event) &
-            validateRouteInfo(event) & validateDbInfo(event) & validateAdvancedInfo(event);
+            validateRouteInfo(event) & validateDbInfo(event) &
+            validateAdvancedInfo(event) & validatePerfIntegrationBlock(event);
         if (canCreateApplication) {
             createConfirmTable('#createAppForm');
             $('#confirmationPopup').modal('show');

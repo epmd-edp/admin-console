@@ -9,6 +9,7 @@ import (
 	"edp-admin-console/service"
 	cbs "edp-admin-console/service/codebasebranch"
 	jiraservice "edp-admin-console/service/jira-server"
+	"edp-admin-console/service/perfboard"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
 	"edp-admin-console/util/consts"
@@ -34,12 +35,14 @@ type LibraryController struct {
 	SlaveService     service.SlaveService
 	JobProvisioning  service.JobProvisioning
 	JiraServer       jiraservice.JiraServer
+	PerfService      perfboard.PerfBoard
 
 	IntegrationStrategies []string
 	BuildTools            []string
 	VersioningTypes       []string
 	DeploymentScript      []string
 	CiTools               []string
+	PerfDataSources       []string
 }
 
 func (c *LibraryController) GetLibraryListPage() {
@@ -115,6 +118,13 @@ func (c *LibraryController) GetCreatePage() {
 		return
 	}
 
+	ps, err := c.PerfService.GetPerfServers()
+	if err != nil {
+		log.Error(err.Error())
+		c.Abort("500")
+		return
+	}
+
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["HasRights"] = auth.IsAdmin(c.GetSession("realm_roles").([]string))
@@ -129,6 +139,8 @@ func (c *LibraryController) GetCreatePage() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
 	c.Data["JiraServer"] = servers
+	c.Data["PerfServer"] = ps
+	c.Data["PerfDataSources"] = c.PerfDataSources
 	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.Data["CiTools"] = c.CiTools
 	c.TplName = "create_library.html"
@@ -246,6 +258,14 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 		}
 	}
 	library.Username = c.Ctx.Input.Session("username").(string)
+
+	if s := c.GetString("perfServer"); len(s) > 0 {
+		library.Perf = &command.Perf{
+			Name:        s,
+			DataSources: c.GetStrings("dataSource"),
+		}
+	}
+
 	return library
 }
 
@@ -271,6 +291,10 @@ func validateLibraryRequestData(library command.CreateCodebase) *validation2.Err
 
 	if library.Vcs != nil {
 		_, err = valid.Valid(library.Vcs)
+	}
+
+	if library.Perf != nil {
+		_, err = valid.Valid(library.Perf)
 	}
 
 	if err != nil {

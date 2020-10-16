@@ -123,6 +123,8 @@
 
                     {{template "template/advanced_settings_block_template.html" .}}
 
+                    {{template "template/data_source_block_template.html" .}}
+
                     {{if .IsVcsEnabled}}
                         {{template "template/accordion_vcs_template.html" .}}
                     {{end}}
@@ -140,7 +142,9 @@
 <script src="{{ .BasePath }}/static/js/bootstrap.js"></script>
 <script src="{{ .BasePath }}/static/js/util.js"></script>
 <script src="{{ .BasePath }}/static/js/branch-util.js"></script>
+<script src="{{ .BasePath }}/static/js/perf-validate.js"></script>
 <script src="{{ .BasePath }}/static/js/codebase-validation.js"></script>
+<script src="{{ .BasePath }}/static/js/perf-block.js"></script>
 <script src="{{ .BasePath }}/static/js/bootstrap-notify.js"></script>
 </body>
 </html>

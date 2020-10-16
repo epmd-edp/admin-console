@@ -1,4 +1,5 @@
-<div class="card advanced-settings-block" data-openshift="{{.IsOpenshift}}">
+<div class="card advanced-settings-block" data-openshift="{{.IsOpenshift}}"
+     data-vcs-enabled="{{.IsVcsEnabled}}" data-codebase-type="{{.Type}}">
 
     <div class="card-header collapsed" id="headingThree" data-toggle="collapse"
          data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -142,6 +143,8 @@
                 </div>
             </div>
 
+            {{template "../template/perf_template.html" .}}
+
             {{if eq .Type "application" }}
                 <button type="button" class="advanced-settings-submit edp-submit-form-btn btn btn-primary"
                         data-toggle="collapse"
@@ -153,8 +156,10 @@
             {{end}}
 
             {{if eq .Type "autotests" }}
+
                 {{if .IsVcsEnabled}}
-                    <button type="button" class="autotest-submit edp-submit-form-btn btn btn-primary"
+                    <button type="button"
+                            class="adv-setting-autotest-submit advanced-settings-submit edp-submit-form-btn btn btn-primary"
                             data-toggle="collapse"
                             data-target="#collapseVCS"
                             aria-expanded="false"
@@ -162,16 +167,28 @@
                         Proceed
                     </button>
                 {{else}}
+                    <button disabled type="button"
+                            class="adv-setting-autotest-submit advanced-settings-submit edp-submit-form-btn btn btn-primary hide-element"
+                            data-toggle="collapse"
+                            data-target="#collapseVCS"
+                            aria-expanded="false"
+                            aria-controls="collapseThree">
+                        Proceed
+                    </button>
+
                     <button type="submit"
-                            class="create-autotest edp-submit-form-btn btn btn-primary">
+                            class="adv-setting-create-autotest create-autotest edp-submit-form-btn btn btn-primary">
                         Create
                     </button>
                 {{end}}
+
             {{end}}
 
             {{if eq .Type "library" }}
+
                 {{if .IsVcsEnabled}}
-                    <button type="button" class="library-submit edp-submit-form-btn btn btn-primary"
+                    <button type="button"
+                            class="adv-setting-library-submit advanced-settings-submit edp-submit-form-btn btn btn-primary"
                             data-toggle="collapse"
                             data-target="#collapseVCS"
                             aria-expanded="false"
@@ -179,12 +196,20 @@
                         Proceed
                     </button>
                 {{else}}
-                    <div class="form-buttons-footer-left">
-                        <button type="submit" class="create-library edp-submit-form-btn btn btn-primary">
-                            Create
-                        </button>
-                    </div>
+                    <button disabled type="button"
+                            class="adv-setting-library-submit advanced-settings-submit edp-submit-form-btn btn btn-primary hide-element"
+                            data-toggle="collapse"
+                            data-target="#collapseVCS"
+                            aria-expanded="false"
+                            aria-controls="collapseThree">
+                        Proceed
+                    </button>
+
+                    <button type="submit" class="adv-setting-create-library create-library edp-submit-form-btn btn btn-primary">
+                        Create
+                    </button>
                 {{end}}
+
             {{end}}
 
         </div>
