@@ -1,0 +1,87 @@
+<div class="card data-source-block hide-element">
+
+    <div class="card-header collapsed" id="headingDataSource" data-toggle="collapse"
+         data-target="#collapseDataSource" aria-expanded="false" aria-controls="collapseDataSource">
+        <h5 class="mb-0">
+            <button class="btn btn-link" type="button">
+                Perf Integration
+            </button>
+        </h5>
+    </div>
+
+    <div id="collapseDataSource" class="collapse"
+         aria-labelledby="headingDataSource" data-parent="#accordionCreateCodebase">
+        <div class="card-body">
+
+            <div class="dataSources">
+                {{range .PerfDataSources}}
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" name="dataSource" class="custom-control-input" id="dataSource-{{.}}" value="{{.}}">
+                        <label class="custom-control-label" for="dataSource-{{.}}">{{.}}</label>
+                    </div>
+                {{end}}
+            </div>
+
+            <div class="invalid-feedback data-source-checkbox-error">
+                At least one checkbox must be checked.
+            </div>
+
+            {{if eq .Type "application" }}
+                {{if .IsVcsEnabled}}
+                    <button type="button" class="data-source edp-submit-form-btn btn btn-primary"
+                            data-toggle="collapse"
+                            data-target="#collapseVCS"
+                            aria-expanded="false"
+                            aria-controls="collapseDataSource">
+                        Proceed
+                    </button>
+                {{else}}
+                    <button type="button" class="data-source edp-submit-form-btn btn btn-primary"
+                            data-toggle="collapse"
+                            data-target="#collapseFour"
+                            aria-expanded="false"
+                            aria-controls="collapseDataSource">
+                        Proceed
+                    </button>
+                {{end}}
+            {{end}}
+
+            {{if eq .Type "autotests" }}
+                {{if .IsVcsEnabled}}
+                    <button type="button" class="data-source edp-submit-form-btn btn btn-primary"
+                            data-toggle="collapse"
+                            data-target="#collapseVCS"
+                            aria-expanded="false"
+                            aria-controls="collapseDataSource">
+                        Proceed
+                    </button>
+                {{else}}
+                    <button type="submit"
+                            class="create-autotest edp-submit-form-btn btn btn-primary">
+                        Create
+                    </button>
+                {{end}}
+            {{end}}
+
+            {{if eq .Type "library" }}
+                {{if .IsVcsEnabled}}
+                    <button type="button" class="data-source edp-submit-form-btn btn btn-primary"
+                            data-toggle="collapse"
+                            data-target="#collapseVCS"
+                            aria-expanded="false"
+                            aria-controls="collapseDataSource">
+                        Proceed
+                    </button>
+                {{else}}
+                    <div class="form-buttons-footer-left">
+                        <button type="submit" class="create-library edp-submit-form-btn btn btn-primary">
+                            Create
+                        </button>
+                    </div>
+                {{end}}
+            {{end}}
+
+        </div>
+    </div>
+
+</div>

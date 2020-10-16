@@ -26,6 +26,7 @@ import (
 	cbs "edp-admin-console/service/codebasebranch"
 	jiraservice "edp-admin-console/service/jira-server"
 	"edp-admin-console/service/logger"
+	"edp-admin-console/service/perfboard"
 	"edp-admin-console/service/platform"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
@@ -48,12 +49,14 @@ type ApplicationController struct {
 	SlaveService     service.SlaveService
 	JobProvisioning  service.JobProvisioning
 	JiraServer       jiraservice.JiraServer
+	PerfService      perfboard.PerfBoard
 
 	IntegrationStrategies []string
 	BuildTools            []string
 	VersioningTypes       []string
 	DeploymentScript      []string
 	CiTools               []string
+	PerfDataSources       []string
 }
 
 const (
@@ -151,6 +154,13 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 		return
 	}
 
+	ps, err := c.PerfService.GetPerfServers()
+	if err != nil {
+		log.Error(err.Error())
+		c.Abort("500")
+		return
+	}
+
 	c.Data["EDPVersion"] = context.EDPVersion
 	c.Data["Username"] = c.Ctx.Input.Session("username")
 	c.Data["IsVcsEnabled"] = isVcsEnabled
@@ -166,6 +176,8 @@ func (c *ApplicationController) GetCreateApplicationPage() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
 	c.Data["JiraServer"] = servers
+	c.Data["PerfServer"] = ps
+	c.Data["PerfDataSources"] = c.PerfDataSources
 	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.Data["CiTools"] = c.CiTools
 	c.TplName = "create_application.html"
@@ -324,5 +336,13 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 		}
 	}
 	codebase.Username = c.Ctx.Input.Session("username").(string)
+
+	if s := c.GetString("perfServer"); len(s) > 0 {
+		codebase.Perf = &command.Perf{
+			Name:        s,
+			DataSources: c.GetStrings("dataSource"),
+		}
+	}
+
 	return codebase
 }

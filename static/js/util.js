@@ -32,7 +32,7 @@ function _sendPostRequest(async, url, data, token, successCallback, failCallback
     });
 }
 
-function htmlEncode(value){
+function htmlEncode(value) {
     return $('<div/>').text(value).html();
 }
 
@@ -76,16 +76,18 @@ function createConfirmTable(formName) {
         return $formData.find(x => x.name === name)
     };
 
-    let addBlock = function (qwery, name, block) {
+    let addBlock = function (qwery, name, block, getValueFunc) {
         let result = "";
         let show = typeof query === "boolean" ? qwery : typeof qwery === "string" ? isFound(qwery) : true;
         if (show) {
             if (name) {
                 result += '<tr><td class="font-weight-bold text-center" colspan="2">' + name + '</td></tr>';
             }
+            if (getValueFunc === undefined) {
+                getValueFunc = getValue
+            }
             $.each(block, function (key, property) {
-                let value = getValue(property);
-                value = typeof property === 'boolean' ? (property ? "&#10004;" : "&#10008;") : htmlEncode(getValue(property));
+                let value = typeof property === 'boolean' ? (property ? "&#10004;" : "&#10008;") : htmlEncode(getValueFunc(property));
                 if (value) {
                     if (key === 'Start Versioning From') {
                         result += '<tr><td>' + key + '</td><td>' + value + '-SNAPSHOT' + '</td></tr>';
@@ -123,7 +125,8 @@ function createConfirmTable(formName) {
         'Versioning Type': 'versioningType',
         'Commit Message Pattern': 'commitMessagePattern',
         'Ticket Name Pattern': 'ticketNamePattern',
-        'CI tool': 'ciTool'
+        'CI tool': 'ciTool',
+        'Perf server': 'perfServer'
     };
 
     if ($('#versioningType').val() === 'edp') {
@@ -139,6 +142,17 @@ function createConfirmTable(formName) {
     }
 
     addBlock(null, "ADVANCED SETTINGS", advancedBlock);
+
+    if ($('#perfServerToggle').is(':checked')) {
+        addBlock(null, "PERF INTEGRATION", {
+            'Data sources': 'dataSource',
+        }, function (name) {
+            let records = $formData.filter(x => x.name === name);
+            return records !== undefined ? records.map(function (el) {
+                return el.value
+            }) : "";
+        });
+    }
 
     if (!isFound('strategy') || getValue('strategy') === "clone") {
         addBlock(

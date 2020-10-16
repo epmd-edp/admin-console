@@ -1,0 +1,19 @@
+<div>
+    <div class="form-check perfServerToggle">
+        <input type="checkbox" class="form-check-input" id="perfServerToggle"
+               {{if not .PerfServer}}disabled{{end}}>
+        <label class="form-check-label" for="perfServerToggle">Integrate with Perf server</label>
+    </div>
+
+    <div class="form-group perfServerBlock hide-element">
+        <label for="perfServer">Select Perf Server
+            <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+                  title="Select Perf server to integrate codebase with."></span>
+        </label>
+        <select class="form-control perfServer" name="perfServer" disabled>
+            {{range .PerfServer}}
+                <option>{{.Name}}</option>
+            {{end}}
+        </select>
+    </div>
+</div>

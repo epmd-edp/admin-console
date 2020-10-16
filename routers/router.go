@@ -26,12 +26,14 @@ import (
 	"edp-admin-console/repository"
 	edpComponentRepo "edp-admin-console/repository/edp-component"
 	jirarepo "edp-admin-console/repository/jira-server"
+	perfRepo "edp-admin-console/repository/perfboard"
 	"edp-admin-console/service"
 	"edp-admin-console/service/cd_pipeline"
 	cbs "edp-admin-console/service/codebasebranch"
 	edpComponentService "edp-admin-console/service/edp-component"
 	jiraservice "edp-admin-console/service/jira-server"
 	"edp-admin-console/service/logger"
+	"edp-admin-console/service/perfboard"
 	"edp-admin-console/util"
 	"fmt"
 
@@ -48,6 +50,7 @@ const (
 	testReportTools       = "testReportTools"
 	deploymentScript      = "deploymentScript"
 	ciTools               = "ciTools"
+	perfDataSources       = "perfDataSources"
 
 	CreateStrategy = "Create"
 )
@@ -93,6 +96,7 @@ func init() {
 	pr := repository.JobProvisioning{}
 	ecr := edpComponentRepo.EDPComponent{}
 	jsr := jirarepo.JiraServer{}
+	psr := perfRepo.PerfServer{}
 
 	ecs := edpComponentService.EDPComponentService{IEDPComponent: ecr}
 	edpService := service.EDPTenantService{Clients: clients}
@@ -126,6 +130,7 @@ func init() {
 	ss := service.SlaveService{ISlaveRepository: sr}
 	ps := service.JobProvisioning{IJobProvisioningRepository: pr}
 	js := jiraservice.JiraServer{IJiraServer: jsr}
+	pbs := perfboard.PerfBoard{PerfRepo: psr}
 
 	beego.ErrorController(&controllers.ErrorController{})
 	beego.Router(fmt.Sprintf("%s/", context.BasePath), &controllers.MainController{EDPTenantService: edpService}, "get:Index")
@@ -161,6 +166,11 @@ func init() {
 		log.Fatal("ciTools config variable is empty.")
 	}
 
+	perfDataSources := util.GetValuesFromConfig(perfDataSources)
+	if perfDataSources == nil {
+		log.Fatal("perfDataSources config variable is empty.")
+	}
+
 	is := make([]string, len(integrationStrategies))
 	copy(is, integrationStrategies)
 
@@ -172,12 +182,14 @@ func init() {
 		SlaveService:     ss,
 		JobProvisioning:  ps,
 		JiraServer:       js,
+		PerfService:      pbs,
 
 		IntegrationStrategies: is,
 		BuildTools:            buildTools,
 		VersioningTypes:       vt,
 		DeploymentScript:      ds,
 		CiTools:               ciTools,
+		PerfDataSources:       perfDataSources,
 	}
 
 	autis := make([]string, len(integrationStrategies))
@@ -191,6 +203,7 @@ func init() {
 		SlaveService:     ss,
 		JobProvisioning:  ps,
 		JiraServer:       js,
+		PerfService:      pbs,
 
 		IntegrationStrategies: util.RemoveElByValue(autis, CreateStrategy),
 		BuildTools:            buildTools,
@@ -198,6 +211,7 @@ func init() {
 		TestReportTools:       testReportTools,
 		DeploymentScript:      ds,
 		CiTools:               ciTools,
+		PerfDataSources:       perfDataSources,
 	}
 
 	lc := controllers.LibraryController{
@@ -207,12 +221,14 @@ func init() {
 		SlaveService:     ss,
 		JobProvisioning:  ps,
 		JiraServer:       js,
+		PerfService:      pbs,
 
 		IntegrationStrategies: is,
 		BuildTools:            buildTools,
 		VersioningTypes:       vt,
 		DeploymentScript:      ds,
 		CiTools:               ciTools,
+		PerfDataSources:       perfDataSources,
 	}
 
 	ec := controllers.EDPTenantController{

@@ -9,6 +9,7 @@ import (
 	"edp-admin-console/service"
 	cbs "edp-admin-console/service/codebasebranch"
 	jiraservice "edp-admin-console/service/jira-server"
+	"edp-admin-console/service/perfboard"
 	"edp-admin-console/util"
 	"edp-admin-console/util/auth"
 	"edp-admin-console/util/consts"
@@ -32,6 +33,7 @@ type AutotestsController struct {
 	SlaveService     service.SlaveService
 	JobProvisioning  service.JobProvisioning
 	JiraServer       jiraservice.JiraServer
+	PerfService      perfboard.PerfBoard
 
 	IntegrationStrategies []string
 	BuildTools            []string
@@ -39,6 +41,7 @@ type AutotestsController struct {
 	TestReportTools       []string
 	DeploymentScript      []string
 	CiTools               []string
+	PerfDataSources       []string
 }
 
 func (c *AutotestsController) CreateAutotests() {
@@ -178,6 +181,14 @@ func (c *AutotestsController) extractAutotestsRequestData() command.CreateCodeba
 		}
 	}
 	codebase.Username = c.Ctx.Input.Session("username").(string)
+
+	if s := c.GetString("perfServer"); len(s) > 0 {
+		codebase.Perf = &command.Perf{
+			Name:        s,
+			DataSources: c.GetStrings("dataSource"),
+		}
+	}
+
 	return codebase
 }
 
@@ -208,6 +219,10 @@ func validateAutotestsRequestData(autotests command.CreateCodebase) *validation2
 
 	if autotests.Vcs != nil {
 		_, err = valid.Valid(autotests.Vcs)
+	}
+
+	if autotests.Perf != nil {
+		_, err = valid.Valid(autotests.Perf)
 	}
 
 	if err != nil {
@@ -266,6 +281,13 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 		return
 	}
 
+	ps, err := c.PerfService.GetPerfServers()
+	if err != nil {
+		log.Error(err.Error())
+		c.Abort("500")
+		return
+	}
+
 	log.Info("Create strategy is removed from list due to Autotest")
 
 	c.Data["EDPVersion"] = context.EDPVersion
@@ -283,6 +305,8 @@ func (c *AutotestsController) GetCreateAutotestsPage() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
 	c.Data["JiraServer"] = servers
+	c.Data["PerfServer"] = ps
+	c.Data["PerfDataSources"] = c.PerfDataSources
 	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.Data["CiTools"] = c.CiTools
 	c.TplName = "create_autotest.html"

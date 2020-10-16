@@ -76,6 +76,11 @@ func ValidCodebaseRequestData(codebase command.CreateCodebase) *ErrMsg {
 		valid.Errors = append(valid.Errors, err)
 	}
 
+	if codebase.Perf != nil {
+		_, err := valid.Valid(codebase.Perf)
+		resErr = err
+	}
+
 	if resErr != nil {
 		return &ErrMsg{"An internal error has occurred on server while validating application's form fields.", http.StatusInternalServerError}
 	}
