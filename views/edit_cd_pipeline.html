@@ -33,7 +33,8 @@
                 <div class="accordion" id="accordionCreatePipeline">
 
                     <div class="card applications">
-                        <div class="card-header" id="headingTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <div class="card-header show" id="headingTwo" data-toggle="collapse"
+                             aria-expanded="true" aria-controls="collapseTwo" data-target="#collapseTwo">
                             <h5 class="mb-0">
                                 <button class="btn btn-link collapsed" type="button">
                                     Applications
@@ -97,11 +98,49 @@
                                     {{end}}
                                 </div>
 
-                                <button type="button" class="update-cd-pipeline edp-submit-form-btn btn btn-primary"
+                                <button type="button" class="stage-info-button edp-submit-form-btn btn btn-primary"
                                         data-toggle="collapse"
                                         data-target="#collapseThree" aria-expanded="false"
                                         aria-controls="collapseTwo">
                                     Proceed
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card stage-block">
+                        <div class="card-header collapsed" id="headingThree" data-toggle="collapse"
+                             aria-expanded="false" aria-controls="collapseThree" data-target="#collapseThree">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button">
+                                    Stages
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                             data-parent="#accordionCreatePipeline">
+                            <div class="card-body">
+
+                                <div class="stages-list">
+
+                                </div>
+
+                                {{if .Error}}
+                                    <div class="backend-validation-error">
+                                        {{.Error}}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-group">
+                                    <button type="button" class="add-stage-modal circle plus"></button>
+                                </div>
+
+                                <button type="button" class="update-cd-pipeline edp-submit-form-btn btn btn-primary"
+                                        data-toggle="collapse"
+                                        data-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseTwo">
+                                    Update
                                 </button>
                             </div>
                         </div>
