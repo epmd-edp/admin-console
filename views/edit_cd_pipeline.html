@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{{ .BasePath }}/static/css/index.css">
     <link rel="stylesheet" href="{{ .BasePath }}/static/css/cd-pipeline.css">
+    <link rel="stylesheet" href="{{ .BasePath }}/static/css/validation.css">
 </head>
 <body>
 <main>
@@ -192,87 +193,90 @@
                             Can not be empty.
                         </div>
                     </div>
-                    <div class="d-flex justify-content-start">
-                        <div class="form-group w-25 mr-4 mb-2">
-                            <label for="qualityGateType">Quality gate type
-                                <span class="tooltip-icon" data-toggle="tooltip"
-                                      data-placement="top" title=""
-                                      data-original-title="Select quality gate type"></span>
-                            </label>
-                            <select class="form-control" id="qualityGateType">
-                                <option value="manual">Manual</option>
-                                <option value="autotests" {{if not .Autotests}}disabled{{end}}>Autotests</option>
-                            </select>
-                        </div>
-                        <div class="form-group w-25 mr-4 mb-2">
-                            <label for="nameOfStep">Step name
-                                <span class="tooltip-icon" data-toggle="tooltip"
-                                      data-placement="top" title=""
-                                      data-original-title="Define quality gate step name"></span>
-                            </label>
-                            <input type="text" class="form-control" id="nameOfStep" placeholder="Enter step name">
+
+                    <div class="quality-gate-row">
+                        <div class="d-flex justify-content-start">
+                            <div class="form-group w-20 mr-4 mb-2">
+                                <label for="qualityGateType"
+                                       class="qualityGateTypeLabel">Quality gate type
+                                    <span class="tooltip-icon" data-toggle="tooltip"
+                                          data-placement="top" title=""
+                                          data-original-title="Select quality gate type"></span>
+                                </label>
+                                <select class="form-control element-width qualityGateType" id="qualityGateType">
+                                    <option value="manual">Manual</option>
+                                    <option value="autotests" {{if not .Autotests}}disabled{{end}}>Autotests</option>
+                                </select>
+                            </div>
+                            <div class="form-group w-25 mr-4 mb-2">
+                                <label for="nameOfStep"
+                                       class="nameOfStepLabel">Step name
+                                    <span class="tooltip-icon" data-toggle="tooltip"
+                                          data-placement="top" title=""
+                                          data-original-title="Define quality gate step name"></span>
+                                </label>
+                                <input type="text" class="form-control element-width nameOfStep" id="nameOfStep"
+                                       placeholder="Enter step name">
+                            </div>
+
+                            {{if .Autotests}}
+                                <div class="form-group w-25 mr-4 mb-2 autotest-block-el hide-element">
+                                    <label class="autotestLabel">Autotests
+                                        <span class="tooltip-icon" data-toggle="tooltip"
+                                              data-placement="top" title=""
+                                              data-original-title="Select autotest for stage"></span>
+                                    </label>
+                                    <select class="form-control element-width autotest-projects">
+                                        {{range .Autotests}}
+                                            <option value="{{.Name}}">{{.Name}}</option>
+                                        {{end}}
+                                    </select>
+                                </div>
+
+                                <div class="form-group w-25 mr-4 mb-2 autotest-block-el hide-element">
+                                    <label class="branchLabel">Branch
+                                        <span class="tooltip-icon" data-toggle="tooltip"
+                                              data-placement="top" title=""
+                                              data-original-title="Select autotest for stage"></span>
+                                    </label>
+                                    {{range $autotest := .Autotests}}
+                                        {{if .CodebaseBranch}}
+                                            <select data-selected-autotest="{{$autotest.Name}}"
+                                                    class="form-control element-width autotest-branches">
+                                                {{range .CodebaseBranch}}
+                                                    <option value="{{.Name}}">{{.Name}}</option>
+                                                {{end}}
+                                            </select>
+                                        {{end}}
+                                    {{end}}
+                                </div>
+                            {{end}}
+
+                            <button type="button" class="delete remove-quality-gate-type hide-element">
+                                <i class="icon-trashcan"></i>
+                            </button>
                         </div>
                     </div>
+
                     <div class="invalid-feedback step-name-validation-msg">
-                        Step name may contain only: lower-case letters, numbers and dashes and cannot start and end with
+                        One or more steps are invalid. Step name may contain only: lower-case letters, numbers and
+                        dashes and cannot start and end with
                         dash. Can not be empty.
                     </div>
-                    <div class="autotests">
-                        <div class="d-flex">
-                            <div class="form-group w-50 mb-2">
-                                <label for="autotests">
-                                    Autotests
-                                    <span class="tooltip-icon" data-toggle="tooltip"
-                                           data-placement="top" title=""
-                                           data-original-title="Select autotest wish you'd like to use on the specified stage"></span>
-                                </label>
 
-                                {{if .Autotests}}
-                                    <table>
-                                        {{range $autotest := .Autotests}}
-                                            <tr>
-                                                <th>
-                                                    <div class="custom-control custom-checkbox autotests-checkbox-info">
-                                                        <input type="checkbox"
-                                                               class="custom-control-input autotests-checkbox"
-                                                               id="{{.Name}}-checkbox"
-                                                               name="autotests-checkbox" value="{{.Name}}"
-                                                               {{if not .CodebaseBranch}}disabled{{end}}>
-                                                        <label class="custom-control-label"
-                                                               for="{{.Name}}-checkbox">{{.Name}}</label>
-                                                    </div>
-                                                </th>
-                                                <th>
-                                                    <div class="custom-checkbox autotest-branch autotests-branches-div">
-                                                        <select class="{{.Name}}-branch form-control autotests-branches-select" id="autotestBranch" name="{{$autotest.Name}}-autotestBranch">
-                                                            {{if .CodebaseBranch}}
-                                                                {{range .CodebaseBranch}}
-                                                                    <option value="{{.Name}}">{{.Name}}</option>
-                                                                {{end}}
-                                                            {{else}}
-                                                                <option>no active branches</option>
-                                                            {{end}}
-                                                        </select>
-                                                    </div>
-                                                </th>
-                                            </tr>
-                                        {{end}}
-                                    </table>
-                                {{end}}
+                    <div class="invalid-feedback duplicate-step-name-validation-msg">
+                        There's duplicate of step name.
+                    </div>
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="invalid-feedback autotests-validation-msg">
-                        At least one autotests should be checked
-                    </div>
+                    <button type="button" class="add-quality-gate-row circle plus"></button>
+
                     <div class="d-flex flex-column justify-content-start">
                         <div class="d-flex">
                             <div class="form-group w-50 mb-2">
                                 <label for="triggerType">Trigger type
                                     <span class="tooltip-icon" data-toggle="tooltip"
-                                                                           data-placement="top" title=""
-                                                                           data-original-title="Stage provisioning trigger type"></span>
+                                          data-placement="top" title=""
+                                          data-original-title="Stage provisioning trigger type"></span>
                                 </label>
                                 <select class="form-control" id="triggerType">
                                     <option>Manual</option>
@@ -280,10 +284,69 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="pipeline-library-row">
+                        <div class="d-flex flex-column justify-content-start">
+                            <div class="d-flex">
+                                <div class="form-group w-25 mr-4 mb-2">
+                                    <label for="pipelineLibrary">Groovy-pipeline library
+                                        <span class="tooltip-icon" data-toggle="tooltip"
+                                              data-placement="top" title=""
+                                              data-original-title="Groovy pipeline library for Stage"></span>
+                                    </label>
+                                    <select class="form-control element-width pipeline-library" id="pipeline-library">
+                                        <option value="default">EDP default</option>
+                                        {{if .GroovyLibs}}
+                                            {{range .GroovyLibs}}
+                                                <option value="{{.Name}}">{{.Name}}</option>
+                                            {{end}}
+                                        {{end}}
+                                    </select>
+                                </div>
+                                <div class="form-group w-25 mr-4 mb-2 branch-block-el hide-element">
+                                    <label class="branchLabel">Branch
+                                        <span class="tooltip-icon" data-toggle="tooltip"
+                                              data-placement="top" title=""
+                                              data-original-title="Groovy pipeline library for Stage"></span>
+                                    </label>
+                                    {{range $pipelineLib := .GroovyLibs}}
+                                        {{if .CodebaseBranch}}
+                                            <select data-selected-pipeline-library="{{$pipelineLib.Name}}"
+                                                    class="form-control element-width pipeline-library-branches" id="pipeline-library-branches">
+                                                {{range .CodebaseBranch}}
+                                                    <option value="{{.Name}}">{{.Name}}</option>
+                                                {{end}}
+                                            </select>
+                                        {{end}}
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="job-provisioner-row">
+                        <div class="d-flex flex-column justify-content-start">
+                            <div class="d-flex">
+                                <div class="form-group w-25 mr-4 mb-2">
+                                    <label for="jobProvisioning">Job Provisioner
+                                        <span class="tooltip-icon" data-toggle="tooltip"
+                                              data-placement="top" title=""
+                                              data-original-title="CD Job Provisioner for Pipeline"></span>
+                                    </label>
+                                    <select class="form-control element-width jobProvisioning" id="jobProvisioning">
+                                        {{range .JobProvisioners}}
+                                            <option>{{.Name}}</option>
+                                        {{end}}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="cancel-edit-stage btn btn-secondary btn-modal-close" data-dismiss="modal">
+                    <button type="button" class="cancel-edit-stage btn btn-secondary btn-modal-close"
+                            data-dismiss="modal">
                         Cancel
                     </button>
                     <button type="button" class="add-stage btn btn-primary">
