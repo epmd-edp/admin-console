@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9b16bbef_4b1eadb4",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-10-21T11:23:53Z",
+      "side": 1,
+      "message": "log error here",
+      "revId": "171c609ff68065a62262563f31d4bc7c508541c0",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86e6f9f8_c632e908",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-10-21T11:23:53Z",
+      "side": 1,
+      "message": "the same",
+      "revId": "171c609ff68065a62262563f31d4bc7c508541c0",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92041624_f9707ef7",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-10-21T11:23:53Z",
+      "side": 1,
+      "message": "the same",
+      "revId": "171c609ff68065a62262563f31d4bc7c508541c0",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
