@@ -212,15 +212,45 @@ func (c *CDPipelineController) GetEditCDPipelinePage() {
 		return
 	}
 
+	groovyLibs, err := c.CodebaseService.GetCodebasesByCriteria(query.CodebaseCriteria{
+		BranchStatus: query.Active,
+		Status:       query.Active,
+		Type:         query.Library,
+		Language:     "groovy-pipeline",
+	})
+	if err != nil {
+		c.Abort("500")
+		return
+	}
+
+	autotests, err := c.CodebaseService.GetCodebasesByCriteria(query.CodebaseCriteria{
+		BranchStatus: query.Active,
+		Status:       query.Active,
+		Type:         query.Autotests,
+	})
+	if err != nil {
+		c.Abort("500")
+		return
+	}
+
+	jp, err := c.JobProvisioning.GetAllJobProvisioners(query.JobProvisioningCriteria{Scope: util.GetStringP(scope)})
+	if err != nil {
+		c.Abort("500")
+		return
+	}
+
 	if flash.Data["error"] != "" {
 		c.Data["Error"] = flash.Data["error"]
 	}
 
 	c.Data["CDPipeline"] = cdPipeline
 	c.Data["Apps"] = applications
+	c.Data["GroovyLibs"] = groovyLibs
 	c.Data["Type"] = "delivery"
+	c.Data["Autotests"] = autotests
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Data["BasePath"] = context.BasePath
+	c.Data["JobProvisioners"] = jp
 	c.Data["DiagramPageEnabled"] = context.DiagramPageEnabled
 	c.TplName = "edit_cd_pipeline.html"
 }
