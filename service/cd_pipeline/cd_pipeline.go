@@ -32,6 +32,8 @@ import (
 	"edp-admin-console/util/consts"
 	dberror "edp-admin-console/util/error/db-errors"
 	"fmt"
+	openshiftAPi "github.com/openshift/api/apps/v1"
+	"k8s.io/api/extensions/v1beta1"
 	"sort"
 	"strings"
 	"time"
@@ -301,33 +303,64 @@ func fillCodebaseStageMatrix(ocClient *k8s.ClientSet, cdPipeline *query.CDPipeli
 
 		dcs, err := ocClient.AppsV1Client.DeploymentConfigs(stage.PlatformProjectName).List(metav1.ListOptions{})
 		if err != nil {
-			return nil, errors.Wrap(err, "an error has occurred while getting project from cluster")
+			return nil, errors.Wrap(err, "an error has occurred while getting deployment configs from cluster")
+		}
+
+		ds, err := ocClient.ExtensionClient.Deployments(stage.PlatformProjectName).List(metav1.ListOptions{})
+		if err != nil {
+			return nil, errors.Wrap(err, "an error has occurred while getting deployment from cluster")
 		}
 
 		for _, codebase := range cdPipeline.CodebaseBranch {
-			var key = query.CDCodebaseStageMatrixKey{
+			dv := findDockerVersion(dcs, ds, codebase.AppName, codebase.Codebase.DeploymentScript)
+
+			matrix[query.CDCodebaseStageMatrixKey{
 				CodebaseBranch: codebase,
 				Stage:          stage,
+			}] = query.CDCodebaseStageMatrixValue{
+				DockerVersion: dv,
 			}
-			var value = query.CDCodebaseStageMatrixValue{
-				DockerVersion: "no deploy",
-			}
-			for _, dc := range dcs.Items {
-				for _, container := range dc.Spec.Template.Spec.Containers {
-					if container.Name == codebase.AppName {
-						var containerImage = container.Image
-						var delimeter = strings.LastIndex(containerImage, ":")
-						if delimeter > 0 {
-							value.DockerVersion = string(containerImage[(delimeter + 1):len(containerImage)])
-						}
-					}
-				}
-			}
-			matrix[key] = value
 		}
 
 	}
 	return matrix, nil
+}
+
+func findDockerVersion(dcs *openshiftAPi.DeploymentConfigList, ds *v1beta1.DeploymentList, codebaseName, deploymentScript string) string {
+	if deploymentScript == "openshift-template" {
+		return getDockerVersionInDeploymentConfig(dcs, codebaseName)
+	}
+	return getDockerVersionInDeployment(ds, codebaseName)
+}
+
+func getDockerVersionInDeploymentConfig(dcs *openshiftAPi.DeploymentConfigList, codebase string) string {
+	for _, dc := range dcs.Items {
+		for _, container := range dc.Spec.Template.Spec.Containers {
+			if container.Name == codebase {
+				var containerImage = container.Image
+				var delimeter = strings.LastIndex(containerImage, ":")
+				if delimeter > 0 {
+					return containerImage[(delimeter + 1):]
+				}
+			}
+		}
+	}
+	return "no deploy"
+}
+
+func getDockerVersionInDeployment(ds *v1beta1.DeploymentList, codebase string) string {
+	for _, dc := range ds.Items {
+		for _, container := range dc.Spec.Template.Spec.Containers {
+			if container.Name == codebase {
+				var containerImage = container.Image
+				var delimeter = strings.LastIndex(containerImage, ":")
+				if delimeter > 0 {
+					return containerImage[(delimeter + 1):]
+				}
+			}
+		}
+	}
+	return "no deploy"
 }
 
 func fillCodebaseStageMatrixK8s(ocClient *k8s.ClientSet, cdPipeline *query.CDPipeline) (map[query.CDCodebaseStageMatrixKey]query.CDCodebaseStageMatrixValue, error) {
