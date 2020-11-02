@@ -26,8 +26,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/client-go/kubernetes"
+	v1 "k8s.io/client-go/kubernetes/typed/apps/v1"
 	coreV1Client "k8s.io/client-go/kubernetes/typed/core/v1"
-	extensionsV1Client "k8s.io/client-go/kubernetes/typed/extensions/v1beta1"
 	storageV1Client "k8s.io/client-go/kubernetes/typed/storage/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -38,11 +39,11 @@ var k8sConfig clientcmd.ClientConfig
 var SchemeGroupVersion = schema.GroupVersion{Group: "v2.edp.epam.com", Version: "v1alpha1"}
 
 type ClientSet struct {
-	CoreClient      *coreV1Client.CoreV1Client
-	StorageClient   *storageV1Client.StorageV1Client
-	EDPRestClient   *rest.RESTClient
-	AppsV1Client    *appsV1Client.AppsV1Client
-	ExtensionClient *extensionsV1Client.ExtensionsV1beta1Client
+	CoreClient     *coreV1Client.CoreV1Client
+	StorageClient  *storageV1Client.StorageV1Client
+	EDPRestClient  *rest.RESTClient
+	AppsV1Client   *appsV1Client.AppsV1Client
+	K8sAppV1Client v1.AppsV1Interface
 }
 
 func init() {
@@ -77,18 +78,18 @@ func CreateOpenShiftClients() ClientSet {
 		panic(err)
 	}
 
-	extClient, err := getExtensionClient()
+	k8sAppClient, err := getK8sAppsV1Client()
 	if err != nil {
 		log.Error("An error has occurred while getting k8s extension client", zap.Error(err))
 		panic(err)
 	}
 
 	return ClientSet{
-		CoreClient:      coreClient,
-		StorageClient:   storageClient,
-		EDPRestClient:   crClient,
-		AppsV1Client:    openshiftAppClient,
-		ExtensionClient: extClient,
+		CoreClient:     coreClient,
+		StorageClient:  storageClient,
+		EDPRestClient:  crClient,
+		AppsV1Client:   openshiftAppClient,
+		K8sAppV1Client: k8sAppClient,
 	}
 }
 
@@ -104,16 +105,16 @@ func getCoreClient() (*coreV1Client.CoreV1Client, error) {
 	return coreClient, nil
 }
 
-func getExtensionClient() (*extensionsV1Client.ExtensionsV1beta1Client, error) {
+func getK8sAppsV1Client() (v1.AppsV1Interface, error) {
 	restConfig, err := k8sConfig.ClientConfig()
 	if err != nil {
 		return nil, err
 	}
-	extClient, err := extensionsV1Client.NewForConfig(restConfig)
+	cs, err := kubernetes.NewForConfig(restConfig)
 	if err != nil {
 		return nil, err
 	}
-	return extClient, nil
+	return cs.AppsV1(), nil
 }
 
 func getStorageClient() (*storageV1Client.StorageV1Client, error) {

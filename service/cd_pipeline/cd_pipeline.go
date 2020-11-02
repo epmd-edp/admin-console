@@ -33,7 +33,7 @@ import (
 	dberror "edp-admin-console/util/error/db-errors"
 	"fmt"
 	openshiftAPi "github.com/openshift/api/apps/v1"
-	"k8s.io/api/extensions/v1beta1"
+	v1 "k8s.io/api/apps/v1"
 	"sort"
 	"strings"
 	"time"
@@ -306,7 +306,7 @@ func fillCodebaseStageMatrix(ocClient *k8s.ClientSet, cdPipeline *query.CDPipeli
 			return nil, errors.Wrap(err, "an error has occurred while getting deployment configs from cluster")
 		}
 
-		ds, err := ocClient.ExtensionClient.Deployments(stage.PlatformProjectName).List(metav1.ListOptions{})
+		ds, err := ocClient.K8sAppV1Client.Deployments(stage.PlatformProjectName).List(metav1.ListOptions{})
 		if err != nil {
 			return nil, errors.Wrap(err, "an error has occurred while getting deployment from cluster")
 		}
@@ -326,7 +326,7 @@ func fillCodebaseStageMatrix(ocClient *k8s.ClientSet, cdPipeline *query.CDPipeli
 	return matrix, nil
 }
 
-func findDockerVersion(dcs *openshiftAPi.DeploymentConfigList, ds *v1beta1.DeploymentList, codebaseName, deploymentScript string) string {
+func findDockerVersion(dcs *openshiftAPi.DeploymentConfigList, ds *v1.DeploymentList, codebaseName, deploymentScript string) string {
 	if deploymentScript == "openshift-template" {
 		return getDockerVersionInDeploymentConfig(dcs, codebaseName)
 	}
@@ -348,7 +348,7 @@ func getDockerVersionInDeploymentConfig(dcs *openshiftAPi.DeploymentConfigList, 
 	return "no deploy"
 }
 
-func getDockerVersionInDeployment(ds *v1beta1.DeploymentList, codebase string) string {
+func getDockerVersionInDeployment(ds *v1.DeploymentList, codebase string) string {
 	for _, dc := range ds.Items {
 		for _, container := range dc.Spec.Template.Spec.Containers {
 			if container.Name == codebase {
@@ -367,7 +367,7 @@ func fillCodebaseStageMatrixK8s(ocClient *k8s.ClientSet, cdPipeline *query.CDPip
 	var matrix = make(map[query.CDCodebaseStageMatrixKey]query.CDCodebaseStageMatrixValue, len(cdPipeline.CodebaseBranch)*len(cdPipeline.Stage))
 	for _, stage := range cdPipeline.Stage {
 
-		dcs, err := ocClient.ExtensionClient.Deployments(stage.PlatformProjectName).List(metav1.ListOptions{})
+		dcs, err := ocClient.K8sAppV1Client.Deployments(stage.PlatformProjectName).List(metav1.ListOptions{})
 		if err != nil {
 			return nil, errors.Wrap(err, "an error has occurred while getting project from cluster")
 		}
