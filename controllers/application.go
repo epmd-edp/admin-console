@@ -235,6 +235,7 @@ func (c *ApplicationController) extractApplicationRequestData() command.CreateCo
 		DeploymentScript: c.GetString("deploymentScript"),
 		CiTool:           c.GetString("ciTool"),
 		Name:             c.GetString("appName"),
+		DefaultBranch:    c.GetString("defaultBranchName"),
 	}
 
 	if js := c.GetString("jenkinsSlave"); len(js) > 0 {

@@ -2,6 +2,7 @@ package command
 
 type CreateCodebase struct {
 	Name                string      `json:"name" valid:"Required;Match(/^[a-z][a-z0-9-]*[a-z0-9]$/)"`
+	DefaultBranch       string      `json:"defaultBranch" valid:"Required"`
 	Strategy            string      `json:"strategy"`
 	Lang                string      `json:"lang" valid:"Required"`
 	Framework           *string     `json:"framework,omitempty"`

@@ -1,0 +1,12 @@
+<div class="form-group app-default-branch">
+    <label for="defaultBranch">Default branch
+        <span class="tooltip-icon" data-toggle="tooltip" data-placement="top"
+              title="Default branch to create/use"></span>
+    </label>
+    <input name="defaultBranchName" type="text" class="default-branch-name form-control"
+           id="defaultBranchName"
+           placeholder="Type default branch name">
+    <div class="default-branch-name-validation invalid-feedback regex-error">
+        Branch name should comply the following REGEXP: /^[a-z0-9][a-z0-9]*[\/-]?[a-z0-9]*[a-z0-9]$/
+    </div>
+</div>

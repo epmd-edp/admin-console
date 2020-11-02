@@ -14,6 +14,7 @@ $(function () {
         VCS_PASSWORD: /\w/,
         DESCRIPTION: /^[a-zA-Z0-9]/,
         CODEBASE_NAME: /^[a-z][a-z0-9-]*[a-z0-9]$/,
+        CODEBASE_DEFAULT_BRANCH: /^[a-z0-9][a-z0-9]*[\/-]?[a-z0-9]*[a-z0-9]$/,
         REPO_LOGIN: /\w/,
         REPO_PASSWORD: /\w/,
         REPO_URL: /(?:^git|^ssh|^https?|^git@[-\w.]+):(\/\/)?(.*?)(\.git)(\/?|\#[-\d\w._]+?)$/,
@@ -655,6 +656,13 @@ $(function () {
             }
         }
 
+        let $defaultBranchInputEl = $('.default-branch-name'),
+        isDefaultBranchNameValid = isFieldValid($defaultBranchInputEl, REGEX.CODEBASE_DEFAULT_BRANCH);
+        if (!isDefaultBranchNameValid) {
+            $('.default-branch-name-validation.regex-error').show();
+            $defaultBranchInputEl.addClass('is-invalid');
+        }
+
         let $descriptionInputEl = $('#description'),
             $descriptionErrEl = $('.description-validation.regex-error'),
             isDescriptionValid = $descriptionInputEl.length === 0 ? true : isFieldValid($descriptionInputEl, REGEX.DESCRIPTION);
@@ -679,7 +687,7 @@ $(function () {
             $('.appLangError').show();
         }
 
-        return isCodebaseNameValid && isDescriptionValid && isLanguageChosen && isFrameworkChosen;
+        return isCodebaseNameValid && isDefaultBranchNameValid && isDescriptionValid && isLanguageChosen && isFrameworkChosen;
     }
 
     function isAdvancedInfoValid() {

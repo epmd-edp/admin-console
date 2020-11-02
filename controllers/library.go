@@ -184,6 +184,7 @@ func (c *LibraryController) extractLibraryRequestData() command.CreateCodebase {
 		DeploymentScript: c.GetString("deploymentScript"),
 		Name:             c.GetString("appName"),
 		CiTool:           c.GetString("ciTool"),
+		DefaultBranch:    c.GetString("defaultBranchName"),
 	}
 
 	if js := c.GetString("jenkinsSlave"); len(js) > 0 {
