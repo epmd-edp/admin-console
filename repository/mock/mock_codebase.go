@@ -10,7 +10,8 @@ type MockCodebase struct {
 }
 
 func (m MockCodebase) GetCodebasesByCriteria(criteria query.CodebaseCriteria) ([]*query.Codebase, error) {
-	panic("implement me")
+	args := m.Called(criteria)
+	return args.Get(0).([]*query.Codebase), args.Error(1)
 }
 
 func (m MockCodebase) FindCodebaseByName(name string) bool {
