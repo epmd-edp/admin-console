@@ -72,10 +72,10 @@
                                         <td>{{.Codebase.Strategy}}</td>
                                     </tr>
                                     {{if .Codebase.GitProjectPath }}
-                                    <tr>
-                                        <th>Relative path</th>
-                                        <td>{{.Codebase.GitProjectPath}}</td>
-                                    </tr>
+                                        <tr>
+                                            <th>Relative path</th>
+                                            <td>{{.Codebase.GitProjectPath}}</td>
+                                        </tr>
                                     {{end}}
                                     {{if .Codebase.TestReportFramework }}
                                         <tr>
@@ -186,22 +186,66 @@
                                         </tr>
                                     {{end}}
                                     {{if .Codebase.CommitMessagePattern}}
-                                    <tr>
-                                        <th>Commit Message Pattern</th>
-                                        <td>{{.Codebase.CommitMessagePattern}}</td>
-                                    </tr>
+                                        <tr>
+                                            <th>Commit Message Pattern</th>
+                                            <td>{{.Codebase.CommitMessagePattern}}</td>
+                                        </tr>
                                     {{end}}
                                     {{if .Codebase.TicketNamePattern}}
-                                    <tr>
-                                        <th>Ticket Name Pattern</th>
-                                        <td>{{.Codebase.TicketNamePattern}}</td>
-                                    </tr>
+                                        <tr>
+                                            <th>Ticket Name Pattern</th>
+                                            <td>{{.Codebase.TicketNamePattern}}</td>
+                                        </tr>
                                     {{end}}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+
+
+                    {{if .Codebase.Perf}}
+                        <div class="card">
+                            <div class="card-header" id="head-perf-settings"
+                                 aria-expanded="true" aria-controls="collapse-perf-settings">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button">
+                                        PERF settings
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse-perf-settings" class="show route"
+                                 aria-labelledby="head-perf-settings">
+                                <div class="card-body">
+                                    <table class="edp-card-table">
+                                        <tbody>
+                                        <tr>
+                                            <th style="width: 50%">PERF server</th>
+                                            <td>{{.Codebase.Perf.Name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 50%">Data Sources</th>
+                                            <td>
+                                                {{$len := (len .Codebase.Perf.DataSources)}}
+                                                {{range $i, $e := .Codebase.Perf.DataSources}}
+                                                    {{$isLast := eq (add $i 1) $len}}
+                                                    {{if not $isLast}}
+                                                        {{.}},
+                                                    {{else}}
+                                                        {{.}}
+                                                    {{end}}
+                                                {{end}}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    {{end}}
+
+
+
 
                     {{if and (eq .Codebase.Status "active") (ne (len .Codebase.CodebaseBranch) 0) }}
                         <div class="card">
@@ -359,7 +403,8 @@
                     </button>
                 </div>
                 <div class="modal-body create-new-branch-modal">
-                    <form id="create-branch-action" action="{{ .BasePath }}/admin/edp/codebase/{{.Codebase.Name}}/branch"
+                    <form id="create-branch-action"
+                          action="{{ .BasePath }}/admin/edp/codebase/{{.Codebase.Name}}/branch"
                           method="post">
                         {{if .Codebase.StartVersioningFrom}}
                             <div class="form-group">

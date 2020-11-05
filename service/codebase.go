@@ -26,6 +26,7 @@ import (
 	"edp-admin-console/repository"
 	cbs "edp-admin-console/service/codebasebranch"
 	"edp-admin-console/service/logger"
+	"edp-admin-console/service/perfboard"
 	"edp-admin-console/util"
 	"edp-admin-console/util/consts"
 	dberror "edp-admin-console/util/error/db-errors"
@@ -47,6 +48,7 @@ type CodebaseService struct {
 	ICodebaseRepository   repository.ICodebaseRepository
 	ICDPipelineRepository repository.ICDPipelineRepository
 	BranchService         cbs.CodebaseBranchService
+	PerfService           perfboard.PerfBoard
 }
 
 func (s CodebaseService) CreateCodebase(codebase command.CreateCodebase) (*edpv1alpha1.Codebase, error) {
@@ -136,6 +138,24 @@ func (s CodebaseService) GetCodebaseByName(name string) (*query.Codebase, error)
 	if err != nil {
 		return nil, errors.Wrapf(err, "an error has occurred while getting %v codebase from db", name)
 	}
+
+	if c.PerfServerId != nil {
+		ps, err := s.PerfService.GetPerfServerName(*c.PerfServerId)
+		if err != nil {
+			return nil, err
+		}
+
+		ds, err := s.PerfService.GetCodebaseDataSources(c.Id)
+		if err != nil {
+			return nil, err
+		}
+
+		c.Perf = &query.Perf{
+			Name:        ps.Name,
+			DataSources: ds,
+		}
+	}
+
 	clog.Info("codebase has been fetched from db", zap.String("name", c.Name))
 	return c, nil
 }

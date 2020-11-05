@@ -35,6 +35,13 @@ type Codebase struct {
 	CommitMessagePattern string            `json:"commitMessagePattern" orm:"commit_message_pattern"`
 	TicketNamePattern    string            `json:"ticketNamePattern" orm:"ticket_name_pattern"`
 	CiTool               string            `json:"ciTool" orm:"ci_tool"`
+	PerfServerId         *int              `json:"-" orm:"column(perf_server_id)"`
+	Perf                 *Perf             `json:"perf" orm:"-"`
+}
+
+type Perf struct {
+	Name        string   `json:"name"`
+	DataSources []string `json:"dataSources"`
 }
 
 func (c *Codebase) TableName() string {

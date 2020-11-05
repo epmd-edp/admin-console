@@ -98,6 +98,12 @@ func init() {
 	jsr := jirarepo.JiraServer{}
 	psr := perfRepo.PerfServer{}
 
+	thirdPartyService := service.ThirdPartyService{IServiceCatalogRepository: serviceRepository}
+	gitServerService := service.GitServerService{IGitServerRepository: gitServerRepository}
+	ss := service.SlaveService{ISlaveRepository: sr}
+	ps := service.JobProvisioning{IJobProvisioningRepository: pr}
+	js := jiraservice.JiraServer{IJiraServer: jsr}
+	pbs := perfboard.PerfBoard{PerfRepo: psr}
 	ecs := edpComponentService.EDPComponentService{IEDPComponent: ecr}
 	edpService := service.EDPTenantService{Clients: clients}
 	clusterService := service.ClusterService{Clients: clients}
@@ -117,6 +123,7 @@ func init() {
 		ICodebaseRepository:   codebaseRepository,
 		ICDPipelineRepository: pipelineRepository,
 		BranchService:         branchService,
+		PerfService:           pbs,
 	}
 	pipelineService := cd_pipeline.CDPipelineService{
 		Clients:               clients,
@@ -125,12 +132,6 @@ func init() {
 		BranchService:         branchService,
 		EDPComponent:          ecs,
 	}
-	thirdPartyService := service.ThirdPartyService{IServiceCatalogRepository: serviceRepository}
-	gitServerService := service.GitServerService{IGitServerRepository: gitServerRepository}
-	ss := service.SlaveService{ISlaveRepository: sr}
-	ps := service.JobProvisioning{IJobProvisioningRepository: pr}
-	js := jiraservice.JiraServer{IJiraServer: jsr}
-	pbs := perfboard.PerfBoard{PerfRepo: psr}
 
 	beego.ErrorController(&controllers.ErrorController{})
 	beego.Router(fmt.Sprintf("%s/", context.BasePath), &controllers.MainController{EDPTenantService: edpService}, "get:Index")
