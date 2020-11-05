@@ -567,7 +567,7 @@ func (c *CDPipelineController) createNativeDockerImageLinks(s []*query.CodebaseD
 		s[i].CICDLink = util.CreateCICDApplicationLink(cj.Url, v.CodebaseBranch.Codebase.Name,
 			util.ProcessNameToKubernetesConvention(v.CodebaseBranch.Name))
 		s[i].ImageLink = util.CreateNativeDockerStreamLink(co.Url, context.Namespace,
-			getImageStreamName(v.CodebaseBranch.Release, v.OcImageStreamName))
+			getImageStreamName(v.CodebaseBranch.Release, v.OcImageStreamName), beego.AppConfig.String("imageStreamMaskUrl"))
 	}
 
 	return nil
@@ -636,7 +636,7 @@ func (c *CDPipelineController) createNativePlatformLinks(stages []*query.Stage, 
 	}
 
 	for i, v := range stages {
-		stages[i].PlatformProjectLink = util.CreateNativeProjectLink(edc.Url, v.PlatformProjectName)
+		stages[i].PlatformProjectLink = util.CreateNativeProjectLink(edc.Url, v.PlatformProjectName, beego.AppConfig.String("projectMaskUrl"))
 	}
 
 	return nil
