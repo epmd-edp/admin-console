@@ -5,11 +5,12 @@ import (
 	"edp-admin-console/models/query"
 	ec "edp-admin-console/repository/edp-component"
 	"edp-admin-console/service/logger"
-	"edp-admin-console/util/consts"
 	dberror "edp-admin-console/util/error/db-errors"
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"strings"
 )
 
 var log = logger.GetLogger()
@@ -45,16 +46,13 @@ func (s EDPComponentService) GetEDPComponents() ([]*query.EDPComponent, error) {
 	log.Info("edp components have been fetched", zap.Any("length", len(c)))
 
 	for i, v := range c {
-		modifyPlatformLinks(v.Url, v.Type, c[i])
+		modifyPlatformLinks(v.Url, c[i])
 	}
 
 	return c, nil
 }
 
-func modifyPlatformLinks(url, componentType string, c *query.EDPComponent) {
-	if componentType == consts.Openshift {
-		c.Url = fmt.Sprintf("%v/console/project/%v/overview", url, context.Namespace)
-	} else if componentType == consts.Kubernetes {
-		c.Url = fmt.Sprintf("%v/#/overview?namespace=%v", url, context.Namespace)
-	}
+func modifyPlatformLinks(url string, c *query.EDPComponent) {
+	replacer := strings.NewReplacer("{namespace}", context.Namespace)
+	c.Url = fmt.Sprintf("%v%v", url, replacer.Replace(beego.AppConfig.String("projectMaskUrl")))
 }

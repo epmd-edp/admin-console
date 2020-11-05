@@ -657,7 +657,7 @@ func (c *CDPipelineController) createNonNativePlatformLinks(stages []*query.Stag
 	}
 
 	for i, v := range stages {
-		stages[i].PlatformProjectLink = util.CreateNonNativeProjectLink(edc.Url, v.PlatformProjectName)
+		stages[i].PlatformProjectLink = util.CreateNativeProjectLink(edc.Url, v.PlatformProjectName)
 	}
 
 	return nil

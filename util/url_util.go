@@ -2,23 +2,23 @@ package util
 
 import (
 	"fmt"
+	"github.com/astaxie/beego"
 	"strings"
 )
 
 func CreateNativeProjectLink(domain, project string) string {
-	return fmt.Sprintf("%v/console/project/%v/overview", domain, project)
-}
-
-func CreateNonNativeProjectLink(domain, namespace string) string {
-	return fmt.Sprintf("%v/#/overview?namespace=%v", domain, namespace)
+	replacer := strings.NewReplacer("{namespace}", project)
+	return fmt.Sprintf("%v%v", domain, replacer.Replace(beego.AppConfig.String("projectMaskUrl")))
 }
 
 func CreateNativeDockerStreamLink(domain, namespace, stream string) string {
-	return fmt.Sprintf("%v/console/project/%v/browse/images/%v", domain, namespace, stream)
+	replacer := strings.NewReplacer("{namespace}", namespace, "{stream}", stream)
+	return fmt.Sprintf("%v%v", domain, replacer.Replace(beego.AppConfig.String("imageStreamMaskUrl")))
 }
 
 func CreateNonNativeDockerStreamLink(domain, stream string) string {
-	return fmt.Sprintf("%v/%v/", domain, stream)
+	replacer := strings.NewReplacer("{stream}", stream)
+	return fmt.Sprintf("%v%v", domain, replacer.Replace(beego.AppConfig.String("imageStreamMaskUrl")))
 }
 
 func CreateCICDApplicationLink(domain, codebase, branch string) string {
