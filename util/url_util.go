@@ -5,16 +5,18 @@ import (
 	"strings"
 )
 
-func CreateNativeProjectLink(domain, project string) string {
-	return fmt.Sprintf("%v/console/project/%v/overview", domain, project)
+func CreateNativeProjectLink(domain, project, maskUrl string) string {
+	replacer := strings.NewReplacer("{namespace}", project)
+	return fmt.Sprintf("%v" + replacer.Replace(maskUrl), domain)
 }
 
 func CreateNonNativeProjectLink(domain, namespace string) string {
 	return fmt.Sprintf("%v/#/overview?namespace=%v", domain, namespace)
 }
 
-func CreateNativeDockerStreamLink(domain, namespace, stream string) string {
-	return fmt.Sprintf("%v/console/project/%v/browse/images/%v", domain, namespace, stream)
+func CreateNativeDockerStreamLink(domain, namespace, stream, maskUrl string) string {
+	replacer := strings.NewReplacer("{namespace}", namespace, "{stream}", stream)
+	return fmt.Sprintf("%v" + replacer.Replace(maskUrl), domain)
 }
 
 func CreateNonNativeDockerStreamLink(domain, stream string) string {
