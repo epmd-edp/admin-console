@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6127bc3c_e5c5542d",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-11-05T12:10:16Z",
+      "side": 1,
+      "message": "dont pass env variable to method, consume it inside",
+      "revId": "4a630764c67a31d4585c5634e60d43f65afa5e0d",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f3e464e_eebf2ab8",
+        "filename": "controllers/cd-pipeline/cd_pipeline.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-11-05T12:10:16Z",
+      "side": 1,
+      "message": "dont pass env variable to method, consume it inside",
+      "revId": "4a630764c67a31d4585c5634e60d43f65afa5e0d",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "902194e0_2f1a74e3",
+        "filename": "service/edp-component/edp_component.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-11-05T12:10:16Z",
+      "side": 1,
+      "message": "don\u0027t pass env variable to method, just consume it inside",
+      "revId": "4a630764c67a31d4585c5634e60d43f65afa5e0d",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "260b66b3_7576fb1b",
+        "filename": "util/url_util.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-11-05T12:10:16Z",
+      "side": 1,
+      "message": "replace with fmt.Sprintf(\"%v%v\", domain,replacer.Replace(maskUrl))",
+      "revId": "4a630764c67a31d4585c5634e60d43f65afa5e0d",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4da5cbb5_9dd69141",
+        "filename": "util/url_util.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000005
+      },
+      "writtenOn": "2020-11-05T12:10:16Z",
+      "side": 1,
+      "message": "the same",
+      "revId": "4a630764c67a31d4585c5634e60d43f65afa5e0d",
+      "serverId": "0350cb7f-c1b1-4710-a647-f6632dbafb3c",
+      "unresolved": true
+    }
+  ]
+}
