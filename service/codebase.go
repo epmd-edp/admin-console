@@ -109,7 +109,7 @@ func (s CodebaseService) CreateCodebase(codebase command.CreateCodebase) (*edpv1
 	result := &edpv1alpha1.Codebase{}
 	err = edpClient.Post().Namespace(context.Namespace).Resource(consts.CodebasePlural).Body(c).Do().Into(result)
 	if err != nil {
-		clog.Error("an error has occurred while creating codebase resource in cluster", zap.Error(err))
+		clog.Error("an error has1 occurred while creating codebase resource in cluster", zap.Error(err))
 		return &edpv1alpha1.Codebase{}, err
 	}
 
