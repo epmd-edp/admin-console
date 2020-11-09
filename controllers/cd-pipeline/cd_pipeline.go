@@ -553,7 +553,7 @@ func (c *CDPipelineController) createNonNativeDockerImageLinks(s []*query.Codeba
 	}
 
 	for i, v := range s {
-		s[i].ImageLink = util.CreateNonNativeDockerStreamLink(cd.Url,
+		s[i].ImageLink = util.CreateNativeDockerStreamLink(cd.Url, "",
 			getImageStreamName(v.CodebaseBranch.Release, v.OcImageStreamName))
 		s[i].CICDLink = util.CreateCICDApplicationLink(cj.Url, v.CodebaseBranch.Codebase.Name,
 			util.ProcessNameToKubernetesConvention(v.CodebaseBranch.Name))
@@ -609,7 +609,7 @@ func (c *CDPipelineController) createNonNativePlatformLinks(stages []*query.Stag
 	}
 
 	for i, v := range stages {
-		stages[i].PlatformProjectLink = util.CreateNonNativeProjectLink(edc.Url, v.PlatformProjectName)
+		stages[i].PlatformProjectLink = util.CreateNativeProjectLink(edc.Url, v.PlatformProjectName)
 	}
 
 	return nil

@@ -11,17 +11,9 @@ func CreateNativeProjectLink(domain, project string) string {
 	return fmt.Sprintf("%v%v", domain, replacer.Replace(beego.AppConfig.String("projectMaskUrl")))
 }
 
-func CreateNonNativeProjectLink(domain, namespace string) string {
-	return fmt.Sprintf("%v/#/overview?namespace=%v", domain, namespace)
-}
-
 func CreateNativeDockerStreamLink(domain, namespace, stream string) string {
 	replacer := strings.NewReplacer("{namespace}", namespace, "{stream}", stream)
 	return fmt.Sprintf("%v%v", domain, replacer.Replace(beego.AppConfig.String("imageStreamMaskUrl")))
-}
-
-func CreateNonNativeDockerStreamLink(domain, stream string) string {
-	return fmt.Sprintf("%v/%v/", domain, stream)
 }
 
 func CreateCICDApplicationLink(domain, codebase, branch string) string {
