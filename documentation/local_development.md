@@ -29,9 +29,9 @@ In order to run the operator, follow the steps below:
 4. Create the PostgreSQL database, schema, and a user for the EDP Admin Console operator:
      * Create database with a user:
    ```yaml
-   CREATE DATABASE edp-install-wizard-db WITH ENCODING 'UTF8';
+   CREATE DATABASE edp-db WITH ENCODING 'UTF8';
    CREATE USER postgres WITH PASSWORD 'password';
-   GRANT ALL PRIVILEGES ON DATABASE 'edp-install-wizard-db' to postgres;
+   GRANT ALL PRIVILEGES ON DATABASE 'edp-db' to postgres;
    ``` 
      * Create a schema:
    ```yaml
@@ -45,7 +45,7 @@ In order to run the operator, follow the steps below:
     dbEnabled=true
     pgHost=localhost
     pgPort=5432
-    pgDatabase=edp-install-wizard-db
+    pgDatabase=edp-db
     pgUser=postgres
     pgPassword=password
     edpName=develop

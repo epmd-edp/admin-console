@@ -22,7 +22,7 @@ spec:
           name: db-init
           env:
             - name: PG_HOST
-              value: edp-install-wizard-db
+              value: edp-db
             - name: PG_PORT
               value: '5432'
             - name: PG_DATABASE
@@ -106,7 +106,7 @@ spec:
                   name: edp-config
                   key: edp_name
             - name: PG_HOST
-              value: edp-install-wizard-db
+              value: edp-db
             - name: PG_PORT
               value: '5432'
             - name: PG_DATABASE
