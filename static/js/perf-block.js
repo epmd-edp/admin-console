@@ -72,3 +72,23 @@ function displayButtonWhenPerfIsNotSelected() {
         }
     }
 }
+
+!function () {
+    togglePerfDataSourcesView();
+}();
+
+$('#strategy').change(function () {
+    togglePerfDataSourcesView();
+});
+
+function togglePerfDataSourcesView() {
+    let strategyType = $('#strategy').val(),
+        $dsDivEl = $('.dataSources').find('div input[value="GitLab"]').parent('div'),
+        importStrategy = 'import';
+
+    if (importStrategy === strategyType.toLowerCase()) {
+        $dsDivEl.removeClass('hide-element');
+        return
+    }
+    $dsDivEl.addClass('hide-element');
+}

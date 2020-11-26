@@ -98,6 +98,9 @@ github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200903073301-2eefd21202bb
 github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20200903073301-2eefd21202bb/go.mod h1:j9vAMW2uSm9iKs7YshmM5Rz4m6jDvIEzS83EQ9sDHpI=
 github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20201019094312-04fd3a4cbee3 h1:aWULqASUmQHQBOWBNOBknY3/mvER6ejviJvtebZy1ZU=
 github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20201019094312-04fd3a4cbee3/go.mod h1:j9vAMW2uSm9iKs7YshmM5Rz4m6jDvIEzS83EQ9sDHpI=
+github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20201019102140-348726fc81a6/go.mod h1:j9vAMW2uSm9iKs7YshmM5Rz4m6jDvIEzS83EQ9sDHpI=
+github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20201106143626-fac13626a6f8 h1:spiEQdBUJErRtr9cdKmx/jxy869Ovmu8i46S5tpsH1k=
+github.com/epmd-edp/codebase-operator/v2 v2.3.0-95.0.20201106143626-fac13626a6f8/go.mod h1:rDXVz1yVp31XRlHNTEIa/bLqAd5Y2H1LaagU6dH0vXg=
 github.com/epmd-edp/edp-component-operator v0.0.0-20191029131047-d87b7a6d3bb0/go.mod h1:k4OqvjIznqyXgdpp1iuuSdSk4BdjiJ3j3eesPIIqO+s=
 github.com/epmd-edp/edp-component-operator v0.1.1-0.20200827122548-e87429a916e0/go.mod h1:Bemq9fPYd6SM8VVyJylyxPSWq2ZlQt4Bb2+Q3AuJTJY=
 github.com/epmd-edp/gerrit-operator/v2 v2.1.0-52/go.mod h1:NUerZ1Gse7TCf0ltzTx08Un4WztLGmLzW9FZ4npRM6g=
@@ -109,6 +112,7 @@ github.com/epmd-edp/jenkins-operator/v2 v2.3.0-130.0.20200416062406-16c330e09a19
 github.com/epmd-edp/jenkins-operator/v2 v2.3.0-130.0.20200525102742-f56cd8641faa/go.mod h1:XjqQ2LkGCsKV2Gke+K+AevHIbIDZtJlCkv2pq7e6DQ8=
 github.com/epmd-edp/keycloak-operator v1.0.18-alpha-39/go.mod h1:n78SGdVQhCkr29STKtz2qKDnYBiWk4TUoGATKF6nOH8=
 github.com/epmd-edp/keycloak-operator v1.0.31-alpha-56/go.mod h1:uXEmg98UyXkMVe9deHTkz0wF7fb47geazmAoiQAb/Zw=
+github.com/epmd-edp/perf-operator/v2 v2.0.0-20201102140540-c5092c5a11af/go.mod h1:4xAIU35PlzybP24XW9AK2z1Ym66ZITg2P5nc6SYdtVI=
 github.com/evanphx/json-patch v4.0.0+incompatible/go.mod h1:50XU6AFN0ol/bzJsmQLiYLvXMP4fmwYFNcr97nuDLSk=
 github.com/evanphx/json-patch v4.5.0+incompatible/go.mod h1:50XU6AFN0ol/bzJsmQLiYLvXMP4fmwYFNcr97nuDLSk=
 github.com/fatih/structs v1.0.0/go.mod h1:9NiDSp5zOcgEDl+j00MP/WkGVPOlPRLejGD8Ga6PJ7M=
