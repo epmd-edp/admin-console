@@ -1,0 +1,7 @@
+Verified+1: CI Jenkins
+Code-Review+2: Sergiy Kulanov <sergiy_kulanov@epam.com>
+Submitted-by: Sergiy Kulanov <sergiy_kulanov@epam.com>
+Submitted-at: Tue, 15 Dec 2020 13:19:58 +0000
+Reviewed-on: https://gerrit-oc-green-edp-cicd.delivery.aws.main.edp.projects.epam.com/c/edp-admin-console/+/6610
+Project: edp-admin-console
+Branch: refs/heads/master
