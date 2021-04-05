@@ -1,3 +1,6 @@
+|![](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Warning.svg/156px-Warning.svg.png) | This project is moved to [https://github.com/epam/edp-admin-console](https://github.com/epam/edp-admin-console).
+|---|---|
+
 # EDP Admin Console
 ## Overview
 Admin Console is a central management tool in the EDP ecosystem that provides the ability to deploy infrastructure, project resources and new technologies in a simple way. 
